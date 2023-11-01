@@ -1,6 +1,7 @@
 package com.apogee.dev.CUJaS.CUJaS_Core;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -42,9 +43,9 @@ public class XMLReader {
     }
 
     private void displayFigure(Node figure) {
-        // get content of tag "figureType"
-        Node type = figure.getChildNodes().item(1);
-        System.out.print(type.getTextContent() + "\n");
+        // get content of tag "figureType" by name
+        String figType = ((Element) figure).getElementsByTagName("figureType").item(0).getTextContent();
+        System.out.println(figType);
     }
 
     /**
