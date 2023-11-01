@@ -6,8 +6,6 @@ plugins {
 group = 'com.apogee.dev'
 version = '1.0-SNAPSHOT'
 
-mainClassName = 'com.apogee.dev.CUJaS.Main'
-
 repositories {
     mavenCentral()
 }
@@ -19,6 +17,7 @@ dependencies {
 
 run {
     standardInput = System.in
+    mainClassName = 'com.apogee.dev.CUJaS.Main'
 }
 
 test {
