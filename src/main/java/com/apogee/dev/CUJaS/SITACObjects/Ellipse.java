@@ -12,5 +12,13 @@ public class Ellipse extends Figure {
         this.hradius = hradius / 2;
         this.vradius = vradius / 2;
     }
+
+    @Override
+    public String toString() {
+        return this.name + " ("
+                + this.center + " "
+                + this.hradius + " "
+                + this.vradius + ")";
+    }
 }
 

@@ -10,4 +10,13 @@ public class Line extends Figure {
         super(name);
         this.points.addAll(as_points(points));
     }
+
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder(this.name + " {");
+        for(Point p : this.points) {
+            res.append(p).append(" ");
+        }
+        return res + "}";
+    }
 }
