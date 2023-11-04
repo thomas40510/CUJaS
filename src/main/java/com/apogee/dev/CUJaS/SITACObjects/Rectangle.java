@@ -11,4 +11,12 @@ public class Rectangle extends Figure {
         this.horizontal = horizontal;
         this.vertical = vertical;
     }
+
+    @Override
+    public String toString() {
+        return this.name + " ("
+                + this.start + " "
+                + this.horizontal + " "
+                + this.vertical + ")";
+    }
 }

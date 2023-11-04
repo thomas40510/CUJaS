@@ -15,4 +15,14 @@ public class Bullseye extends Figure {
         this.rings = rings;
         this.ring_distance = ring_distance;
     }
+
+    @Override
+    public String toString() {
+        return "(BullsEye) " + this.name + " "
+                + this.center + " "
+                + this.hradius + " "
+                + this.vradius + " "
+                + this.rings + " "
+                + this.ring_distance;
+    }
 }

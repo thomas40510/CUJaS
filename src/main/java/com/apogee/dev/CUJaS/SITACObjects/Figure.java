@@ -18,34 +18,40 @@ public abstract class Figure {
         v.visit(this);
     }
 
-    public Point as_point(double[] point) {
+    public static Point as_point(double[] point) {
         return new Point(point[0], point[1]);
     }
-    public Point as_point(double latitude, double longitude) {
+
+    public static Point as_point(double latitude, double longitude) {
         return new Point(latitude, longitude);
     }
-    public Point as_point(Point p) {
+    public static Point as_point(Point p) {
         return p;
     }
-    public Point as_point() {
+    public static Point as_point() {
         return new Point(0.0, 0.0);
     }
-    public Point as_point(Object o) {
-        switch (o.getClass().getName()) {
-            case "double[]":
-                return as_point((double[]) o);
-            case "Point":
-                return as_point((Point) o);
-            default:
-                return as_point();
+    public static Point as_point(Object o) {
+        if (o instanceof Point) {
+            return (Point) o;
+        } else if (o instanceof double[]) {
+            return as_point((double[]) o);
+        } else if (o instanceof ArrayList) {
+            return as_point(o);
+        } else {
+            return as_point();
         }
     }
 
-    public ArrayList<Point> as_points(ArrayList<Object> points) {
+    public static ArrayList<Point> as_points(ArrayList<Object> points) {
         ArrayList<Point> res = new ArrayList<>();
         for(Object o : points) {
             res.add(as_point(o));
         }
         return res;
+    }
+
+    public String toString() {
+        return "I am a generic figure. Or, did you forget to implement my own toString?";
     }
 }
