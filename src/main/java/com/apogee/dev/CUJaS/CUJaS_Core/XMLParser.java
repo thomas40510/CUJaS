@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class XMLParser {
-    private Document doc;
-    private ArrayList<Node> extracted_figures;
-    private HashMap<XKey, String> keywords;
+    private final Document doc;
+    private final ArrayList<Node> extracted_figures;
+    private final HashMap<XKey, String> keywords;
     private ArrayList<Figure> figures;
 
     public XMLParser(String filepath, Semantics semantics) {

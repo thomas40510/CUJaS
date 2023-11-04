@@ -3,7 +3,7 @@ package com.apogee.dev.CUJaS.SITACObjects;
 import java.util.ArrayList;
 
 public class Line extends Figure {
-    public ArrayList<Point> points = new ArrayList<Point>();
+    public ArrayList<Point> points = new ArrayList<>();
     public String name = "Line";
 
     public Line(ArrayList<Point> points, String... name) {
