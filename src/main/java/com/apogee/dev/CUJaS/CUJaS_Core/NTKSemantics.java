@@ -8,5 +8,8 @@ public class NTKSemantics extends Semantics {
         this.keywords = new HashMap<>();
         this.keywords.put(XKey.BODY, "figures");
         this.keywords.put(XKey.FIGURE, "figure");
+        this.keywords.put(XKey.FIG_TYPE, "figureType");
+        this.keywords.put(XKey.FIG_NAME, "name");
+        this.keywords.put(XKey.FIG_HORIZ, "horizontal");
     }
 }
