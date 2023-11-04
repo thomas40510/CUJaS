@@ -1,7 +1,5 @@
 package com.apogee.dev.CUJaS.CUJaS_Core;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -13,7 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * @see https://www.tutorialspoint.com/java_xml/java_dom_parse_document.htm
+ * @ref <a href="https://www.tutorialspoint.com/java_xml/java_dom_parse_document.htm">DOM parse document</a>
  */
 public class XMLReader {
     private Document doc;
