@@ -13,6 +13,7 @@ import java.util.ArrayList;
 /**
  * @ref <a href="https://www.tutorialspoint.com/java_xml/java_dom_parse_document.htm">DOM parse document</a>
  */
+@Deprecated
 public class XMLReader {
     private Document doc;
     private ArrayList<Node> figures;
