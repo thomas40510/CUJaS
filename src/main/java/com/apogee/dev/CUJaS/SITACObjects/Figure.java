@@ -2,20 +2,12 @@ package com.apogee.dev.CUJaS.SITACObjects;
 
 import java.util.ArrayList;
 
-public abstract class Figure {
+public abstract class Figure implements SITACObject {
     public String name = "Figure";
     public Figure(String... name) {
         if (name.length > 0) {
             this.name = name[0];
         }
-    }
-
-    public Figure() {
-        this.name = "Figure";
-    }
-
-    public void accept_visitor(Visitor v) {
-        v.visit(this);
     }
 
     public static Point as_point(double[] point) {
@@ -51,7 +43,8 @@ public abstract class Figure {
         return res;
     }
 
-    public String toString() {
-        return "I am a generic figure. Or, did you forget to implement my own toString?";
+
+    public String getName() {
+        return this.name;
     }
 }

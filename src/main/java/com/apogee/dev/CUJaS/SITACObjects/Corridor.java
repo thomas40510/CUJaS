@@ -11,4 +11,10 @@ public class Corridor extends Figure {
         this.end_point = as_point(end_point);
         this.width = width;
     }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.start_point + " " + this.end_point + " " + this.width;
+    }
+
 }

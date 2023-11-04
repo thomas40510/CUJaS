@@ -14,4 +14,13 @@ public class Polygon extends Line {
     public Polygon(ArrayList<Object> points, String... name) {
         super(points, name);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder(this.name + " {");
+        for(Point p : this.points) {
+            res.append(p).append(" ");
+        }
+        return res + "}";
+    }
 }
