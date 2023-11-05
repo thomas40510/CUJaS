@@ -11,8 +11,17 @@ public class Polygon extends Line {
      * @param points Points of the polygon
      * @param name Optional name of the Polygon
      */
-    public Polygon(ArrayList<Object> points, String... name) {
+    public Polygon(ArrayList<Point> points, String... name) {
         super(points, name);
+    }
+
+    public Polygon() {
+        super();
+        this.points = new ArrayList<>();
+    }
+
+    public Polygon fromLine(Line l) {
+        return new Polygon(l.points, l.name);
     }
 
     @Override
