@@ -56,12 +56,12 @@ public class XMLParser {
     Each constructed figure is added to the figures array.
      */
     public void build_figures() {
-        String figureTypeKey = this.keywords.get(XKey.FIG_TYPE);
         logger.info("Building " + this.extracted_figures.size() + " extracted figures.");
         for (Node node : this.extracted_figures) {
             Element elem = (Element) node;
-            String figureType = elem.getElementsByTagName(figureTypeKey).item(0).getTextContent();
-            String figureName = elem.getElementsByTagName(this.keywords.get(XKey.FIG_NAME)).item(0).getTextContent();
+            String figureType = getVal(elem, XKey.FIG_TYPE);
+            String figureName = getVal(elem, XKey.FIG_NAME);
+            logger.debug("Building figure " + figureName + " of type " + figureType);
             switch (figureType) {
                 case "Point":
                     this.figures.add(parse_point(elem, figureName));
@@ -86,11 +86,12 @@ public class XMLParser {
                     break;
                 case "Corridor":
                     this.figures.add(parse_corridor(elem, figureName));
+                    break;
                 default:
-                    logger.warn("Unknown figure type: " + figureType);
-                    //throw new RuntimeException("Unknown figure type: " + figureType);
+                    logger.warn("Unknown figure type: " + figureType + ". I'm ignoring it.");
             }
         }
+        logger.info("Done building " + this.figures.size() + " figures.");
     }
 
     private Point parse_point(Element elem, String figureName) {
@@ -104,7 +105,7 @@ public class XMLParser {
         ArrayList<Point> pts = new ArrayList<>();
         for (int i = 0; i < points.getLength(); i++) {
             Element pt = (Element) points.item(i);
-            pts.add(parse_point(pt, figureName));
+            pts.add(parse_point(pt, "Pt"+i));
         }
         return new Line(pts, figureName);
     }
@@ -114,7 +115,7 @@ public class XMLParser {
     }
 
     private Ellipse parse_ellipse(Element elem, String figureName) {
-        Point center = parse_point(elem, figureName);
+        Point center = parse_point(elem, "Center");
         double[] horizVert = getHorizVert(elem);
         double horizontal = horizVert[0];
         double vertical = horizVert[1];
@@ -122,19 +123,19 @@ public class XMLParser {
     }
 
     private Circle parse_circle(Element elem, String figureName) {
-        Point center = parse_point(elem, figureName);
+        Point center = parse_point(elem, "Center");
         String radius = getVal(elem, XKey.FIG_HORIZ);
         return new Circle(center, Double.parseDouble(radius), figureName);
     }
 
     private Rectangle parse_rectangle(Element element, String figureName) {
-        Point pos = parse_point(element, figureName);
+        Point pos = parse_point(element, "StartPt");
         double[] horizVert = getHorizVert(element);
         return new Rectangle(pos, horizVert[0], horizVert[1], figureName);
     }
 
     private Bullseye parse_bullseye(Element element, String figureName) {
-        Point pos = parse_point(element, figureName);
+        Point pos = parse_point(element, "Center");
         double[] horizVert = getHorizVert(element);
         int nbRings = Integer.parseInt(getVal(element, XKey.BULLS_RINGS));
         double dist = Double.parseDouble(getVal(element, XKey.BULLS_DIST));
@@ -143,8 +144,8 @@ public class XMLParser {
 
     private Corridor parse_corridor(Element element, String figureName) {
         NodeList points = element.getElementsByTagName(this.keywords.get(XKey.FIG_POINT));
-        Point start = parse_point((Element) points.item(0), figureName);
-        Point end = parse_point((Element) points.item(1), figureName);
+        Point start = parse_point((Element) points.item(0), "CorrStart");
+        Point end = parse_point((Element) points.item(1), "CorrEnd");
         double width = Double.parseDouble(getVal(element, XKey.FIG_HORIZ));
         return new Corridor(start, end, width, figureName);
     }
@@ -159,8 +160,6 @@ public class XMLParser {
         String vertical = getVal(element, XKey.FIG_VERT);
         return new double[]{Double.parseDouble(horizontal), Double.parseDouble(vertical)};
     }
-
-
 
     private String getVal(Element elem, XKey key) throws RuntimeException {
         try {
