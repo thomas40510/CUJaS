@@ -79,7 +79,7 @@ public class XMLParser {
                     this.figures.add(parse_bullseye(elem, figureName));
                     break;
                 case "Corridor":
-                    this.figures.add(parse_corridor(elem, figureName));)
+                    this.figures.add(parse_corridor(elem, figureName));
                 default:
                     throw new RuntimeException("Unknown figure type: " + figureType);
             }
