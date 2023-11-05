@@ -1,7 +1,6 @@
 package com.apogee.dev.CUJaS.SITACObjects;
 
 public class Circle extends Ellipse {
-    public String name = "Circle";
     public Point center;
     public double radius;
 

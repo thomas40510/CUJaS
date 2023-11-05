@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 
 public class Polygon extends Line {
-    public String name = "Polygon";
-
     /**
      * A Polygon Object, define by its points
      * @param points Points of the polygon

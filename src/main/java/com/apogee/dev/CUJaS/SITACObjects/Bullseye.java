@@ -1,7 +1,6 @@
 package com.apogee.dev.CUJaS.SITACObjects;
 
 public class Bullseye extends Figure {
-    public String name = "Bullseye";
     public Point center;
     public double hradius, vradius;
     public int rings;

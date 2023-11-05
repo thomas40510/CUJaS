@@ -1,12 +1,20 @@
 package com.apogee.dev.CUJaS.SITACObjects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 
 public abstract class Figure implements SITACObject {
-    public String name = "Figure";
+    protected static final Logger logger = LogManager.getLogger(Figure.class);
+
+    public String name;
     public Figure(String... name) {
-        if (name.length > 0) {
-            this.name = name[0];
+        this.name = this.getClass().getSimpleName();
+        try {
+            this.name = (name[0] != null) ? name[0] : this.name;
+        } catch (Exception e) {
+            logger.warn(e);
         }
     }
 
