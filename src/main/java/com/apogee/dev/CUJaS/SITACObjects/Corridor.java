@@ -1,7 +1,6 @@
 package com.apogee.dev.CUJaS.SITACObjects;
 
 public class Corridor extends Figure {
-    public String name = "Corridor";
     public Point start_point, end_point;
     public double width;
 

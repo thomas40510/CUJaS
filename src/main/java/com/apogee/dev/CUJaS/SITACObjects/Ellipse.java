@@ -1,7 +1,6 @@
 package com.apogee.dev.CUJaS.SITACObjects;
 
 public class Ellipse extends Figure {
-    public String name = "Ellipse";
     public Point center;
     public double hradius, vradius;
 
@@ -15,10 +14,10 @@ public class Ellipse extends Figure {
 
     @Override
     public String toString() {
-        return this.name + " ("
-                + this.center + " "
-                + this.hradius + " "
-                + this.vradius + ")";
+        return this.name + " {"
+                + this.center + " / "
+                + this.hradius + " ; "
+                + this.vradius + "}";
     }
 }
 

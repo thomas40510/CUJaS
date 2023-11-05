@@ -11,5 +11,13 @@ public class NTKSemantics extends Semantics {
         this.keywords.put(XKey.FIG_TYPE, "figureType");
         this.keywords.put(XKey.FIG_NAME, "name");
         this.keywords.put(XKey.FIG_HORIZ, "horizontal");
+        this.keywords.put(XKey.FIG_VERT, "vertical");
+        this.keywords.put(XKey.FIG_POINTS, "points");
+        this.keywords.put(XKey.FIG_POINT, "point");
+        this.keywords.put(XKey.PT_LAT, "latitude");
+        this.keywords.put(XKey.PT_LON, "longitude");
+        this.keywords.put(XKey.BULLSEYE, "bullseye");
+        this.keywords.put(XKey.BULLS_RINGS, "numberOfRings");
+        this.keywords.put(XKey.BULLS_DIST, "distanceBetweenRing");
     }
 }
