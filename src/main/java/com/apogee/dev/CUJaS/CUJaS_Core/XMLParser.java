@@ -66,20 +66,20 @@ public class XMLParser {
                 case "Polygon":
                     this.figures.add(parse_polygon(elem, figureName));
                     break;
-/*
                 case "Circle":
                     this.figures.add(parse_circle(elem, figureName));
                     break;
                 case "Rectangle":
-                    parse_rectangle(elem, figureName);
+                    this.figures.add(parse_rectangle(elem, figureName));
                     break;
                 case "Ellipse":
-                    parse_ellipse(elem, figureName);
+                    this.figures.add(parse_ellipse(elem, figureName));
                     break;
                 case "BullsEye":
-                    parse_bullseye(elem, figureName);
+                    this.figures.add(parse_bullseye(elem, figureName));
                     break;
-*/
+                case "Corridor":
+                    this.figures.add(parse_corridor(elem, figureName));)
                 default:
                     throw new RuntimeException("Unknown figure type: " + figureType);
             }
@@ -103,8 +103,54 @@ public class XMLParser {
     }
 
     private Polygon parse_polygon(Element element, String figureName) {
-        Line l = parse_line(element, figureName);
-        return (Polygon) l;
+        return new Polygon().fromLine(parse_line(element, figureName));
+    }
+
+    private Ellipse parse_ellipse(Element elem, String figureName) {
+        Point center = parse_point(elem, figureName);
+        double[] horizVert = getHorizVert(elem);
+        double horizontal = horizVert[0];
+        double vertical = horizVert[1];
+        return new Ellipse(center, horizontal, vertical, figureName);
+    }
+
+    private Circle parse_circle(Element elem, String figureName) {
+        Point center = parse_point(elem, figureName);
+        String radius = getVal(elem, XKey.FIG_HORIZ);
+        return new Circle(center, Double.parseDouble(radius), figureName);
+    }
+
+    private Rectangle parse_rectangle(Element element, String figureName) {
+        Point pos = parse_point(element, figureName);
+        double[] horizVert = getHorizVert(element);
+        return new Rectangle(pos, horizVert[0], horizVert[1], figureName);
+    }
+
+    private Bullseye parse_bullseye(Element element, String figureName) {
+        Point pos = parse_point(element, figureName);
+        double[] horizVert = getHorizVert(element);
+        int nbRings = Integer.parseInt(getVal(element, XKey.BULLS_RINGS));
+        double dist = Double.parseDouble(getVal(element, XKey.BULLS_DIST));
+        return new Bullseye(pos, horizVert[0], horizVert[1], nbRings, dist, figureName);
+    }
+
+    private Corridor parse_corridor(Element element, String figureName) {
+        NodeList points = element.getElementsByTagName(this.keywords.get(XKey.FIG_POINT));
+        Point start = parse_point((Element) points.item(0), figureName);
+        Point end = parse_point((Element) points.item(1), figureName);
+        double width = Double.parseDouble(getVal(element, XKey.FIG_HORIZ));
+        return new Corridor(start, end, width, figureName);
+    }
+
+    /**
+     * Parse horizontal and vertical values from a figure
+     * @param element Element to parse values from
+     * @return Array of horizontal and vertical values
+     */
+    private double[] getHorizVert(Element element) {
+        String horizontal = getVal(element, XKey.FIG_HORIZ);
+        String vertical = getVal(element, XKey.FIG_VERT);
+        return new double[]{Double.parseDouble(horizontal), Double.parseDouble(vertical)};
     }
 
 
