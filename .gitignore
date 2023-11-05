@@ -192,3 +192,5 @@ Temporary Items
 
 
 .idea/inspectionProfiles/
+
+src/main/resources/test.xml
