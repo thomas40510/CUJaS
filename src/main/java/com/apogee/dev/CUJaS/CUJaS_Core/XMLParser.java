@@ -12,11 +12,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 public class XMLParser {
     private final Document doc;
     private final ArrayList<Node> extracted_figures;
     private final HashMap<XKey, String> keywords;
-    private ArrayList<Figure> figures;
+    private final ArrayList<Figure> figures;
+
+    private static final Logger logger = LogManager.getLogger(XMLParser.class);
 
     public XMLParser(String filepath, Semantics semantics) {
         this.extracted_figures = new ArrayList<>();
@@ -52,6 +57,7 @@ public class XMLParser {
      */
     public void build_figures() {
         String figureTypeKey = this.keywords.get(XKey.FIG_TYPE);
+        logger.info("Building " + this.extracted_figures.size() + " extracted figures.");
         for (Node node : this.extracted_figures) {
             Element elem = (Element) node;
             String figureType = elem.getElementsByTagName(figureTypeKey).item(0).getTextContent();
@@ -75,13 +81,14 @@ public class XMLParser {
                 case "Ellipse":
                     this.figures.add(parse_ellipse(elem, figureName));
                     break;
-                case "BullsEye":
+                case "Bullseye":
                     this.figures.add(parse_bullseye(elem, figureName));
                     break;
                 case "Corridor":
                     this.figures.add(parse_corridor(elem, figureName));
                 default:
-                    throw new RuntimeException("Unknown figure type: " + figureType);
+                    logger.warn("Unknown figure type: " + figureType);
+                    //throw new RuntimeException("Unknown figure type: " + figureType);
             }
         }
     }
