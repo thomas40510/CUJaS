@@ -6,7 +6,7 @@ public class Circle extends Ellipse {
 
     // accepts either Point or double[] for center
     public Circle(Object center, double radius, String... name) {
-        super(center, radius, radius, name);
+        super(center, radius, radius, 0, name);
         this.center = as_point(center);
         this.radius = radius;
     }

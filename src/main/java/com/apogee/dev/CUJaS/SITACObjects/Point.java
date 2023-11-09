@@ -24,4 +24,17 @@ public class Point extends Figure {
         return this.name + " (" + this.latitude + "," + this.longitude + ")";
     }
 
+    @Override
+    public String export_kml() {
+        String style = "style_point";
+        String coordinates = latitude + "," + longitude;
+        return "<Placemark>\n" +
+                "    <name>" + this.name + "</name>\n" +
+                "    <description> un point </description>\n" +
+                "    <styleUrl>" + style + "</styleUrl>\n" +
+                "    <Point>\n" +
+                "        <coordinates>" + coordinates + "</coordinates>\n" +
+                "    </Point>\n" +
+                "</Placemark>";
+    }
 }

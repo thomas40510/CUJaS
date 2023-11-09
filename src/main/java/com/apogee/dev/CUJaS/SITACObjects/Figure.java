@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-public abstract class Figure implements SITACObject {
+public abstract class Figure implements SITACObject, KMLObject {
     protected static final Logger logger = LogManager.getLogger(Figure.class);
 
     public String name;
@@ -55,4 +55,9 @@ public abstract class Figure implements SITACObject {
     public String getName() {
         return this.name;
     }
+
+    public String export_kml() {
+        return "";
+    }
+
 }
