@@ -1,6 +1,8 @@
 package com.apogee.dev.CUJaS.CUJaS_Core;
 
 import com.apogee.dev.CUJaS.SITACObjects.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -11,9 +13,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 public class XMLParser {
     private final Document doc;
@@ -30,6 +29,7 @@ public class XMLParser {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             this.doc = builder.parse(new File(filepath));
+            logger.info("Successfully found your file.");
         } catch (NullPointerException e) {
             throw new RuntimeException("File not found: " + filepath);
         } catch (Exception e) {
@@ -47,8 +47,10 @@ public class XMLParser {
         doc.getDocumentElement().normalize();
         NodeList figs = doc.getElementsByTagName(this.keywords.get(XKey.FIGURE));
         for (int i = 0; i < figs.getLength(); i++) {
+            logger.debug("Extracting figure " + i);
             this.extracted_figures.add(figs.item(i));
         }
+        logger.info("Done parsing. I found " + this.extracted_figures.size() + " figures.");
     }
 
     /*
@@ -56,7 +58,6 @@ public class XMLParser {
     Each constructed figure is added to the figures array.
      */
     public void build_figures() {
-        logger.info("Building " + this.extracted_figures.size() + " extracted figures.");
         for (Node node : this.extracted_figures) {
             Element elem = (Element) node;
             String figureType = getVal(elem, XKey.FIG_TYPE);
@@ -170,8 +171,6 @@ public class XMLParser {
             throw new RuntimeException("Unknown key: " + key + " for " + figName);
         }
     }
-
-
 
     public ArrayList<Figure> getFigures() {
         return this.figures;

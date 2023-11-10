@@ -25,8 +25,10 @@ public class Ellipse extends Figure {
                 + this.vradius + "}";
     }
 
+    // TODO: implement good kml structure for Ellipse
     @Override
     public String export_kml() {
+        logger.warn("Exporting Ellipse using wrong kml structure. Watch out!");
         StringBuilder res = new StringBuilder();
         ArrayList<Point> points = new GeomUtils().makeEllipse(this);
         for (Point p : points) {

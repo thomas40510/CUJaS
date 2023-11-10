@@ -57,6 +57,7 @@ public abstract class Figure implements SITACObject, KMLObject {
     }
 
     public String export_kml() {
+        logger.warn("KML export not implemented for " + this.getClass().getSimpleName() + ". I'm ignoring it.");
         return "";
     }
 
