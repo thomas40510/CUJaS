@@ -1,6 +1,7 @@
 package com.apogee.dev.CUJaS.SITACObjects;
 
 import com.apogee.dev.CUJaS.SITACObjects.utils.GeomUtils;
+import com.apogee.dev.CUJaS.SITACObjects.utils.KMLUtils;
 
 import java.util.ArrayList;
 
@@ -25,16 +26,14 @@ public class Ellipse extends Figure {
                 + this.vradius + "}";
     }
 
-    // TODO: implement good kml structure for Ellipse
     @Override
     public String export_kml() {
-        logger.warn("Exporting Ellipse using wrong kml structure. Watch out!");
         StringBuilder res = new StringBuilder();
         ArrayList<Point> points = new GeomUtils().makeEllipse(this);
         for (Point p : points) {
-            res.append(p.export_kml());
+            res.append(p.latitude).append(",").append(p.longitude).append(",0\n");
         }
-        return res.toString();
+        return new KMLUtils().kmlPolygon(this.name, "#style_circle", res.toString());
     }
 }
 

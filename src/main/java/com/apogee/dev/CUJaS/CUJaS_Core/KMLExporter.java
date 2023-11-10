@@ -48,6 +48,7 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath) {
         logger.debug("Exporting figures to KML...");
         StringBuilder figCode = new StringBuilder();
         for (Figure f : this.figures) {
+            logger.debug("Exporting figure " + f +".");
             figCode.append(f.export_kml());
         }
         String kml = header + readStyles() + figCode + footer;
