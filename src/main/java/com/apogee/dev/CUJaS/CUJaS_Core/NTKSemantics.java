@@ -19,5 +19,6 @@ public class NTKSemantics extends Semantics {
         this.keywords.put(XKey.BULLSEYE, "bullseye");
         this.keywords.put(XKey.BULLS_RINGS, "numberOfRings");
         this.keywords.put(XKey.BULLS_DIST, "distanceBetweenRing");
+        this.keywords.put(XKey.ANGLE, "angle");
     }
 }

@@ -3,7 +3,7 @@
     <Properties>
         <Property name="CLR">{FATAL=bright red, ERROR=red, WARN=bright yellow, INFO=blue, DEBUG=white, TRACE=black}</Property>
         <Property name="PATTERN">
-            %highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n}${CLR}
+            %highlight{%d{HH:mm:ss} [%t] %-5level (%logger{2}) — %msg%n}${CLR}
         </Property>
     </Properties>
     <Appenders>

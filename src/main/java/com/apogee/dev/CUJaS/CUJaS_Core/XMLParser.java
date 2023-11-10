@@ -119,7 +119,8 @@ public class XMLParser {
         double[] horizVert = getHorizVert(elem);
         double horizontal = horizVert[0];
         double vertical = horizVert[1];
-        return new Ellipse(center, horizontal, vertical, figureName);
+        double angle = Double.parseDouble(getVal(elem, XKey.ANGLE));
+        return new Ellipse(center, horizontal, vertical, angle, figureName);
     }
 
     private Circle parse_circle(Element elem, String figureName) {

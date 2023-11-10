@@ -14,4 +14,5 @@ public enum XKey {
     BULLSEYE,
     BULLS_RINGS,
     BULLS_DIST,
+    ANGLE,
 }

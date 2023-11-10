@@ -3,9 +3,7 @@ package com.apogee.dev.CUJaS;
 import com.apogee.dev.CUJaS.CUJaS_Core.NTKSemantics;
 import com.apogee.dev.CUJaS.CUJaS_Core.XMLParser;
 import com.apogee.dev.CUJaS.SITACObjects.Figure;
-import com.apogee.dev.CUJaS.SITACObjects.Line;
-import com.apogee.dev.CUJaS.SITACObjects.Point;
-import com.apogee.dev.CUJaS.SITACObjects.Polygon;
+import com.apogee.dev.CUJaS.CUJaS_Core.KMLExporter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,8 +19,9 @@ public class Main {
         XMLParser parser = new XMLParser(filename, new NTKSemantics());
         parser.parse_sitac();
         ArrayList<Figure> figures = parser.getFigures();
-        for (Figure f : figures) {
-            System.out.println(f);
-        }
+
+        String kml_path = current_path + "/src/main/resources/output.kml";
+        KMLExporter exporter = new KMLExporter(figures, kml_path);
+        exporter.export();
     }
 }
