@@ -53,10 +53,10 @@ public class XMLParser {
         logger.info("Done parsing. I found " + this.extracted_figures.size() + " figures.");
     }
 
-    /*
-    From extracted xml nodes, build figures by extracting desired properties.
-    Each constructed figure is added to the figures array.
-     */
+    /**
+    * From extracted xml nodes, build figures by extracting desired properties.
+    * Each constructed figure is added to the figures array.
+    */
     public void build_figures() {
         for (Node node : this.extracted_figures) {
             Element elem = (Element) node;
