@@ -39,6 +39,6 @@ public class Polygon extends Line {
         for (Point p : this.points) {
             coords.append(p.longitude).append(",").append(p.latitude).append(",0 \n");
         }
-        return new KMLUtils().kmlPolygon(this.name, "#style_shape", coords.toString());
+        return KMLUtils.kmlPolygon(this.name, "#style_shape", coords.toString());
     }
 }

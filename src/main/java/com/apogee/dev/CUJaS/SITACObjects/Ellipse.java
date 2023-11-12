@@ -29,11 +29,11 @@ public class Ellipse extends Figure {
     @Override
     public String export_kml() {
         StringBuilder res = new StringBuilder();
-        ArrayList<Point> points = new GeomUtils().makeEllipse(this);
+        ArrayList<Point> points = GeomUtils.makeEllipse(this);
         for (Point p : points) {
-            res.append(p.latitude).append(",").append(p.longitude).append(",0\n");
+            res.append(p.longitude).append(",").append(p.latitude).append(",0\n");
         }
-        return new KMLUtils().kmlPolygon(this.name, "#style_circle", res.toString());
+        return KMLUtils.kmlPolygon(this.name, "#style_circle", res.toString());
     }
 }
 

@@ -25,9 +25,9 @@ public class Rectangle extends Figure {
     @Override
     public String export_kml() {
         StringBuilder res = new StringBuilder();
-        for (Point p : new GeomUtils().makeRectangle(this)) {
-            res.append(p.latitude).append(",").append(p.longitude).append(",0\n");
+        for (Point p : GeomUtils.makeRectangle(this)) {
+            res.append(p.longitude).append(",").append(p.latitude).append(",0\n");
         }
-        return new KMLUtils().kmlPolygon(this.name, "#style_shape", res.toString());
+        return KMLUtils.kmlPolygon(this.name, "#style_shape", res.toString());
     }
 }

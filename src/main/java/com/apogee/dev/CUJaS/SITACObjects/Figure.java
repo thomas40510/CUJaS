@@ -14,7 +14,7 @@ public abstract class Figure implements SITACObject, KMLObject {
         try {
             this.name = (name[0] != null) ? name[0] : this.name;
         } catch (Exception e) {
-            logger.warn(e);
+            logger.debug("No name provided. Using default (" + this.name + ").");
         }
     }
 
