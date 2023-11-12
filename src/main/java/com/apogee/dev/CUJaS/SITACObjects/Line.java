@@ -34,6 +34,7 @@ public class Line extends Figure {
     @Override
     public String export_kml() {
         StringBuilder coords = new StringBuilder();
+        this.points.add(this.points.get(0));
         for (Point p : this.points) {
             coords.append(p.longitude).append(",").append(p.latitude).append(",0 \n");
         }
