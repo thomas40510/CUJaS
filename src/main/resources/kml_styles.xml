@@ -11,11 +11,11 @@
 	</LabelStyle>
 	<LineStyle>
 		<!--color>ff2f2fd3</color-->
-		<color>5f78ff00</color>
+		<color>af78ff00</color>
 		<width>7</width>
 	</LineStyle>
 	<PolyStyle>
-		<color>40ffffff</color>
+		<color>00ffffff</color>
 	</PolyStyle>
 	<BalloonStyle>
 		<displayMode>hide</displayMode>
@@ -33,11 +33,11 @@
 </LabelStyle>
 <LineStyle>
 	<!--color>ff2f2fd3</color-->
-	<color>5f78ff00</color>
+	<color>af78ff00</color>
 	<width>3</width>
 </LineStyle>
 <PolyStyle>
-	<color>40ffffff</color>
+	<color>00ffffff</color>
 </PolyStyle>
 <BalloonStyle>
 	<displayMode>hide</displayMode>
@@ -129,4 +129,4 @@
 </BalloonStyle>
 </Style>
 
-				<!-- Begin_Objects -->
+		<!-- Begin_Objects -->

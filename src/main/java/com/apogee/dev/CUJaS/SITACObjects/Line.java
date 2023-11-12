@@ -38,7 +38,7 @@ public class Line extends Figure {
         for (Point p : this.points) {
             coords.append(p.longitude).append(",").append(p.latitude).append(",0 \n");
         }
-        return new KMLUtils().kmlPolygon(this.name, "#style_line", coords.toString());
+        return KMLUtils.kmlPolygon(this.name, "#style_line", coords.toString());
     }
 
 }

@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+// https://developers.google.com/kml/documentation/kmlreference
 public record KMLExporter(ArrayList<Figure> figures, String filepath) {
     private static final Logger logger = LogManager.getLogger(KMLExporter.class);
 

@@ -14,7 +14,7 @@ public class GeomUtils {
      * @param angle in degrees
      * @return a value in radians
      */
-    private double rad(double angle) {
+    private static double rad(double angle) {
         return angle * Math.PI / 180;
     }
 
@@ -23,7 +23,7 @@ public class GeomUtils {
      * @param meter distance in meters
      * @return a value in degrees
      */
-    private double meter2degree(double meter) {
+    public static double meter2degree(double meter) {
         return meter / 111111;
     }
 
@@ -36,7 +36,7 @@ public class GeomUtils {
      * @param ellipse Ellipse to generate the contour of
      * @return a list of points along the contour of the Ellipse
      */
-    public ArrayList<Point> makeEllipse(Ellipse ellipse) {
+    public static ArrayList<Point> makeEllipse(Ellipse ellipse) {
         ArrayList<Point> points = new ArrayList<>();
         double x = ellipse.center.latitude;
         double y = ellipse.center.longitude;
@@ -62,12 +62,11 @@ public class GeomUtils {
      * @param circle Circle to generate the contour of
      * @return a list of points along the contour of the Circle
      */
-    @Deprecated
-    public ArrayList<Point> makeCircle(Circle circle) {
+    public static ArrayList<Point> makeCircle(Circle circle) {
         return makeEllipse(circle);
     }
 
-    public ArrayList<Point> makeRectangle(Rectangle rectangle) {
+    public static ArrayList<Point> makeRectangle(Rectangle rectangle) {
         double start_lat = rectangle.start.latitude;
         double start_lon = rectangle.start.longitude;
         double end_lat = start_lat + meter2degree(rectangle.horizontal);
@@ -81,6 +80,20 @@ public class GeomUtils {
         rectPoints.add(new Point(start_lat, start_lon, rectangle.name+"_Pt4"));
 
         return rectPoints;
+    }
+
+    public static ArrayList<Point> makeLineFromRadius(Point center, double length, double angle) {
+        ArrayList<Point> points = new ArrayList<>();
+        double line_angle = rad(angle);
+        Point start = new Point (center.latitude + length * Math.cos(line_angle),
+                center.longitude + length * Math.sin(line_angle));
+        Point end = new Point(center.latitude - length * Math.cos(line_angle),
+                center.longitude - length * Math.sin(line_angle));
+        points.add(start);
+        points.add(center);
+        points.add(end);
+
+        return points;
     }
 
 }
