@@ -3,6 +3,7 @@ package com.apogee.dev.CUJaS.SITACObjects.utils;
 import com.apogee.dev.CUJaS.SITACObjects.Circle;
 import com.apogee.dev.CUJaS.SITACObjects.Ellipse;
 import com.apogee.dev.CUJaS.SITACObjects.Point;
+import com.apogee.dev.CUJaS.SITACObjects.Rectangle;
 
 import java.util.ArrayList;
 
@@ -64,4 +65,21 @@ public class GeomUtils {
     public ArrayList<Point> makeCircle(Circle circle) {
         return makeEllipse(circle);
     }
+
+    public ArrayList<Point> makeRectangle(Rectangle rectangle) {
+        double start_lat = rectangle.start.latitude;
+        double start_lon = rectangle.start.longitude;
+        double end_lat = start_lat + meter2degree(rectangle.horizontal);
+        double end_lon = start_lon + meter2degree(rectangle.vertical);
+
+        ArrayList<Point> rectPoints = new ArrayList<>();
+        rectPoints.add(new Point(start_lat, start_lon, rectangle.name+"_Pt0"));
+        rectPoints.add(new Point(start_lat, end_lon, rectangle.name+"_Pt1"));
+        rectPoints.add(new Point(end_lat, end_lon, rectangle.name+"_Pt2"));
+        rectPoints.add(new Point(end_lat, start_lon, rectangle.name+"_Pt3"));
+        rectPoints.add(new Point(start_lat, start_lon, rectangle.name+"_Pt4"));
+
+        return rectPoints;
+    }
+
 }
