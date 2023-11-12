@@ -15,4 +15,9 @@ public class Circle extends Ellipse {
     public String toString() {
         return this.name + " " + this.center + " " + this.radius;
     }
+
+    @Override
+    public String export_kml() {
+        return super.export_kml();
+    }
 }

@@ -62,6 +62,7 @@ public class GeomUtils {
      * @param circle Circle to generate the contour of
      * @return a list of points along the contour of the Circle
      */
+    @Deprecated
     public ArrayList<Point> makeCircle(Circle circle) {
         return makeEllipse(circle);
     }
