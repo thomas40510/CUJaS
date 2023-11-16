@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-public abstract class Figure implements SITACObject {
+public abstract class Figure implements SITACObject, KMLObject {
     protected static final Logger logger = LogManager.getLogger(Figure.class);
 
     public String name;
@@ -14,7 +14,7 @@ public abstract class Figure implements SITACObject {
         try {
             this.name = (name[0] != null) ? name[0] : this.name;
         } catch (Exception e) {
-            logger.warn(e);
+            logger.debug("No name provided. Using default (" + this.name + ").");
         }
     }
 
@@ -55,4 +55,10 @@ public abstract class Figure implements SITACObject {
     public String getName() {
         return this.name;
     }
+
+    public String export_kml() {
+        logger.warn("KML export not implemented for " + this.getClass().getSimpleName() + ". I'm ignoring it.");
+        return "";
+    }
+
 }
