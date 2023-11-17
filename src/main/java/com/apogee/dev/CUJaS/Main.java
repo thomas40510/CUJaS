@@ -1,5 +1,7 @@
 package com.apogee.dev.CUJaS;
 
+import com.apogee.dev.CUJaS.UI.CUJaS_UI;
+
 public class Main {
     public static void main(String[] args) {
         // run CUJaS_UI.main

@@ -1,4 +1,4 @@
-package com.apogee.dev.CUJaS.CUJaS_Core;
+package com.apogee.dev.CUJaS.Core;
 
 import java.util.HashMap;
 

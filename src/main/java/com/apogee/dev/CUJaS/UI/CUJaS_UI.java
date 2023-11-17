@@ -1,7 +1,7 @@
-package com.apogee.dev.CUJaS;
+package com.apogee.dev.CUJaS.UI;
 
-import com.apogee.dev.CUJaS.CUJaS_Core.NTKSemantics;
-import com.apogee.dev.CUJaS.CUJaS_Core.XMLParser;
+import com.apogee.dev.CUJaS.Core.NTKSemantics;
+import com.apogee.dev.CUJaS.Core.XMLParser;
 import com.apogee.dev.CUJaS.SITACObjects.Figure;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,18 +9,52 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class CUJaS_UI {
     private final Logger logger = LogManager.getLogger(CUJaS_UI.class);
 
     private JPanel rootPanel;
-    private JButton bFileSelect;
+    private JButton inputSelectBtn;
+    private JButton nextBtn;
+    private JRadioButton NTKRadioButton;
+    private JRadioButton melissaRadioButton;
+    private JPanel inputPane;
+    private JPanel langPane;
+    private JPanel outPane;
+    private JButton outSelectBtn;
+    private JTabbedPane tabbedPane1;
+    private JScrollPane processingPane;
+    private ButtonGroup langGroup;
 
     public CUJaS_UI() {
         logger.info("UI initialized.");
 
-        bFileSelect.addActionListener(new ActionListener() {
+        ColoredTextPane textPane = new ColoredTextPane();
+
+        processingPane.setViewportView(textPane);
+
+        // redirect stdout to textPane
+        PrintStream printStream = new PrintStream(new OutputStream() {
+            @Override
+            public void write(int b) {
+                textPane.append(String.valueOf((char) b));
+            }
+        });
+        System.setOut(printStream);
+        System.setErr(printStream);
+
+
+        nextBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                logger.info("Next button pressed.");
+            }
+        });
+
+        inputSelectBtn.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
              *
@@ -71,5 +105,9 @@ public class CUJaS_UI {
         // frame.pack();
         frame.setLocationRelativeTo(null); // center window
         frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

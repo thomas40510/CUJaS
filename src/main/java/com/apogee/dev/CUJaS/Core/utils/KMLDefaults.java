@@ -1,4 +1,4 @@
-package com.apogee.dev.CUJaS.CUJaS_Core.utils;
+package com.apogee.dev.CUJaS.Core.utils;
 
 // https://stackoverflow.com/a/17364689/8361698
 public class KMLDefaults {

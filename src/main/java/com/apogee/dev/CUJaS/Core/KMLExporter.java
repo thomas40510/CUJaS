@@ -1,4 +1,4 @@
-package com.apogee.dev.CUJaS.CUJaS_Core;
+package com.apogee.dev.CUJaS.Core;
 
 import com.apogee.dev.CUJaS.SITACObjects.Figure;
 import org.apache.logging.log4j.LogManager;
