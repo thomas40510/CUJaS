@@ -51,6 +51,9 @@ public class CUJaS_UI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 logger.info("Next button pressed.");
+                logger.debug("Next button pressed.");
+                logger.error("Next button pressed.");
+                logger.warn("Next button pressed.");
             }
         });
 

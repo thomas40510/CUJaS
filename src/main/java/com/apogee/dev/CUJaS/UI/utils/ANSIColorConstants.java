@@ -128,7 +128,7 @@ public final class ANSIColorConstants
      * The reset color dictated by ANSI code 0 (this dictates the background) It
      * is currently set to RGB values (16, 16, 16).
      */
-    public static final Color BACKGROUND_RESET = new Color(16, 16, 16);
+    public static final Color BACKGROUND_RESET = new Color(255, 255, 255);
 
     /**
      * The escape character. This character is present before each escape sequence
@@ -231,8 +231,8 @@ public final class ANSIColorConstants
      */
     public static boolean isBackgroundEscape(String ansiColor)
     {
-        return ansiColor.indexOf(ESCAPE_TEXT_END, 0) > 1 && Character.getNumericValue(
-                ansiColor.charAt(ansiColor.indexOf(ESCAPE_TEXT_END, 0) - 2)) ==
+        return ansiColor.indexOf(ESCAPE_TEXT_END) > 1 && Character.getNumericValue(
+                ansiColor.charAt(ansiColor.indexOf(ESCAPE_TEXT_END) - 2)) ==
                 BACKGROUND_NUMBER;
     }
 

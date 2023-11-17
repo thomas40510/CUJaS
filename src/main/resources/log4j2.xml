@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Properties>
-        <Property name="CLR">{FATAL=bright red, ERROR=red, WARN=bright yellow, INFO=blue, DEBUG=white, TRACE=black}</Property>
+        <Property name="CLR">{FATAL=red, ERROR=red, WARN=magenta, INFO=blue, DEBUG=white, TRACE=black}</Property>
         <Property name="PATTERN">
-            %highlight{%d{HH:mm:ss} [%t] %-5level (%logger{2}) — %msg%n}${CLR}
+            %highlight{%d{HH:mm:ss} [%t] %-5level (%logger{2}) - %m}${CLR}%n
         </Property>
     </Properties>
     <Appenders>

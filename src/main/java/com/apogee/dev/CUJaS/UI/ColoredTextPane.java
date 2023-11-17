@@ -32,8 +32,7 @@ import java.io.Serial;
  * @since JTalker 0.1.5
  * @see com.apogee.dev.CUJaS.UI.utils.ANSIColorConstants
  */
-public class ColoredTextPane extends JTextPane implements Printable
-{
+public class ColoredTextPane extends JTextPane implements Printable {
   @Serial
   private static final long serialVersionUID = 5972869629177225150L;
 
@@ -70,8 +69,7 @@ public class ColoredTextPane extends JTextPane implements Printable
    * {@link com.apogee.dev.CUJaS.UI.utils.GUIConstants#DEFAULT_FONT gui} constants
    * class.
    */
-  public ColoredTextPane()
-  {
+  public ColoredTextPane() {
     this.colorMode = true;
     this.setFont(GUIConstants.DEFAULT_FONT);
     this.setBackground(ANSIColorConstants.BACKGROUND_RESET);
@@ -86,8 +84,7 @@ public class ColoredTextPane extends JTextPane implements Printable
    *   than or equal to the parents width, {@code true} otherwise.
    */
   @Override
-  public boolean getScrollableTracksViewportWidth()
-  {
+  public boolean getScrollableTracksViewportWidth() {
     Component parent = this.getParent();
     ComponentUI ui = this.getUI();
 
@@ -105,8 +102,7 @@ public class ColoredTextPane extends JTextPane implements Printable
    * @param pageIndex The page number (determines which page to print).
    */
   @Override
-  public int print(Graphics g, PageFormat format, int pageIndex)
-  {
+  public int print(Graphics g, PageFormat format, int pageIndex) {
     /*
      * User (0,0) is typically outside the imageable area, so we must
      * translate by the X and Y values in the PageFormat to avoid clipping
@@ -121,27 +117,24 @@ public class ColoredTextPane extends JTextPane implements Printable
     int linesPerPage = (int)format.getImageableHeight() / lineHeight;
     int textLines = ((this.typed.toString()).split("\n")).length;
     int documentHeight =
-      (((lineHeight * textLines) / (int)format.getImageableHeight()) + 1) *
-      (int)format.getImageableHeight();
+            (((lineHeight * textLines) / (int)format.getImageableHeight()) + 1) *
+                    (int)format.getImageableHeight();
 
     //TODO: this will only print lines to a certain point. This needs fixed.
     BufferedImage document = new BufferedImage((int)format.getImageableWidth(),
-      documentHeight, BufferedImage.TYPE_INT_ARGB);
+            documentHeight, BufferedImage.TYPE_INT_ARGB);
     this.paint(document.getGraphics());
     BufferedImage[] pages =
-      new BufferedImage[((textLines - 1) / linesPerPage) + 1];
-    for(int b = 0; b < pages.length; b++)
-    {
+            new BufferedImage[((textLines - 1) / linesPerPage) + 1];
+    for(int b = 0; b < pages.length; b++) {
       pages[b] = document.getSubimage(0, (int)(b * format.getImageableHeight()),
-        (int)format.getImageableWidth(), (int)format.getImageableHeight());
+              (int)format.getImageableWidth(), (int)format.getImageableHeight());
     }
 
-    if(pageIndex < 0 || pageIndex >= pages.length)
-    {
+    if(pageIndex < 0 || pageIndex >= pages.length) {
       return NO_SUCH_PAGE;
     }
-    else
-    {
+    else {
       g.drawImage(pages[pageIndex], 0, 0, null);
       /* tell the caller that this page is part of the printed document */
       return PAGE_EXISTS;
@@ -161,8 +154,7 @@ public class ColoredTextPane extends JTextPane implements Printable
    *  deleted.
    */
   @Override
-  public void setText(String text)
-  {
+  public void setText(String text) {
     /*
      * We have to deselect the text we may have selected, as this will cause
      * the colored text pane to draw the next text with the selected color
@@ -184,8 +176,7 @@ public class ColoredTextPane extends JTextPane implements Printable
    * codes; we interpret them and change the pane accordingly.
    * @param s The string that may contain ANSI color codes.
    */
-  public void append(String s)
-  {
+  public void append(String s) {
     this.setEditable(true);
     //Add what is going to be appended to the history of what was typed.
     this.typed.append(s);
@@ -201,20 +192,17 @@ public class ColoredTextPane extends JTextPane implements Printable
     String addString = this.remaining + s;
     this.remaining = "";
 
-    if(!addString.isEmpty())
-    {
+    if(!addString.isEmpty()) {
       //find first escape
       aIndex = addString.indexOf(ANSIColorConstants.ESCAPE_TEXT);
-      if(aIndex == -1)
-      {
+      if(aIndex == -1) {
         //no escape code in this string, so just send it with currentColor color
         this.append(addString, this.currentColor, isBackground);
         return;
       }
 
       //otherwise there is an escape character in the string, so we process it
-      if(aIndex > 0)
-      {
+      if(aIndex > 0) {
         //Escape is not first char, so send text up to first escape
         tmpString = addString.substring(0, aIndex);
         this.append(tmpString, this.currentColor, isBackground);
@@ -223,37 +211,31 @@ public class ColoredTextPane extends JTextPane implements Printable
 
       //aPos is now at the beginning of the first escape sequence
       stillSearching = true;
-      while(stillSearching)
-      {
+      while(stillSearching) {
         //find the end of the escape sequence
         mIndex = addString.indexOf(ANSIColorConstants.ESCAPE_TEXT_END, aPos);
-        if(mIndex < 0)
-        {
+        if(mIndex < 0) {
           //the buffer ends halfway through the ansi string!
           this.remaining = addString.substring(aPos);
           stillSearching = false;
           continue;
         }
-        else
-        {
+        else {
           tmpString = addString.substring(aPos, mIndex + 1);
-          if(ANSIColorConstants.isEscape(tmpString))
-          {
+          if(ANSIColorConstants.isEscape(tmpString)) {
             this.currentColor =
-              ANSIColorConstants.isReset(tmpString) || !this.colorMode ?
-              ANSIColorConstants.COLOR_RESET :
-              ANSIColorConstants.getANSIColor(tmpString);
+                    ANSIColorConstants.isReset(tmpString) || !this.colorMode ?
+                            ANSIColorConstants.COLOR_RESET :
+                            ANSIColorConstants.getANSIColor(tmpString);
             isBackground = ANSIColorConstants.isBackgroundEscape(tmpString);
 
-            if(ANSIColorConstants.isReset(tmpString) || !this.colorMode)
-            {
+            if(ANSIColorConstants.isReset(tmpString) || !this.colorMode) {
               this.isBackground = false;
               this.append("", ANSIColorConstants.COLOR_RESET, false);
               this.append("", ANSIColorConstants.BACKGROUND_RESET, true);
             }
           }
-          else
-          {
+          else {
             //The escape sequence was received, but did not have a valid code
             mIndex = aPos;
             //skip the escape text, but still process all the gobbldy gook
@@ -264,8 +246,7 @@ public class ColoredTextPane extends JTextPane implements Printable
         //now we have the color, send text that is in that color
         aIndex = addString.indexOf(ANSIColorConstants.ESCAPE_TEXT, aPos);
 
-        if(aIndex == -1)
-        {
+        if(aIndex == -1) {
           //if that was the last sequence of the input, send remaining text
           tmpString = addString.substring(aPos);
           this.append(tmpString, this.currentColor, this.isBackground);
@@ -288,8 +269,7 @@ public class ColoredTextPane extends JTextPane implements Printable
    * Returns whether colors have been enabled with the text pane.
    * @return Whether colors have been enabled with the text pane.
    */
-  public boolean getColorMode()
-  {
+  public boolean getColorMode() {
     return this.colorMode;
   }
 
@@ -301,8 +281,7 @@ public class ColoredTextPane extends JTextPane implements Printable
    * @return All the text that has been appended to this pane.
    * @see java.lang.StringBuffer
    */
-  public String getHistory()
-  {
+  public String getHistory() {
     return this.typed.toString();
   }
 
@@ -312,10 +291,8 @@ public class ColoredTextPane extends JTextPane implements Printable
    * pane (if the mode has been changed).
    * @param colorMode The new color mode ({@code true} for colors enabled).
    */
-  public void setColorMode(boolean colorMode)
-  {
-    if(this.colorMode != colorMode)
-    {
+  public void setColorMode(boolean colorMode) {
+    if(this.colorMode != colorMode) {
       this.colorMode = colorMode;
       String history = this.getHistory();
       this.setText("");
@@ -332,15 +309,14 @@ public class ColoredTextPane extends JTextPane implements Printable
    * @param c The color of the text.
    * @param background Whether this is a background or foreground color.
    */
-  protected void append(String s, Color c, boolean background)
-  {
+  protected void append(String s, Color c, boolean background) {
     StyleContext sc = StyleContext.getDefaultStyleContext();
     AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY,
-      background ? StyleConstants.Background : StyleConstants.Foreground, c);
+            background ? StyleConstants.Background : StyleConstants.Foreground, c);
 
     int len = this.getDocument().getLength();//same value as getText().length();
     this.setCaretPosition(len); //place caret at the end (with no selection)
     this.setCharacterAttributes(aset, false);
-    this.replaceSelection(s); //there is no selection, so inserts at caret
+    this.replaceSelection(s.replace("[m", "")); //there is no selection, so inserts at caret
   }
 }
