@@ -26,7 +26,7 @@ public class CUJaS_UI {
     private JPanel outPane;
     private JButton outSelectBtn;
     private JTabbedPane tabbedPane1;
-    private JScrollPane processingPane;
+    private JScrollPane procPane;
     private ButtonGroup langGroup;
 
     public CUJaS_UI() {
@@ -34,7 +34,7 @@ public class CUJaS_UI {
 
         ColoredTextPane textPane = new ColoredTextPane();
 
-        processingPane.setViewportView(textPane);
+        procPane.setViewportView(textPane);
 
         // redirect stdout to textPane
         PrintStream printStream = new PrintStream(new OutputStream() {
@@ -47,14 +47,11 @@ public class CUJaS_UI {
         System.setErr(printStream);
 
 
-        nextBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                logger.info("Next button pressed.");
-                logger.debug("Next button pressed.");
-                logger.error("Next button pressed.");
-                logger.warn("Next button pressed.");
-            }
+        nextBtn.addActionListener(e -> {
+            logger.info("Next button pressed.");
+            logger.debug("Next button pressed.");
+            logger.error("Next button pressed.");
+            logger.warn("Next button pressed.");
         });
 
         inputSelectBtn.addActionListener(new ActionListener() {
