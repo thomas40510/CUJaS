@@ -51,9 +51,7 @@ public class CUJaS_UI {
 
         logger.info("UI initialized.");
 
-        nextBtn.addActionListener(e -> {
-            logger.debug("Next button pressed.");
-        });
+        nextBtn.addActionListener(e -> logger.debug("Next button pressed."));
 
         inputBtn.addActionListener(e -> {
             // open file picker
