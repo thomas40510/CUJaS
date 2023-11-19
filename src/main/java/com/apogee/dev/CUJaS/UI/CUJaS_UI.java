@@ -51,7 +51,10 @@ public class CUJaS_UI {
 
         logger.info("UI initialized.");
 
-        nextBtn.addActionListener(e -> logger.debug("Next button pressed."));
+        nextBtn.addActionListener(e -> {
+            logger.debug("Next button pressed");
+            txtRead.setText("Lecture de la SITAC");
+        });
 
         inputBtn.addActionListener(e -> {
             // open file picker
