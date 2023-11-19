@@ -9,11 +9,17 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 public class CUJaS_UI {
     private final Logger logger = LogManager.getLogger(CUJaS_UI.class);
 
     private String inputFileName;
+
+    private enum Lang {
+        MELISSA,
+        NTK
+    }
 
     private Semantics semantics;
 
@@ -29,6 +35,15 @@ public class CUJaS_UI {
     private JScrollPane procPane;
     private JButton inputBtn;
     private JLabel inputLocTxt;
+    private JLabel txtRead;
+    private JLabel txtExtract;
+    private JLabel txtGenerate;
+    private JLabel txtExport;
+    private JProgressBar procProgress;
+    private JLabel readStatus;
+    private JLabel extractStatus;
+    private JLabel genStatus;
+    private JLabel exportStatus;
     private ButtonGroup langGroup;
 
     public CUJaS_UI() {
@@ -37,10 +52,7 @@ public class CUJaS_UI {
         logger.info("UI initialized.");
 
         nextBtn.addActionListener(e -> {
-            logger.info("Next button pressed.");
             logger.debug("Next button pressed.");
-            logger.error("Next button pressed.");
-            logger.warn("Next button pressed.");
         });
 
         inputBtn.addActionListener(e -> {
@@ -66,11 +78,15 @@ public class CUJaS_UI {
             // get selected file
             inputFileName = fileChooser.getSelectedFile().getAbsolutePath();
             inputLocTxt.setText(inputFileName);
+            // show next tab
+            tabbedPane1.setSelectedIndex(1);
+            // change tab title
+            tabbedPane1.setTitleAt(0, tabbedPane1.getTitleAt(0) + " ✅");
         });
 
         // listener on radio buttons group
-        melissaRadioButton.addActionListener(e -> semantics = new MelissaSemantics());
-        NTKRadioButton.addActionListener(e -> semantics = new NTKSemantics());
+        melissaRadioButton.addActionListener(e -> selectLang(Lang.MELISSA));
+        NTKRadioButton.addActionListener(e -> selectLang(Lang.NTK));
 
         outSelectBtn.addActionListener(e -> {
             // open directory picker
@@ -85,7 +101,47 @@ public class CUJaS_UI {
             // get selected directory
             String outputDir = fileChooser.getSelectedFile().getAbsolutePath();
             logger.info("Output directory: " + outputDir);
+            // show next tab
+            tabbedPane1.setSelectedIndex(3);
+            // change tab title
+            tabbedPane1.setTitleAt(2, tabbedPane1.getTitleAt(2) + " ✅");
+
+            nextBtn.setEnabled(true);
         });
+
+        preProcess();
+    }
+
+    private void preProcess() {
+        nextBtn.setEnabled(false);
+        ArrayList<JLabel> statusLabels = new ArrayList<>();
+        statusLabels.add(readStatus);
+        statusLabels.add(extractStatus);
+        statusLabels.add(genStatus);
+        statusLabels.add(exportStatus);
+
+        for (JLabel label : statusLabels) {
+            label.setText("");
+        }
+
+        txtExtract.setVisible(false);
+        txtGenerate.setVisible(false);
+        txtExport.setVisible(false);
+
+        procProgress.setValue(0);
+    }
+
+    private void selectLang(Lang lang) {
+        switch (lang) {
+            case MELISSA:
+                semantics = new MelissaSemantics();
+                break;
+            case NTK:
+                semantics = new NTKSemantics();
+                break;
+        }
+        tabbedPane1.setTitleAt(1, tabbedPane1.getTitleAt(1) + " ✅");
+        tabbedPane1.setSelectedIndex(2);
     }
 
     /**
