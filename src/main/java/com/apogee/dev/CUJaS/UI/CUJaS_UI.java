@@ -134,29 +134,29 @@ public class CUJaS_UI {
     }
 
     private static int PROGRESS = 1;
-    private static final long COOLDOWN = 1000;
+    private static final long WAIT_TIME = 1000;
 
     private void exportFile() {
-        SwingWorker<Void, JLabel> worker = new SwingWorker<Void, JLabel>() {
+        SwingWorker<Void, JLabel> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
                 // read xml
                 XMLParser parser = new XMLParser(inputFileName, semantics);
                 this.publish(readStatus);
 
-                Thread.sleep(COOLDOWN);
+                Thread.sleep(WAIT_TIME);
 
                 // extract figures
                 parser.parse_figures();
                 this.publish(extractStatus);
 
-                Thread.sleep(COOLDOWN);
+                Thread.sleep(WAIT_TIME);
 
                 // build figures
                 parser.build_figures();
                 this.publish(genStatus);
 
-                Thread.sleep(COOLDOWN);
+                Thread.sleep(WAIT_TIME);
 
                 // generate kml
                 String outputFile = outputDir + "/output.kml";
