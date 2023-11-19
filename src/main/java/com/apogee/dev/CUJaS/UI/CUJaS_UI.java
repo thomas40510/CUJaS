@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CUJaS_UI {
     private final Logger logger = LogManager.getLogger(CUJaS_UI.class);
@@ -129,33 +130,52 @@ public class CUJaS_UI {
             label.setText("");
         }
 
-//        txtExtract.setVisible(false);
-//        txtGenerate.setVisible(false);
-//        txtExport.setVisible(false);
-
         procProgress.setValue(0);
     }
 
     private static int PROGRESS = 1;
+    private static final long COOLDOWN = 1000;
 
     private void exportFile() {
-        // read xml
-        XMLParser parser = new XMLParser(inputFileName, semantics);
-        complete(readStatus);
+        SwingWorker<Void, JLabel> worker = new SwingWorker<Void, JLabel>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                // read xml
+                XMLParser parser = new XMLParser(inputFileName, semantics);
+                this.publish(readStatus);
 
-        // extract figures
-        parser.parse_figures();
-        complete(extractStatus);
+                Thread.sleep(COOLDOWN);
 
-        // build figures
-        parser.build_figures();
-        complete(genStatus);
+                // extract figures
+                parser.parse_figures();
+                this.publish(extractStatus);
 
-        // generate kml
-        String outputFile = outputDir + "/output.kml";
-        KMLExporter exporter = new KMLExporter(parser.getFigures(), outputFile);
-        exporter.export();
-        complete(exportStatus);
+                Thread.sleep(COOLDOWN);
+
+                // build figures
+                parser.build_figures();
+                this.publish(genStatus);
+
+                Thread.sleep(COOLDOWN);
+
+                // generate kml
+                String outputFile = outputDir + "/output.kml";
+                KMLExporter exporter = new KMLExporter(parser.getFigures(), outputFile);
+                exporter.export();
+                this.publish(exportStatus);
+
+                return null;
+            }
+
+            @Override
+            protected void process(List<JLabel> res) {
+                for (JLabel label : res) {
+                    complete(label);
+                }
+            }
+        };
+
+        worker.execute();
 
         logger.info("/// Done exporting! ///");
     }
