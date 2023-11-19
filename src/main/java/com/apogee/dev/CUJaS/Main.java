@@ -1,14 +1,13 @@
 package com.apogee.dev.CUJaS;
 
-import com.apogee.dev.CUJaS.CUJaS_Core.KMLExporter;
-import com.apogee.dev.CUJaS.CUJaS_Core.NTKSemantics;
-import com.apogee.dev.CUJaS.CUJaS_Core.XMLParser;
-import com.apogee.dev.CUJaS.SITACObjects.Figure;
-
-import java.util.ArrayList;
+import com.apogee.dev.CUJaS.UI.CUJaS_UI;
 
 public class Main {
     public static void main(String[] args) {
+        // run CUJaS_UI.main
+        CUJaS_UI.main(args);
+
+/*
         String current_path = System.getProperty("user.dir");
         // read file in 'resources' folder
         String filename = current_path + "/src/main/resources/test.xml";
@@ -20,5 +19,6 @@ public class Main {
         String kml_path = current_path + "/src/main/out/output.kml";
         KMLExporter exporter = new KMLExporter(figures, kml_path);
         exporter.export();
+*/
     }
 }

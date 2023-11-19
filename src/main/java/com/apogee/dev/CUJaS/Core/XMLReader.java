@@ -1,4 +1,4 @@
-package com.apogee.dev.CUJaS.CUJaS_Core;
+package com.apogee.dev.CUJaS.Core;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
