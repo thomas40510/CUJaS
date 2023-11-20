@@ -63,7 +63,6 @@ public class CUJaS_UI {
 
         nextBtn.addActionListener(e -> exportFile());
 
-
     }
 
     private void selectInput() {
@@ -164,6 +163,8 @@ public class CUJaS_UI {
                 exporter.export();
                 this.publish(exportStatus);
 
+                JOptionPane.showMessageDialog(rootPanel, "Exportation terminée !", "Exportation terminée", JOptionPane.INFORMATION_MESSAGE);
+
                 return null;
             }
 
@@ -175,9 +176,12 @@ public class CUJaS_UI {
             }
         };
 
-        worker.execute();
-
-        logger.info("/// Done exporting! ///");
+        try {
+            worker.execute();
+            logger.info("/// Done exporting! ///");
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
     }
 
     private void complete (JLabel label) {
