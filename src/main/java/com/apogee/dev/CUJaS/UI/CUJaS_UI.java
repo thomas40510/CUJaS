@@ -118,6 +118,7 @@ public class CUJaS_UI {
     private static final ArrayList<JLabel> statusLabels = new ArrayList<>();
 
     private void preProcess() {
+        inputLocTxt.setText("Aucun fichier sélectionné");
         txtRead.setText("Lecture de la SITAC");
         nextBtn.setEnabled(false);
         statusLabels.add(readStatus);
@@ -133,7 +134,7 @@ public class CUJaS_UI {
     }
 
     private static int PROGRESS = 1;
-    private static final long WAIT_TIME = 1000;
+    private static final long WAIT_TIME = 500;
 
     private void exportFile() {
         SwingWorker<Void, JLabel> worker = new SwingWorker<>() {
