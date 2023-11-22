@@ -1,8 +1,6 @@
 package com.apogee.dev.CUJaS.UI;
 
-import com.apogee.dev.CUJaS.Core.MelissaSemantics;
-import com.apogee.dev.CUJaS.Core.NTKSemantics;
-import com.apogee.dev.CUJaS.Core.Semantics;
+import com.apogee.dev.CUJaS.Core.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,11 +8,13 @@ import javax.swing.*;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CUJaS_UI {
     private final Logger logger = LogManager.getLogger(CUJaS_UI.class);
 
     private String inputFileName;
+    private String outputDir;
 
     private enum Lang {
         MELISSA,
@@ -51,71 +51,76 @@ public class CUJaS_UI {
 
         logger.info("UI initialized.");
 
-        nextBtn.addActionListener(e -> {
-            logger.debug("Next button pressed");
-            txtRead.setText("Lecture de la SITAC");
-        });
+        preProcess();
 
-        inputBtn.addActionListener(e -> {
-            // open file picker
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Select SITAC XML file");
-            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            // open on current directory
-            fileChooser.setCurrentDirectory(new java.io.File("."));
-            // set extension
-            fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
-                public boolean accept(java.io.File f) {
-                    return f.getName().toLowerCase().endsWith(".xml") || f.isDirectory();
-                }
-
-                public String getDescription() {
-                    return "SITAC XML files (*.xml)";
-                }
-            });
-            fileChooser.setAcceptAllFileFilterUsed(false);
-            fileChooser.showOpenDialog(rootPanel);
-
-            // get selected file
-            inputFileName = fileChooser.getSelectedFile().getAbsolutePath();
-            inputLocTxt.setText(inputFileName);
-            // show next tab
-            tabbedPane1.setSelectedIndex(1);
-            // change tab title
-            tabbedPane1.setTitleAt(0, tabbedPane1.getTitleAt(0) + " ✅");
-        });
+        inputBtn.addActionListener(e -> selectInput());
 
         // listener on radio buttons group
         melissaRadioButton.addActionListener(e -> selectLang(Lang.MELISSA));
         NTKRadioButton.addActionListener(e -> selectLang(Lang.NTK));
 
-        outSelectBtn.addActionListener(e -> {
-            // open directory picker
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Select output directory");
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            // open on current directory
-            fileChooser.setCurrentDirectory(new java.io.File("."));
-            fileChooser.setAcceptAllFileFilterUsed(false);
-            fileChooser.showOpenDialog(rootPanel);
+        outSelectBtn.addActionListener(e -> selectOutput());
 
-            // get selected directory
-            String outputDir = fileChooser.getSelectedFile().getAbsolutePath();
-            logger.info("Output directory: " + outputDir);
-            // show next tab
-            tabbedPane1.setSelectedIndex(3);
-            // change tab title
-            tabbedPane1.setTitleAt(2, tabbedPane1.getTitleAt(2) + " ✅");
+        nextBtn.addActionListener(e -> exportFile());
 
-            nextBtn.setEnabled(true);
-        });
-
-        preProcess();
     }
 
+    private void selectInput() {
+        // open file picker
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select SITAC XML file");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        // open on current directory
+        fileChooser.setCurrentDirectory(new java.io.File("."));
+        // set extension
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+            public boolean accept(java.io.File f) {
+                return f.getName().toLowerCase().endsWith(".xml") || f.isDirectory();
+            }
+
+            public String getDescription() {
+                return "SITAC XML files (*.xml)";
+            }
+        });
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.showOpenDialog(rootPanel);
+
+        // get selected file
+        inputFileName = fileChooser.getSelectedFile().getAbsolutePath();
+        inputLocTxt.setText(inputFileName);
+        // show next tab
+        tabbedPane1.setSelectedIndex(1);
+        // change tab title
+        tabbedPane1.setTitleAt(0, tabbedPane1.getTitleAt(0) + " ✅");
+    }
+
+    private void selectOutput() {
+        // open directory picker
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select output directory");
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        // open on current directory
+        fileChooser.setCurrentDirectory(new java.io.File("."));
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.showOpenDialog(rootPanel);
+
+        // get selected directory
+        outputDir = fileChooser.getSelectedFile().getAbsolutePath();
+        logger.info("Output directory: " + outputDir);
+        // show next tab
+        tabbedPane1.setSelectedIndex(3);
+        // change tab title
+        tabbedPane1.setTitleAt(2, tabbedPane1.getTitleAt(2) + " ✅");
+
+        nextBtn.setEnabled(true);
+    }
+
+    private static final ArrayList<JLabel> statusLabels = new ArrayList<>();
+
     private void preProcess() {
+        inputLocTxt.setText("Aucun fichier sélectionné");
+        txtRead.setText("Lecture de la SITAC");
         nextBtn.setEnabled(false);
-        ArrayList<JLabel> statusLabels = new ArrayList<>();
         statusLabels.add(readStatus);
         statusLabels.add(extractStatus);
         statusLabels.add(genStatus);
@@ -125,11 +130,91 @@ public class CUJaS_UI {
             label.setText("");
         }
 
-        txtExtract.setVisible(false);
-        txtGenerate.setVisible(false);
-        txtExport.setVisible(false);
-
         procProgress.setValue(0);
+    }
+
+    private static int PROGRESS = 1;
+    private static final long WAIT_TIME = 500;
+
+    private void exportFile() {
+        SwingWorker<Void, JLabel> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                // read xml
+                XMLParser parser = new XMLParser(inputFileName, semantics);
+                this.publish(readStatus);
+
+                Thread.sleep(WAIT_TIME);
+
+                // extract figures
+                parser.parse_figures();
+                this.publish(extractStatus);
+
+                Thread.sleep(WAIT_TIME);
+
+                // build figures
+                parser.build_figures();
+                this.publish(genStatus);
+
+                Thread.sleep(WAIT_TIME);
+
+                // generate kml
+                String outputFile = outputDir + "/output.kml";
+                KMLExporter exporter = new KMLExporter(parser.getFigures(), outputFile);
+                exporter.export();
+                this.publish(exportStatus);
+
+                showSuccessAlert();
+
+                return null;
+            }
+
+            @Override
+            protected void process(List<JLabel> res) {
+                for (JLabel label : res) {
+                    complete(label);
+                }
+            }
+        };
+
+        try {
+            worker.execute();
+            logger.info("/// Done exporting! ///");
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+    }
+
+    private void showSuccessAlert() {
+        // show a success alert dialog with 2 buttons
+        int res = JOptionPane.showConfirmDialog(rootPanel,
+                "Exportation terminée avec succès !\nVoulez-vous ouvrir la destination ?",
+                "Exportation terminée",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+        if (res == JOptionPane.YES_OPTION) {
+            // open file
+            try {
+                // get OS name
+                String os = System.getProperty("os.name").toLowerCase();
+                // open output directory
+                if (os.contains("win")) {
+                    Runtime.getRuntime().exec("explorer.exe /select," + outputDir + "/output.kml");
+                } else if (os.contains("mac")) {
+                    Runtime.getRuntime().exec("open " + outputDir);
+                } else {
+                    // linux
+                    Runtime.getRuntime().exec("xdg-open " + outputDir);
+                }
+            } catch (Exception e) {
+                logger.warn(e.getMessage());
+            }
+        }
+    }
+
+    private void complete (JLabel label) {
+        label.setText("✅");
+        procProgress.setValue(PROGRESS++);
     }
 
     private void selectLang(Lang lang) {
