@@ -164,7 +164,7 @@ public class CUJaS_UI {
                 exporter.export();
                 this.publish(exportStatus);
 
-                JOptionPane.showMessageDialog(rootPanel, "Exportation terminée !", "Exportation terminée", JOptionPane.INFORMATION_MESSAGE);
+                showSuccessAlert();
 
                 return null;
             }
@@ -182,6 +182,33 @@ public class CUJaS_UI {
             logger.info("/// Done exporting! ///");
         } catch (Exception e) {
             logger.warn(e.getMessage());
+        }
+    }
+
+    private void showSuccessAlert() {
+        // show a success alert dialog with 2 buttons
+        int res = JOptionPane.showConfirmDialog(rootPanel,
+                "Exportation terminée avec succès !\nVoulez-vous ouvrir la destination ?",
+                "Exportation terminée",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+        if (res == JOptionPane.YES_OPTION) {
+            // open file
+            try {
+                // get OS name
+                String os = System.getProperty("os.name").toLowerCase();
+                // open output directory
+                if (os.contains("win")) {
+                    Runtime.getRuntime().exec("explorer.exe /select," + outputDir + "/output.kml");
+                } else if (os.contains("mac")) {
+                    Runtime.getRuntime().exec("open " + outputDir);
+                } else {
+                    // linux
+                    Runtime.getRuntime().exec("xdg-open " + outputDir);
+                }
+            } catch (Exception e) {
+                logger.warn(e.getMessage());
+            }
         }
     }
 
