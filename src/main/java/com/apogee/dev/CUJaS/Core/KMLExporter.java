@@ -3,6 +3,7 @@ package com.apogee.dev.CUJaS.Core;
 import com.apogee.dev.CUJaS.SITACObjects.Figure;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,12 +13,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 // https://developers.google.com/kml/documentation/kmlreference
-public record KMLExporter(ArrayList<Figure> figures, String filepath) {
+public record KMLExporter(ArrayList<Figure> figures, String filepath, String styles_filepath) {
     private static final Logger logger = LogManager.getLogger(KMLExporter.class);
 
-    public KMLExporter(ArrayList<Figure> figures, String filepath) {
+    public KMLExporter(ArrayList<Figure> figures, String filepath, @Nullable String styles_filepath) {
         this.figures = figures;
         this.filepath = filepath;
+        this.styles_filepath = styles_filepath;
         logger.info("Initialized exporter for file " + filepath);
     }
 
@@ -34,9 +36,16 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath) {
         // read contents of file
         String res = "";
         try {
-            Path currentRelativePath = Paths.get("");
-            // read file in 'resources' folder as string
-            String filename = currentRelativePath.toAbsolutePath() + "/src/main/resources/kml_styles.xml";
+            String filename;
+            if (this.styles_filepath == null) {
+                Path currentRelativePath = Paths.get("");
+                // read file in 'resources' folder as string
+                filename = currentRelativePath.toAbsolutePath() + "/src/main/resources/kml_styles.xml";
+                logger.info("Using default styles");
+            } else {
+                filename = this.styles_filepath;
+                logger.info("Using custom styles");
+            }
             File file = new File(filename);
             res = new String(Files.readAllBytes(file.toPath()));
         } catch (Exception e) {

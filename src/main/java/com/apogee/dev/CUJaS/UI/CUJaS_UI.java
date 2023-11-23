@@ -13,8 +13,9 @@ import java.util.List;
 public class CUJaS_UI {
     private final Logger logger = LogManager.getLogger(CUJaS_UI.class);
 
-    private String inputFileName;
-    private String outputDir;
+    private String inputFileName = null;
+    private String outputDir = null;
+    private String kml_styles = null;
 
     private enum Lang {
         MELISSA,
@@ -44,6 +45,8 @@ public class CUJaS_UI {
     private JLabel extractStatus;
     private JLabel genStatus;
     private JLabel exportStatus;
+    private JButton customStyleBtn;
+    private JButton stylesQBtn;
     private ButtonGroup langGroup;
 
     public CUJaS_UI() {
@@ -60,6 +63,18 @@ public class CUJaS_UI {
         NTKRadioButton.addActionListener(e -> selectLang(Lang.NTK));
 
         outSelectBtn.addActionListener(e -> selectOutput());
+
+        customStyleBtn.addActionListener(e -> selectCustomStyleFile());
+
+        stylesQBtn.addActionListener(e -> {
+            // show a message dialog
+            JOptionPane.showMessageDialog(rootPanel,
+                    """
+                            Il est possible de définir le style des objets plutôt que d'utiliser ceux par défaut.\s
+                            Voir la documentation et le fichier d'exemple kml_styles.xml pour + d'infos.""",
+                    "Styles KML",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
 
         nextBtn.addActionListener(e -> exportFile());
 
@@ -84,6 +99,7 @@ public class CUJaS_UI {
         });
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.showOpenDialog(rootPanel);
+        if (fileChooser.getSelectedFile() == null) return;
 
         // get selected file
         inputFileName = fileChooser.getSelectedFile().getAbsolutePath();
@@ -91,7 +107,7 @@ public class CUJaS_UI {
         // show next tab
         tabbedPane1.setSelectedIndex(1);
         // change tab title
-        tabbedPane1.setTitleAt(0, tabbedPane1.getTitleAt(0) + " ✅");
+        titleDone(0);
     }
 
     private void selectOutput() {
@@ -103,16 +119,53 @@ public class CUJaS_UI {
         fileChooser.setCurrentDirectory(new java.io.File("."));
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.showOpenDialog(rootPanel);
+        // if dialog closes without selecting a directory, do nothing
+        if (fileChooser.getSelectedFile() == null) return;
 
         // get selected directory
         outputDir = fileChooser.getSelectedFile().getAbsolutePath();
         logger.info("Output directory: " + outputDir);
         // show next tab
-        tabbedPane1.setSelectedIndex(3);
+        //tabbedPane1.setSelectedIndex(3);
         // change tab title
-        tabbedPane1.setTitleAt(2, tabbedPane1.getTitleAt(2) + " ✅");
+        titleDone(2);
 
         nextBtn.setEnabled(true);
+    }
+
+    private void titleDone(int i) {
+        String paneTitle = tabbedPane1.getTitleAt(i);
+        if (!paneTitle.contains(" ✅")) tabbedPane1.setTitleAt(i, paneTitle + " ✅");
+    }
+
+    private void selectCustomStyleFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select styles file");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        // open on current directory
+        fileChooser.setCurrentDirectory(new java.io.File("."));
+        // set extension
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+            public boolean accept(java.io.File f) {
+                return f.getName().toLowerCase().endsWith(".xml")
+                        || f.getName().toLowerCase().endsWith(".kml")
+                        || f.isDirectory();
+            }
+
+            public String getDescription() {
+                return "KML Style file (*.xml, *.kml)";
+            }
+        });
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.showOpenDialog(rootPanel);
+
+        if (fileChooser.getSelectedFile() == null) return;
+
+        kml_styles = fileChooser.getSelectedFile().getAbsolutePath();
+        logger.info("Custom kml styles set: " + kml_styles);
+
+        if (outputDir != null) tabbedPane1.setSelectedIndex(3);
+
     }
 
     private static final ArrayList<JLabel> statusLabels = new ArrayList<>();
@@ -160,7 +213,7 @@ public class CUJaS_UI {
 
                 // generate kml
                 String outputFile = outputDir + "/output.kml";
-                KMLExporter exporter = new KMLExporter(parser.getFigures(), outputFile);
+                KMLExporter exporter = new KMLExporter(parser.getFigures(), outputFile, kml_styles);
                 exporter.export();
                 this.publish(exportStatus);
 
@@ -226,7 +279,7 @@ public class CUJaS_UI {
                 semantics = new NTKSemantics();
                 break;
         }
-        tabbedPane1.setTitleAt(1, tabbedPane1.getTitleAt(1) + " ✅");
+        titleDone(1);
         tabbedPane1.setSelectedIndex(2);
     }
 
