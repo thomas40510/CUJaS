@@ -13,8 +13,8 @@ import java.util.List;
 public class CUJaS_UI {
     private final Logger logger = LogManager.getLogger(CUJaS_UI.class);
 
-    private String inputFileName;
-    private String outputDir;
+    private String inputFileName = null;
+    private String outputDir = null;
     private String kml_styles = null;
 
     private enum Lang {
@@ -107,7 +107,7 @@ public class CUJaS_UI {
         // show next tab
         tabbedPane1.setSelectedIndex(1);
         // change tab title
-        tabbedPane1.setTitleAt(0, tabbedPane1.getTitleAt(0) + " ✅");
+        titleDone(0);
     }
 
     private void selectOutput() {
@@ -128,9 +128,14 @@ public class CUJaS_UI {
         // show next tab
         //tabbedPane1.setSelectedIndex(3);
         // change tab title
-        tabbedPane1.setTitleAt(2, tabbedPane1.getTitleAt(2) + " ✅");
+        titleDone(2);
 
         nextBtn.setEnabled(true);
+    }
+
+    private void titleDone(int i) {
+        String paneTitle = tabbedPane1.getTitleAt(i);
+        if (!paneTitle.contains(" ✅")) tabbedPane1.setTitleAt(i, paneTitle + " ✅");
     }
 
     private void selectCustomStyleFile() {
@@ -158,6 +163,9 @@ public class CUJaS_UI {
 
         kml_styles = fileChooser.getSelectedFile().getAbsolutePath();
         logger.info("Custom kml styles set: " + kml_styles);
+
+        if (outputDir != null) tabbedPane1.setSelectedIndex(3);
+
     }
 
     private static final ArrayList<JLabel> statusLabels = new ArrayList<>();
@@ -271,7 +279,7 @@ public class CUJaS_UI {
                 semantics = new NTKSemantics();
                 break;
         }
-        tabbedPane1.setTitleAt(1, tabbedPane1.getTitleAt(1) + " ✅");
+        titleDone(1);
         tabbedPane1.setSelectedIndex(2);
     }
 
