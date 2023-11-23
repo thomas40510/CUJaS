@@ -15,6 +15,7 @@ public class CUJaS_UI {
 
     private String inputFileName;
     private String outputDir;
+    private String kml_styles = null;
 
     private enum Lang {
         MELISSA,
@@ -44,6 +45,8 @@ public class CUJaS_UI {
     private JLabel extractStatus;
     private JLabel genStatus;
     private JLabel exportStatus;
+    private JButton customStyleBtn;
+    private JButton stylesQBtn;
     private ButtonGroup langGroup;
 
     public CUJaS_UI() {
@@ -60,6 +63,18 @@ public class CUJaS_UI {
         NTKRadioButton.addActionListener(e -> selectLang(Lang.NTK));
 
         outSelectBtn.addActionListener(e -> selectOutput());
+
+        customStyleBtn.addActionListener(e -> selectCustomStyleFile());
+
+        stylesQBtn.addActionListener(e -> {
+            // show a message dialog
+            JOptionPane.showMessageDialog(rootPanel,
+                    """
+                            Il est possible de définir le style des objets plutôt que d'utiliser ceux par défaut.\s
+                            Voir la documentation et le fichier d'exemple kml_styles.xml pour + d'infos.""",
+                    "Styles KML",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
 
         nextBtn.addActionListener(e -> exportFile());
 
@@ -108,11 +123,37 @@ public class CUJaS_UI {
         outputDir = fileChooser.getSelectedFile().getAbsolutePath();
         logger.info("Output directory: " + outputDir);
         // show next tab
-        tabbedPane1.setSelectedIndex(3);
+        //tabbedPane1.setSelectedIndex(3);
         // change tab title
         tabbedPane1.setTitleAt(2, tabbedPane1.getTitleAt(2) + " ✅");
 
         nextBtn.setEnabled(true);
+    }
+
+    private void selectCustomStyleFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select styles file");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        // open on current directory
+        fileChooser.setCurrentDirectory(new java.io.File("."));
+        // set extension
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+            public boolean accept(java.io.File f) {
+                return f.getName().toLowerCase().endsWith(".xml")
+                        || f.getName().toLowerCase().endsWith(".kml")
+                        || f.isDirectory();
+            }
+
+            public String getDescription() {
+                return "KML Style file (*.xml, *.kml)";
+            }
+        });
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.showOpenDialog(rootPanel);
+
+        //TODO: link kml_styles to styles file in Exporter
+        kml_styles = fileChooser.getSelectedFile().getAbsolutePath();
+        logger.info("Custom kml styles set: " + kml_styles);
     }
 
     private static final ArrayList<JLabel> statusLabels = new ArrayList<>();
