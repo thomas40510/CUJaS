@@ -156,7 +156,6 @@ public class CUJaS_UI {
 
         if (fileChooser.getSelectedFile() == null) return;
 
-        //TODO: link kml_styles to styles file in Exporter
         kml_styles = fileChooser.getSelectedFile().getAbsolutePath();
         logger.info("Custom kml styles set: " + kml_styles);
     }
