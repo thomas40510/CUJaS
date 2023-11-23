@@ -99,6 +99,7 @@ public class CUJaS_UI {
         });
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.showOpenDialog(rootPanel);
+        if (fileChooser.getSelectedFile() == null) return;
 
         // get selected file
         inputFileName = fileChooser.getSelectedFile().getAbsolutePath();
@@ -118,6 +119,8 @@ public class CUJaS_UI {
         fileChooser.setCurrentDirectory(new java.io.File("."));
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.showOpenDialog(rootPanel);
+        // if dialog closes without selecting a directory, do nothing
+        if (fileChooser.getSelectedFile() == null) return;
 
         // get selected directory
         outputDir = fileChooser.getSelectedFile().getAbsolutePath();
@@ -150,6 +153,8 @@ public class CUJaS_UI {
         });
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.showOpenDialog(rootPanel);
+
+        if (fileChooser.getSelectedFile() == null) return;
 
         //TODO: link kml_styles to styles file in Exporter
         kml_styles = fileChooser.getSelectedFile().getAbsolutePath();
@@ -201,7 +206,7 @@ public class CUJaS_UI {
 
                 // generate kml
                 String outputFile = outputDir + "/output.kml";
-                KMLExporter exporter = new KMLExporter(parser.getFigures(), outputFile);
+                KMLExporter exporter = new KMLExporter(parser.getFigures(), outputFile, kml_styles);
                 exporter.export();
                 this.publish(exportStatus);
 
