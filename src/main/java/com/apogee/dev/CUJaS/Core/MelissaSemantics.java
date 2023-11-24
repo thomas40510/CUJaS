@@ -1,10 +1,14 @@
 package com.apogee.dev.CUJaS.Core;
 
-import java.util.HashMap;
-
-public class MelissaSemantics extends Semantics {
+/**
+ * Éléments sémantiques pour le format Melissa.
+ * En pratique, on fait correspondre la syntaxe spécifique Melissa aux clés génériques {@link XKey} d'une SITAC.
+ * @see Semantics
+ * @see XKey
+ * @author PRV
+ * @version 1.0
+ */
+public class MelissaSemantics implements Semantics {
     public MelissaSemantics() {
-        this.keywords = new HashMap<>();
-        this.sems = new HashMap<>();
     }
 }

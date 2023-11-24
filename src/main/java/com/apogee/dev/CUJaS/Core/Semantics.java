@@ -2,7 +2,13 @@ package com.apogee.dev.CUJaS.Core;
 
 import java.util.HashMap;
 
-public abstract class Semantics {
-    public HashMap<XKey, String> keywords;
-    public HashMap<String, String> sems;
+
+/**
+ * Interface générique pour les éléments sémantiques.
+ * @see XKey
+ * @author PRV
+ * @version 1.0
+ */
+public interface Semantics {
+    HashMap<XKey, String> keywords = new HashMap<>();
 }
