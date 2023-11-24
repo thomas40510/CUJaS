@@ -7,6 +7,18 @@ package com.apogee.dev.CUJaS.SITACObjects;
  */
 public interface SITACObject {
     String name = "SITACObject";
+
+    /**
+     * Conversion en chaîne de caractères pour affichage.
+     * @return la figure comme {@code String}
+     */
     String toString();
+
     String getName();
+
+    /**
+     * Prise en charge de l'export de la figure en objets KML.
+     * @return la construction de la figure en KML
+     */
+    String export_kml();
 }

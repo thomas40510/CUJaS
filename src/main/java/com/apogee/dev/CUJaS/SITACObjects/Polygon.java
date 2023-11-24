@@ -5,23 +5,38 @@ import com.apogee.dev.CUJaS.SITACObjects.utils.KMLUtils;
 import java.util.ArrayList;
 
 
+/**
+ * Implémentation du Polygone
+ * @see Line
+ */
 public class Polygon extends Line {
+
     /**
-     * A Polygon Object, define by its points
-     * @param points Points of the polygon
-     * @param name Optional name of the Polygon
+     * Instanciation d'un Polygone
+     * @param points points du polygone
+     * @param name nom du polygone
      */
     public Polygon(ArrayList<Point> points, String... name) {
         super(points, name);
     }
 
+    /**
+     * Constructeur par défaut du Polygone
+     * @implNote Crée un polygone sans points
+     */
     public Polygon() {
         super();
         this.points = new ArrayList<>();
     }
 
-    public Polygon fromLine(Line l) {
-        return new Polygon(l.points, l.name);
+    /**
+     * Crée un {@code Polygon} à partir d'une {@code Line}
+     * @param line ligne à convertir
+     * @return un {@code Polygon} constitué des mêmes points que la {@link Line}
+     * @see Line#asPolygon()
+     */
+    public Polygon fromLine(Line line) {
+        return new Polygon(line.points, line.name);
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author PRV
  * @version 1.0
  */
-public abstract class Figure implements SITACObject, KMLObject {
+public abstract class Figure implements SITACObject {
     protected static final Logger logger = LogManager.getLogger(Figure.class);
 
     public String name;
@@ -79,9 +79,11 @@ public abstract class Figure implements SITACObject, KMLObject {
     }
 
     /**
-     * Génération du code KML correspondant à la figure.
-     * @return le code KML correspondant à la figure
+     * Conversion de la figure en objets KML.
+     * @return la construction de la figure en KML
      * @implNote Par défaut, on renvoie une chaîne vide (on ignore la figure).
+     * @implSpec La coordonnée d'altitude, requise par le format KML, est fixée à 0.
+     * Elle pourra être extraite de la SITAC et prise en compte.
      */
     public String export_kml() {
         logger.warn("KML export not implemented for " + this.getClass().getSimpleName() + ". I'm ignoring it.");
