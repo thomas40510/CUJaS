@@ -62,6 +62,7 @@ public abstract class Figure implements SITACObject {
      * @return la liste de {@code Point} créée
      * @see #as_point(Object)
      */
+    @SuppressWarnings("unused")
     public static ArrayList<Point> as_points(ArrayList<Object> points) {
         ArrayList<Point> res = new ArrayList<>();
         for(Object o : points) {
