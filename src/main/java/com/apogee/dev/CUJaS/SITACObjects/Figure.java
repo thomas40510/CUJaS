@@ -81,10 +81,12 @@ public abstract class Figure implements SITACObject {
 
     /**
      * Conversion de la figure en objets KML.
-     * @return la construction de la figure en KML
-     * @implNote Par défaut, on renvoie une chaîne vide (on ignore la figure).
-     * @implSpec La coordonnée d'altitude, requise par le format KML, est fixée à 0.
+     * <br>
+     * Par défaut, on renvoie une chaîne vide (on ignore la figure).
+     * <br>
+     * La coordonnée d'altitude, requise par le format KML, est fixée à 0.
      * Elle pourra être extraite de la SITAC et prise en compte.
+     * @return la construction de la figure en KML
      */
     public String export_kml() {
         logger.warn("KML export not implemented for " + this.getClass().getSimpleName() + ". I'm ignoring it.");

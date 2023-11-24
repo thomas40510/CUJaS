@@ -2,7 +2,7 @@ package com.apogee.dev.CUJaS.SITACObjects;
 
 /**
  * Implémentation d'un point géographique.
- * @ref <a href="https://fr.wikipedia.org/wiki/Coordonn%C3%A9es_g%C3%A9ographiques">Point Géographique</a>
+ * @see <a href="https://fr.wikipedia.org/wiki/Coordonn%C3%A9es_g%C3%A9ographiques">Point Géographique</a>
  */
 public class Point extends Figure {
     public double latitude, longitude;
@@ -20,10 +20,10 @@ public class Point extends Figure {
     }
 
     /**
-     * Opération d'égalité sur les points
+     * Opération d'égalité sur les points.
+     * Deux points sont égaux si leurs latitudes et longitudes sont respectivement égales.
      * @param other autre point
      * @return {@code true} si les deux points sont égaux, {@code false} sinon
-     * @implNote deux points sont égaux si leurs latitudes et longitudes sont respectivement égales
      */
     @Override
     public boolean equals(Object other) {
@@ -41,7 +41,7 @@ public class Point extends Figure {
     }
 
     /**
-     * @ref <a href="https://developers.google.com/kml/documentation/kmlreference#placemark">KML Placemark</a>
+     * @see <a href="https://developers.google.com/kml/documentation/kmlreference#placemark">KML Placemark</a>
      */
     @Override
     public String export_kml() {

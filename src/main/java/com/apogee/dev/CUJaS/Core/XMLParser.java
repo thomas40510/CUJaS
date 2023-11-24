@@ -75,7 +75,8 @@ public class XMLParser {
 
     /**
     * Construit les figures à partir des nœuds XML extraits, en fonction de la sémantique.
-     * @implNote Seules les figures connues sont construites. Les autres sont ignorées.
+     * <br>
+     * Seules les figures connues sont construites. Les autres sont ignorées.
      * En cas d'implémentation d'une nouvelle figure, il faut ajouter un cas dans le {@code switch}.
      * @see Figure
     */
@@ -147,10 +148,11 @@ public class XMLParser {
 
     /**
      * Crée un {@link Polygon} à partir d'un nœud XML.
+     * <br>
+     * Un polygone est une ligne fermée, donc on utilise {@link #parse_line(Element, String)}.
      * @param element Nœud XML à parser
      * @param figureName Nom de la figure
      * @return Polygon créé
-     * @implNote Un polygone est une ligne fermée, donc on utilise {@link #parse_line(Element, String)}.
      * @see Polygon#fromLine(Line)
      */
     private Polygon parse_polygon(Element element, String figureName) {
@@ -198,7 +200,8 @@ public class XMLParser {
 
     /**
      * Crée un {@link Bullseye} à partir d'un nœud XML.
-     * @implNote Seul l'objet est créé, on ne se pose ici pas la question pratique du dessin.
+     * <br>
+     * Seul l'objet est créé, on ne se pose ici pas la question pratique du dessin.
      * @param element Nœud XML à parser
      * @param figureName Nom de la figure
      * @return Bullseye créé

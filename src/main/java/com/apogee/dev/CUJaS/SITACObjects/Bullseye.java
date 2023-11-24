@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Implémentation du Bullseye
- * @ref <a href="http://www.185th.co.uk/squad_info/training/basic_n&b.htm">BullsEye</a>
+ * @see <a href="http://www.185th.co.uk/squad_info/training/basic_n&b.htm">BullsEye</a>
  */
 public class Bullseye extends Figure {
     public Point center;
@@ -44,13 +44,16 @@ public class Bullseye extends Figure {
     }
 
     /**
-     * @implNote
+     * Exportation du {@code Bullseye} en KML.
+     * <br>
+     * En pratique :
      * <ul>
      *     <li>on génère les cercles primaires ({@code major}) en partant du plus petit</li>
      *     <li>on génère les cercles secondaires ({@code minor}) en partant du plus petit</li>
      *     <li>on génère la croix</li>
      *     <li>on concatène le tout</li>
      * </ul>
+     * @return le fragment KML correspondant au {@code Bullseye}
      */
     @Override
     public String export_kml() {
@@ -88,11 +91,13 @@ public class Bullseye extends Figure {
     private static final int CROSS_ALPHA = 45;
 
     /**
-     * Génère la croix du Bullseye
+     * Génère la croix du Bullseye.
+     * <br>
+     * On trace, tous les {@value CROSS_ALPHA} degrés,
+     * un diamètre du cercle de centre {@code center} et de rayon {@code radius}.
      * @param center centre de la croix
      * @param radius rayon de la croix
      * @return le fragment KML correspondant à la croix
-     * @implNote on trace, tous les {@value CROSS_ALPHA} degrés, un diamètre du cercle de centre {@code center} et de rayon {@code radius}
      */
     private static String genCross(Point center, double radius) {
         StringBuilder res = new StringBuilder();

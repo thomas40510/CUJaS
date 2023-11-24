@@ -22,8 +22,7 @@ public class Line extends Figure {
     }
 
     /**
-     * Constructeur par défaut.
-     * @implNote crée une Line sans points
+     * Constructeur par défaut, crée une {@code Line} vide.
      */
     public Line() {
         super();

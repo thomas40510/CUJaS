@@ -1,10 +1,11 @@
 package com.apogee.dev.CUJaS.SITACObjects;
 
 /**
- * Implémentation du Cercle
+ * Implémentation du Cercle.
+ * <br>
+ * Un cercle est une ellipse dont les deux rayons sont égaux, et l'inclinaison nulle.
  * @see Ellipse
  * @see Figure
- * @implNote Un cercle est une ellipse dont les deux rayons sont égaux, et l'inclinaison nulle
  */
 public class Circle extends Ellipse {
     public Point center;

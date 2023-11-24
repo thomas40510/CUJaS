@@ -1,9 +1,10 @@
 package com.apogee.dev.CUJaS.SITACObjects;
 
 /**
- * Implémentation du Couloir
+ * Implémentation du Couloir.
+ * <br>
+ * Un couloir est une figure géométrique définie par une position de départ, une position d'arrivée et une largeur.
  * @see Figure
- * @implNote Un couloir est une figure géométrique définie par une position de départ, une position d'arrivée et une largeur
  * TODO: implémenter l'export en KML
  */
 public class Corridor extends Figure {

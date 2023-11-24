@@ -21,8 +21,7 @@ public class Polygon extends Line {
     }
 
     /**
-     * Constructeur par défaut du Polygone
-     * @implNote Crée un polygone sans points
+     * Constructeur par défaut du Polygone, crée un Polygone vide.
      */
     public Polygon() {
         super();

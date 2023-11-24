@@ -6,9 +6,10 @@ import com.apogee.dev.CUJaS.SITACObjects.utils.KMLUtils;
 import java.util.ArrayList;
 
 /**
- * Implémentation de l'Ellipse
+ * Implémentation de l'Ellipse.
+ * <br>
+ * Une ellipse est une figure géométrique définie par un centre, deux rayons et un angle de rotation.
  * @see Figure
- * @implNote Une ellipse est une figure géométrique définie par un centre, deux rayons et un angle de rotation.
  */
 public class Ellipse extends Figure {
     public Point center;
@@ -21,7 +22,6 @@ public class Ellipse extends Figure {
      * @param vradius rayon vertical de l'ellipse
      * @param angle inclinaison de l'ellipse par rapport à l'horizontale (en degrés)
      * @param name nom de l'ellipse
-     * @implNote Les rayons extraits sont en réalité les diamètres de l'ellipse, donc on divise par 2.
      */
     public Ellipse(Point center, double hradius, double vradius, double angle, String... name) {
         super(name);

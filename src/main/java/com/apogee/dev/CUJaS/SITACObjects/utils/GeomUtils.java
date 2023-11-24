@@ -38,11 +38,12 @@ public class GeomUtils {
 
     /**
      * Génération des points de contour d'une {@code Ellipse}.
-     * @param ellipse une Ellipse quelconque
-     * @return une liste de {@value NB_POINTS} {@code Points} décrivant le contour de l'ellipse
-     * @implNote À partir du centre et des rayons de l'ellipse,
+     * <br>
+     * À partir du centre et des rayons de l'ellipse,
      * on génère {@value NB_POINTS} points uniformément répartis sur son contour
      * en utilisant sa représentation paramétrique et prenant en compte son angle de rotation.
+     * @param ellipse une Ellipse quelconque
+     * @return une liste de {@value NB_POINTS} {@code Points} décrivant le contour de l'ellipse
      */
     public static ArrayList<Point> makeEllipse(Ellipse ellipse) {
         ArrayList<Point> points = new ArrayList<>();
@@ -66,9 +67,11 @@ public class GeomUtils {
 
     /**
      * Génération des points de contour d'un {@code Circle}.
+     * <br>
+     * On utilise la méthode {@link GeomUtils#makeEllipse}
+     * en passant un {@link Ellipse} dont les rayons sont égaux.
      * @param circle un Cercle quelconque
      * @return une liste de {@value NB_POINTS} {@code Points} décrivant le contour du cercle
-     * @implNote On utilise la méthode {@link GeomUtils#makeEllipse} en passant un {@link Ellipse} dont les rayons sont égaux.
      * @see GeomUtils#makeEllipse
      */
     public static ArrayList<Point> makeCircle(Circle circle) {
@@ -77,10 +80,11 @@ public class GeomUtils {
 
     /**
      * Génération des sommets d'un rectangle.
+     * <br>
+     * À partir du {@code Point} de départ et des dimensions du rectangle,
+     * on génère les 4 sommets du rectangle et on renvoie un contour fermé.
      * @param rectangle un Rectangle quelconque
      * @return une liste de 5 {@code Points} décrivant le contour fermé du rectangle
-     * @implNote À partir du {@code Point} de départ et des dimensions du rectangle,
-     * on génère les 4 sommets du rectangle et on renvoie un contour fermé.
      */
     public static ArrayList<Point> makeRectangle(Rectangle rectangle) {
         double start_lat = rectangle.start.latitude;
@@ -100,11 +104,12 @@ public class GeomUtils {
 
     /**
      * Génération d'une ligne à partir d'un centre, d'une longueur et d'un angle.
+     * <br>
+     * On génère simplement le diamètre d'un cercle de rayon {@code length} centré sur {@code center}
      * @param center {@code Point} central de la ligne
      * @param length longueur de la ligne
      * @param angle angle de la ligne avec l'horizontale
      * @return une liste de 3 {@code Points} décrivant la ligne
-     * @implNote On génère simplement le diamètre d'un cercle de rayon {@code length} centré sur {@code center}
      */
     public static ArrayList<Point> makeLineFromRadius(Point center, double length, double angle) {
         ArrayList<Point> points = new ArrayList<>();
