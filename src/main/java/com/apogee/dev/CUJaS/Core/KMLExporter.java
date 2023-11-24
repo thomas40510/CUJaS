@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 /**
  * Exportation des figures vers un fichier KML.
- * Voir la <a href="https://developers.google.com/kml/documentation/kmlreference">documentation KML</a> pour connaître les specs.
  * @author PRV
  * @version 1.0
+ * @see <a href="https://developers.google.com/kml/documentation/kmlreference">Documentation du langage KML</a>
  */
 public record KMLExporter(ArrayList<Figure> figures, String filepath, String styles_filepath) {
     private static final Logger logger = LogManager.getLogger(KMLExporter.class);
@@ -26,6 +26,7 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath, String sty
      * @param figures liste des figures à exporter (voir {@link Figure})
      * @param filepath chemin vers le fichier de sortie
      * @param  styles_filepath chemin vers le fichier de styles (optionnel)
+     * @see <a href="https://developers.google.com/kml/documentation/kmlreference#style">Styles dans la doc KML</a>
      */
     public KMLExporter(ArrayList<Figure> figures, String filepath, @Nullable String styles_filepath) {
         this.figures = figures;
@@ -49,9 +50,10 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath, String sty
     private static final String footer = "</Document></kml>";
 
     /**
-     * Lecture du fichier de styles (voir <a href="https://developers.google.com/kml/documentation/kmlreference#style">KML Docs</a>).
+     * Lecture du fichier de styles.
      * Si aucun fichier n'a été spécifié, on utilise le fichier par défaut.
      * @return contenu du fichier de styles
+     * @see <a href="https://developers.google.com/kml/documentation/kmlreference#style">Styles dans la doc KML</a>
      */
     private String readStyles() {
         logger.debug("Reading styles for SITAC...");
