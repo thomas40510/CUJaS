@@ -3,11 +3,23 @@ package com.apogee.dev.CUJaS.SITACObjects;
 import com.apogee.dev.CUJaS.SITACObjects.utils.GeomUtils;
 import com.apogee.dev.CUJaS.SITACObjects.utils.KMLUtils;
 
+
+/**
+ * Implémentation du Rectangle
+ * @see Figure
+ */
 public class Rectangle extends Figure {
     public Point start;
     public double horizontal, vertical;
 
-    public Rectangle(Object start, double horizontal, double vertical, String... name) {
+    /**
+     * Constructeur d'un Rectangle
+     * @param start position de départ
+     * @param horizontal longueur du rectangle
+     * @param vertical largeur du rectangle
+     * @param name nom du rectangle
+     */
+    public Rectangle(Point start, double horizontal, double vertical, String... name) {
         super(name);
         this.start = as_point(start);
         this.horizontal = horizontal;

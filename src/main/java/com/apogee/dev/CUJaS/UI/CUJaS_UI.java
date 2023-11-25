@@ -10,6 +10,11 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * UI de l'outil CUJaS
+ * @author PRV
+ * @version 1.0
+ */
 public class CUJaS_UI {
     private final Logger logger = LogManager.getLogger(CUJaS_UI.class);
 
@@ -17,6 +22,9 @@ public class CUJaS_UI {
     private String outputDir = null;
     private String kml_styles = null;
 
+    /**
+     * Langage de la SITAC
+     */
     private enum Lang {
         MELISSA,
         NTK
@@ -49,6 +57,9 @@ public class CUJaS_UI {
     private JButton stylesQBtn;
     private ButtonGroup langGroup;
 
+    /**
+     * Constructeur de l'UI
+     */
     public CUJaS_UI() {
         redirectConsole();
 
@@ -80,6 +91,9 @@ public class CUJaS_UI {
 
     }
 
+    /**
+     * Sélection du fichier d'entrée.
+     */
     private void selectInput() {
         // open file picker
         JFileChooser fileChooser = new JFileChooser();
@@ -110,6 +124,9 @@ public class CUJaS_UI {
         titleDone(0);
     }
 
+    /**
+     * Sélection du dossier de sortie.
+     */
     private void selectOutput() {
         // open directory picker
         JFileChooser fileChooser = new JFileChooser();
@@ -133,11 +150,18 @@ public class CUJaS_UI {
         nextBtn.setEnabled(true);
     }
 
+    /**
+     * L'étape de l'onglet {@code i} est un succès, on met à jour le titre de l'onglet.
+     * @param i index de l'onglet
+     */
     private void titleDone(int i) {
         String paneTitle = tabbedPane1.getTitleAt(i);
         if (!paneTitle.contains(" ✅")) tabbedPane1.setTitleAt(i, paneTitle + " ✅");
     }
 
+    /**
+     * Fenêtre de sélection d'un fichier de styles.
+     */
     private void selectCustomStyleFile() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select styles file");
@@ -168,9 +192,11 @@ public class CUJaS_UI {
 
     }
 
-    private static final ArrayList<JLabel> statusLabels = new ArrayList<>();
-
+    /**
+     * Préparation de l'UI avant l'exportation.
+     */
     private void preProcess() {
+        final ArrayList<JLabel> statusLabels = new ArrayList<>();
         inputLocTxt.setText("Aucun fichier sélectionné");
         txtRead.setText("Lecture de la SITAC");
         nextBtn.setEnabled(false);
@@ -186,9 +212,21 @@ public class CUJaS_UI {
         procProgress.setValue(0);
     }
 
+    /**
+     * Avancement de l'exportation (pour la {@code ProgressBar}).
+     */
     private static int PROGRESS = 1;
+
+    /**
+     * <i>Cooldown</i> entre chaque étape de l'exportation, en ms.
+     */
     private static final long WAIT_TIME = 500;
 
+    /**
+     * Exportation de la SITAC.
+     * @see com.apogee.dev.CUJaS.Core.XMLParser
+     * @see com.apogee.dev.CUJaS.Core.KMLExporter
+     */
     private void exportFile() {
         SwingWorker<Void, JLabel> worker = new SwingWorker<>() {
             @Override
@@ -238,6 +276,9 @@ public class CUJaS_UI {
         }
     }
 
+    /**
+     * Succès de l'exportation, on affiche une boîte de dialogue.
+     */
     private void showSuccessAlert() {
         // show a success alert dialog with 2 buttons
         int res = JOptionPane.showConfirmDialog(rootPanel,
@@ -265,11 +306,21 @@ public class CUJaS_UI {
         }
     }
 
+    /**
+     * Met à jour un label de status pour indiquer que l'étape est terminée, et incrémente la {@code ProgressBar}.
+     * @param label label à mettre à jour
+     */
     private void complete (JLabel label) {
         label.setText("✅");
         procProgress.setValue(PROGRESS++);
     }
 
+    /**
+     * Sélection du langage de la SITAC.
+     * @param lang langage choisi par l'utilisateur
+     * @see Lang
+     * @see Semantics
+     */
     private void selectLang(Lang lang) {
         switch (lang) {
             case MELISSA:
@@ -284,7 +335,8 @@ public class CUJaS_UI {
     }
 
     /**
-     * Redirect stdout and stderr to a {@link com.apogee.dev.CUJaS.UI.ColoredTextPane ColoredTextPane}
+     * Redirection des sorties {@code stdout} et {@code stderr}
+     * vers un {@link com.apogee.dev.CUJaS.UI.ColoredTextPane}
      */
     private void redirectConsole() {
         ColoredTextPane textPane = new ColoredTextPane();
@@ -302,6 +354,10 @@ public class CUJaS_UI {
         System.setErr(printStream);
     }
 
+    /**
+     * Point d'entrée de l'application.
+     * @param args arguments de la ligne de commande
+     */
     public static void main(String[] args) {
         JFrame frame = new JFrame("CUJaS_UI");
         frame.setContentPane(new CUJaS_UI().rootPanel);

@@ -5,10 +5,20 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-public abstract class Figure implements SITACObject, KMLObject {
+/**
+ * Classe abstraite pour les figures géométriques d'une SITAC, et méthodes utilitaires associées.
+ * @author PRV
+ * @version 1.0
+ */
+public abstract class Figure implements SITACObject {
     protected static final Logger logger = LogManager.getLogger(Figure.class);
 
     public String name;
+
+    /**
+     * Constructeur par défaut.
+     * @param name nom de la figure
+     */
     public Figure(String... name) {
         this.name = this.getClass().getSimpleName();
         try {
@@ -18,31 +28,41 @@ public abstract class Figure implements SITACObject, KMLObject {
         }
     }
 
-    public static Point as_point(double[] point) {
-        return new Point(point[0], point[1]);
+    /**
+     * Création d'un {@code Point} à partir d'un tableau de doubles.
+     * @param coords tableau de doubles
+     * @return le {@code Point} créé
+     */
+    public static Point as_point(double[] coords) {
+        return new Point(coords[0], coords[1]);
     }
 
-    public static Point as_point(double latitude, double longitude) {
-        return new Point(latitude, longitude);
-    }
-    public static Point as_point(Point p) {
-        return p;
-    }
-    public static Point as_point() {
-        return new Point(0.0, 0.0);
-    }
-    public static Point as_point(Object o) {
-        if (o instanceof Point) {
-            return (Point) o;
-        } else if (o instanceof double[]) {
-            return as_point((double[]) o);
-        } else if (o instanceof ArrayList) {
-            return as_point(o);
+    /**
+     * Conversion d'un objet en {@code Point}.
+     * @param obj objet à convertir
+     * @return le {@code Point} créé. Par défaut, retourne le point (0, 0).
+     */
+    public static Point as_point(Object obj) {
+        if (obj instanceof Point) {
+            return (Point) obj;
+        } else if (obj instanceof double[]) {
+            return as_point((double[]) obj);
+        } else if (obj instanceof ArrayList) {
+            double lat = (double) ((ArrayList<?>) obj).get(0);
+            double lon = (double) ((ArrayList<?>) obj).get(1);
+            return new Point(lat, lon);
         } else {
-            return as_point();
+            return new Point(0, 0);
         }
     }
 
+    /**
+     * Conversion d'une liste d'objets en liste de {@code Point}.
+     * @param points liste d'objets à convertir
+     * @return la liste de {@code Point} créée
+     * @see #as_point(Object)
+     */
+    @SuppressWarnings("unused")
     public static ArrayList<Point> as_points(ArrayList<Object> points) {
         ArrayList<Point> res = new ArrayList<>();
         for(Object o : points) {
@@ -51,11 +71,23 @@ public abstract class Figure implements SITACObject, KMLObject {
         return res;
     }
 
-
+    /**
+     * Lecture du nom de la figure.
+     * @return le nom de la figure
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Conversion de la figure en objets KML.
+     * <br>
+     * Par défaut, on renvoie une chaîne vide (on ignore la figure).
+     * <br>
+     * La coordonnée d'altitude, requise par le format KML, est fixée à 0.
+     * Elle pourra être extraite de la SITAC et prise en compte.
+     * @return la construction de la figure en KML
+     */
     public String export_kml() {
         logger.warn("KML export not implemented for " + this.getClass().getSimpleName() + ". I'm ignoring it.");
         return "";

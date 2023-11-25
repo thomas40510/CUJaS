@@ -1,5 +1,10 @@
 package com.apogee.dev.CUJaS.Core;
 
+/**
+ * Clés génériques nécessaires à la lecture d'une SITAC et l'extraction des figures.
+ * @author PRV
+ * @version 1.0
+ */
 public enum XKey {
     BODY,
     FIGURE,
