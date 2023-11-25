@@ -2,3 +2,5 @@ com.apogee.dev.CUJaS
 com.apogee.dev.CUJaS.Core
 com.apogee.dev.CUJaS.SITACObjects
 com.apogee.dev.CUJaS.SITACObjects.utils
+com.apogee.dev.CUJaS.UI
+com.apogee.dev.CUJaS.UI.utils
