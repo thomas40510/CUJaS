@@ -62,13 +62,16 @@ public class XMLParser {
      * @see org.w3c.dom.Node
      * @see org.w3c.dom.NodeList
      */
-    public void parse_figures() {
+    public void parse_figures() throws RuntimeException {
         this.extracted_figures.clear();
         doc.getDocumentElement().normalize();
         NodeList figs = doc.getElementsByTagName(this.keywords.get(XKey.FIGURE));
         for (int i = 0; i < figs.getLength(); i++) {
             logger.debug("Extracting figure " + i);
             this.extracted_figures.add(figs.item(i));
+        }
+        if (this.extracted_figures.isEmpty()) {
+            throw new RuntimeException("No figure found in the file.");
         }
         logger.info("Done parsing. I found " + this.extracted_figures.size() + " figures.");
     }

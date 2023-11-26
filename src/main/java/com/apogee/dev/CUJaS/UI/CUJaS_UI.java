@@ -117,6 +117,7 @@ public class CUJaS_UI {
 
         // get selected file
         inputFileName = fileChooser.getSelectedFile().getAbsolutePath();
+        preProcess();
         inputLocTxt.setText(inputFileName);
         // show next tab
         tabbedPane1.setSelectedIndex(1);
@@ -192,11 +193,15 @@ public class CUJaS_UI {
 
     }
 
+    protected static final ArrayList<JLabel> statusLabels = new ArrayList<>();
+
     /**
      * Préparation de l'UI avant l'exportation.
      */
     private void preProcess() {
-        final ArrayList<JLabel> statusLabels = new ArrayList<>();
+        // reset UI elements to default
+        procProgress.setIndeterminate(false);
+
         inputLocTxt.setText("Aucun fichier sélectionné");
         txtRead.setText("Lecture de la SITAC");
         nextBtn.setEnabled(false);
@@ -205,11 +210,20 @@ public class CUJaS_UI {
         statusLabels.add(genStatus);
         statusLabels.add(exportStatus);
 
+        checkTabs();
+
         for (JLabel label : statusLabels) {
             label.setText("");
         }
 
         procProgress.setValue(0);
+    }
+
+    private void checkTabs() {
+        for (int i = 0; i < tabbedPane1.getTabCount(); i++) {
+            String paneTitle = tabbedPane1.getTitleAt(i);
+            if (paneTitle.contains(" ✅")) tabbedPane1.setTitleAt(i, paneTitle.substring(0, paneTitle.length() - 2));
+        }
     }
 
     /**
@@ -231,33 +245,40 @@ public class CUJaS_UI {
         SwingWorker<Void, JLabel> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
-                // read xml
-                XMLParser parser = new XMLParser(inputFileName, semantics);
-                this.publish(readStatus);
+                try {
+                    // read xml
+                    XMLParser parser = new XMLParser(inputFileName, semantics);
+                    this.publish(readStatus);
 
-                Thread.sleep(WAIT_TIME);
+                    Thread.sleep(WAIT_TIME);
 
-                // extract figures
-                parser.parse_figures();
-                this.publish(extractStatus);
+                    // extract figures
+                    parser.parse_figures();
+                    this.publish(extractStatus);
 
-                Thread.sleep(WAIT_TIME);
+                    Thread.sleep(WAIT_TIME);
 
-                // build figures
-                parser.build_figures();
-                this.publish(genStatus);
+                    // build figures
+                    parser.build_figures();
+                    this.publish(genStatus);
 
-                Thread.sleep(WAIT_TIME);
+                    Thread.sleep(WAIT_TIME);
 
-                // generate kml
-                String outputFile = outputDir + "/output.kml";
-                KMLExporter exporter = new KMLExporter(parser.getFigures(), outputFile, kml_styles);
-                exporter.export();
-                this.publish(exportStatus);
+                    // generate kml
+                    String outputFile = outputDir + "/output.kml";
+                    KMLExporter exporter = new KMLExporter(parser.getFigures(), outputFile, kml_styles);
+                    exporter.export();
+                    this.publish(exportStatus);
 
-                showSuccessAlert();
+                    showSuccessAlert();
 
-                return null;
+                    return null;
+                } catch (Exception e) {
+                    logger.warn(e.getMessage());
+                    showErrorStatus();
+                    showErrorAlert();
+                    return null;
+                }
             }
 
             @Override
@@ -304,6 +325,24 @@ public class CUJaS_UI {
                 logger.warn(e.getMessage());
             }
         }
+    }
+
+    private void showErrorAlert () {
+        JOptionPane.showMessageDialog(rootPanel,
+                "Une erreur est survenue lors de l'exportation. Le fichier est sûrement incorrect," +
+                        "ou le langage mal sélectionné. Voir les logs pour plus d'informations.",
+                "Erreur",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Erreur lors de l'exportation, on met à jour les labels de status.
+     */
+    private void showErrorStatus() {
+        for (JLabel label : statusLabels) {
+            if (label.getText().isEmpty()) label.setText("❌");
+        }
+        procProgress.setIndeterminate(true);
     }
 
     /**
