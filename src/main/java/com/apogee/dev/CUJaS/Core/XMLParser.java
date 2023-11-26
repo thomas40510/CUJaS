@@ -59,16 +59,20 @@ public class XMLParser {
 
     /**
      * Parse le fichier XML et extrait les noeuds XML correspondant aux figures.
+     * @throws RuntimeException Si aucune figure n'est trouvée dans le fichier (fichier incorrect ou illisible)
      * @see org.w3c.dom.Node
      * @see org.w3c.dom.NodeList
      */
-    public void parse_figures() {
+    public void parse_figures() throws RuntimeException {
         this.extracted_figures.clear();
         doc.getDocumentElement().normalize();
         NodeList figs = doc.getElementsByTagName(this.keywords.get(XKey.FIGURE));
         for (int i = 0; i < figs.getLength(); i++) {
             logger.debug("Extracting figure " + i);
             this.extracted_figures.add(figs.item(i));
+        }
+        if (this.extracted_figures.isEmpty()) {
+            throw new RuntimeException("No figure found in the file.");
         }
         logger.info("Done parsing. I found " + this.extracted_figures.size() + " figures.");
     }
