@@ -81,6 +81,7 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath, String sty
 
     /**
      * Exportation des figures vers un fichier KML. Chaque figure est exportée grâce à sa méthode propre.
+     * @throws RuntimeException Si aucune figure n'est à exporter.
      * @see Figure#export_kml()
      */
     public void export() throws RuntimeException {

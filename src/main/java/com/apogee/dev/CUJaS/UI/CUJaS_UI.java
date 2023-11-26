@@ -273,7 +273,7 @@ public class CUJaS_UI {
                     showSuccessAlert();
 
                     return null;
-                } catch (Exception e) {
+                } catch (RuntimeException e) {
                     logger.warn(e.getMessage());
                     showErrorStatus();
                     showErrorAlert();
@@ -327,6 +327,9 @@ public class CUJaS_UI {
         }
     }
 
+    /**
+     * Erreur lors de l'exportation, on affiche une boîte de dialogue.
+     */
     private void showErrorAlert () {
         JOptionPane.showMessageDialog(rootPanel,
                 "Une erreur est survenue lors de l'exportation. Le fichier est sûrement incorrect," +

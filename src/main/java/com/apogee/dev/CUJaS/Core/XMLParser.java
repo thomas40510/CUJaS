@@ -59,6 +59,7 @@ public class XMLParser {
 
     /**
      * Parse le fichier XML et extrait les noeuds XML correspondant aux figures.
+     * @throws RuntimeException Si aucune figure n'est trouvée dans le fichier (fichier incorrect ou illisible)
      * @see org.w3c.dom.Node
      * @see org.w3c.dom.NodeList
      */
