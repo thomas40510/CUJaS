@@ -1,6 +1,10 @@
 package com.apogee.dev.CUJaS.UI;
 
-import com.apogee.dev.CUJaS.Core.*;
+import com.apogee.dev.CUJaS.Core.KMLExporter;
+import com.apogee.dev.CUJaS.Core.Melissa.MelissaSemantics;
+import com.apogee.dev.CUJaS.Core.NTK.NTKParser;
+import com.apogee.dev.CUJaS.Core.NTK.NTKSemantics;
+import com.apogee.dev.CUJaS.Core.Semantics;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -238,7 +242,7 @@ public class CUJaS_UI {
 
     /**
      * Exportation de la SITAC.
-     * @see com.apogee.dev.CUJaS.Core.XMLParser
+     * @see NTKParser
      * @see com.apogee.dev.CUJaS.Core.KMLExporter
      */
     private void exportFile() {
@@ -247,7 +251,7 @@ public class CUJaS_UI {
             protected Void doInBackground() throws Exception {
                 try {
                     // read xml
-                    XMLParser parser = new XMLParser(inputFileName, semantics);
+                    NTKParser parser = new NTKParser(inputFileName);
                     this.publish(readStatus);
 
                     Thread.sleep(WAIT_TIME);

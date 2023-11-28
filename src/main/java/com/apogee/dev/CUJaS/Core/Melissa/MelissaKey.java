@@ -1,0 +1,22 @@
+package com.apogee.dev.CUJaS.Core.Melissa;
+
+import com.apogee.dev.CUJaS.Core.XKey;
+
+public enum MelissaKey implements XKey {
+    BODY,
+    POINT,
+    COORDS,
+    LINE,
+    PTS_LINE,
+    ELLIPSE,
+    ELL_RADII,
+    ANGLE,
+    POLYGON,
+    CORRIDOR,
+    ANGLE_CORR,
+    SIZE_CORR,
+    PTS_CORR,
+    BULLS,
+    BULLS_RINGS,
+    BULLS_DIST,
+}

@@ -12,7 +12,7 @@ public class Main {
         // read file in 'resources' folder
         String filename = current_path + "/src/main/resources/test.xml";
 
-        XMLParser parser = new XMLParser(filename, new NTKSemantics());
+        NTKParser parser = new NTKParser(filename, new NTKSemantics());
         parser.parse_sitac();
         ArrayList<Figure> figures = parser.getFigures();
 
