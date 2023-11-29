@@ -1,10 +1,10 @@
 package com.apogee.dev.CUJaS.UI;
 
 import com.apogee.dev.CUJaS.Core.KMLExporter;
-import com.apogee.dev.CUJaS.Core.Melissa.MelissaSemantics;
+import com.apogee.dev.CUJaS.Core.Melissa.MelissaParser;
 import com.apogee.dev.CUJaS.Core.NTK.NTKParser;
-import com.apogee.dev.CUJaS.Core.NTK.NTKSemantics;
 import com.apogee.dev.CUJaS.Core.Semantics;
+import com.apogee.dev.CUJaS.Core.XMLParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,7 +34,7 @@ public class CUJaS_UI {
         NTK
     }
 
-    private Semantics semantics;
+    private XMLParser parser;
 
     private JPanel rootPanel;
     private JButton nextBtn;
@@ -251,7 +251,6 @@ public class CUJaS_UI {
             protected Void doInBackground() throws Exception {
                 try {
                     // read xml
-                    NTKParser parser = new NTKParser(inputFileName);
                     this.publish(readStatus);
 
                     Thread.sleep(WAIT_TIME);
@@ -269,7 +268,8 @@ public class CUJaS_UI {
                     Thread.sleep(WAIT_TIME);
 
                     // generate kml
-                    String outputFile = outputDir + "/output.kml";
+                    String time_now = String.valueOf(System.currentTimeMillis());
+                    String outputFile = outputDir + "/output_" + time_now + ".kml";
                     KMLExporter exporter = new KMLExporter(parser.getFigures(), outputFile, kml_styles);
                     exporter.export();
                     this.publish(exportStatus);
@@ -362,7 +362,7 @@ public class CUJaS_UI {
     }
 
     /**
-     * Sélection du langage de la SITAC.
+     * Sélection du langage de la SITAC, et instanciation du {@link XMLParser} correspondant.
      * @param lang langage choisi par l'utilisateur
      * @see Lang
      * @see Semantics
@@ -370,10 +370,10 @@ public class CUJaS_UI {
     private void selectLang(Lang lang) {
         switch (lang) {
             case MELISSA:
-                semantics = new MelissaSemantics();
+                parser = new MelissaParser(inputFileName);
                 break;
             case NTK:
-                semantics = new NTKSemantics();
+                parser = new NTKParser(inputFileName);
                 break;
         }
         titleDone(1);
