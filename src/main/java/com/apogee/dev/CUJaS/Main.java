@@ -1,24 +1,23 @@
 package com.apogee.dev.CUJaS;
 
-import com.apogee.dev.CUJaS.UI.CUJaS_UI;
+import com.apogee.dev.CUJaS.Core.KMLExporter;
+import com.apogee.dev.CUJaS.Core.Melissa.MelissaParser;
 
 public class Main {
     public static void main(String[] args) {
         // run CUJaS_UI.main
-        CUJaS_UI.main(args);
+        //CUJaS_UI.main(args);
 
-/*
         String current_path = System.getProperty("user.dir");
         // read file in 'resources' folder
-        String filename = current_path + "/src/main/resources/test.xml";
+        String filename = current_path + "/src/main/resources/MELISSA.stc.xml";
 
-        NTKParser parser = new NTKParser(filename, new NTKSemantics());
-        parser.parse_sitac();
-        ArrayList<Figure> figures = parser.getFigures();
+        MelissaParser parser = new MelissaParser(filename);
+        parser.parse_figures();
+        parser.build_figures();
 
-        String kml_path = current_path + "/src/main/out/output.kml";
-        KMLExporter exporter = new KMLExporter(figures, kml_path);
+        String kml_filename = current_path + "/src/main/out/MELISSA.kml";
+        KMLExporter exporter = new KMLExporter(parser.getFigures(), kml_filename, null);
         exporter.export();
-*/
     }
 }

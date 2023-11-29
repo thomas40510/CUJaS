@@ -12,7 +12,7 @@ import com.apogee.dev.CUJaS.Core.Semantics;
  */
 public class MelissaSemantics implements Semantics {
     public MelissaSemantics() {
-        this.keywords.put(MelissaKey.BODY, "sitac");
+        this.keywords.put(MelissaKey.BODY, "Sitac");
         this.keywords.put(MelissaKey.POINT, "PointMelissa");
         this.keywords.put(MelissaKey.COORDS, "coordonnees");
         this.keywords.put(MelissaKey.LINE, "Ligne");
