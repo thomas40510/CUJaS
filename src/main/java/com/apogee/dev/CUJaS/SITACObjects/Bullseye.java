@@ -88,7 +88,7 @@ public class Bullseye extends Figure {
         return res_major + res_minor + res_cross;
     }
 
-    private static final int CROSS_ALPHA = 45;
+    private static final int CROSS_ALPHA = 30;
 
     /**
      * Génère la croix du Bullseye.

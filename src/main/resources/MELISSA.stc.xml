@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Sitac version="V1.1" proprietaire="">
+	<PointMelissa>
+		<coordonnees latitude="49.373938445" longitude="0.149410464"/>
+		<altitudeMNT code="135.0"/>
+		<age code="-9223372036854775808"/>
+		<Texte>
+			<couleurFond code="-1"/>
+			<couleurEcriture code="-16777216"/>
+			<libelle code="ALT LZ"/>
+			<description code=""/>
+			<libelleVisible code="true"/>
+			<toujoursVisible code="false"/>
+			<font nom="Arial" style="1" taille="15" />
+			<decalage x="0" y="18" angle="0"/>
+		</Texte>
+		<TraitSitac>
+			<couleurContour code="-16777216"/>
+			<couleurRemplissage code="-15695872"/>
+			<typeTrait code="PLEIN"/>
+			<largeurTrait code="1"/>
+		</TraitSitac>
+		<attitude code="None"/>
+		<elevationInf unit="GL" value="0"/>
+		<elevationSup unit="GL" value="0"/>
+		<elevationVisible code="false"/>
+		<portee code="0.0"/>
+	</PointMelissa>
+	<Ellipse>
+		<coordonnees latitude="48.442795013" longitude="0.100730682"/>
+		<altitudeMNT code="143.0"/>
+		<age code="1617888471834"/>
+		<Texte>
+			<couleurFond code="-1"/>
+			<couleurEcriture code="-16777216"/>
+			<libelle code=" SA7"/>
+			<description code=""/>
+			<libelleVisible code="true"/>
+			<toujoursVisible code="false"/>
+			<font nom="Arial" style="1" taille="15" />
+			<decalage x="0" y="18" angle="0"/>
+		</Texte>
+		<TraitSitac>
+			<couleurContour code="-16777216"/>
+			<couleurRemplissage code="-65536"/>
+			<typeTrait code="PLEIN"/>
+			<largeurTrait code="1"/>
+		</TraitSitac>
+		<attitude code="None"/>
+		<elevationInf unit="GL" value="0"/>
+		<elevationSup unit="GL" value="0"/>
+		<elevationVisible code="false"/>
+		<rayons rayonHorizontal="5556.0" rayonVertical="5556.0"/>
+		<angle code="0.0"/>
+		<rempli code="true"/>
+	</Ellipse>
+	<Bulls>
+		<coordonnees latitude="48.5" longitude="-0.0"/>
+		<altitudeMNT code="277.0"/>
+		<age code="1620043631939"/>
+		<Texte>
+			<couleurFond code="-1"/>
+			<couleurEcriture code="-16777216"/>
+			<libelle code="MADON"/>
+			<description code=""/>
+			<libelleVisible code="true"/>
+			<toujoursVisible code="false"/>
+			<font nom="Arial" style="1" taille="15" />
+			<decalage x="0" y="18" angle="0"/>
+		</Texte>
+		<TraitSitac>
+			<couleurContour code="-16777216"/>
+			<couleurRemplissage code="-16719648"/>
+			<typeTrait code="PLEIN"/>
+			<largeurTrait code="1"/>
+		</TraitSitac>
+		<attitude code="None"/>
+		<elevationInf unit="GL" value="0"/>
+		<elevationSup unit="GL" value="0"/>
+		<elevationVisible code="false"/>
+		<pas code="9260.0"/>
+		<nbCercles code="15"/>
+		<devMagnet code="0.0"/>
+		<angleSection code="30.0"/>
+		<tirets10degres code="true"/>
+		<reference code="false"/>
+	</Bulls>
+	<Ligne>
+		<coordonnees latitude="49.688754924" longitude="0.4999995395"/>
+		<altitudeMNT code="154.0"/>
+		<age code="1617888471834"/>
+		<Texte>
+			<couleurFond code="-1"/>
+			<couleurEcriture code="-16777216"/>
+			<libelle code="Ligne1"/>
+			<description code=""/>
+			<libelleVisible code="true"/>
+			<toujoursVisible code="false"/>
+			<font nom="Arial" style="1" taille="15" />
+			<decalage x="0" y="18" angle="0"/>
+		</Texte>
+		<TraitSitac>
+			<couleurContour code="-16777216"/>
+			<couleurRemplissage code="-16777216"/>
+			<typeTrait code="PLEIN"/>
+			<largeurTrait code="3"/>
+		</TraitSitac>
+		<attitude code="None"/>
+		<elevationInf unit="GL" value="0"/>
+		<elevationSup unit="GL" value="0"/>
+		<elevationVisible code="false"/>
+		<liste>
+			<coordonnees latitude="49.665294341" longitude="0.003282049"/> <altitudeMNT code="0.0"/>
+			<coordonnees latitude="49.712215507" longitude="0.99671703"/> <altitudeMNT code="154.0"/>
+		</liste>
+		<numerosVisibles code="true"/>
+		<coinsDessines code="true"/>
+		<texteVisible code="false"/>
+	</Ligne>
+	<Porte>
+		<coordonnees latitude="49.512312569" longitude="-1.298980285"/>
+		<altitudeMNT code="30.0"/>
+		<age code="1617888471834"/>
+		<Texte>
+			<couleurFond code="-1"/>
+			<couleurEcriture code="-16777216"/>
+			<libelle code="Porte1"/>
+			<description code=""/>
+			<libelleVisible code="false"/>
+			<toujoursVisible code="false"/>
+			<font nom="Arial" style="1" taille="15" />
+			<decalage x="0" y="18" angle="0"/>
+		</Texte>
+		<TraitSitac>
+			<couleurContour code="-16777216"/>
+			<couleurRemplissage code="-16777216"/>
+			<typeTrait code="PLEIN"/>
+			<largeurTrait code="5"/>
+		</TraitSitac>
+		<attitude code="None"/>
+		<elevationInf unit="GL" value="0"/>
+		<elevationSup unit="GL" value="0"/>
+		<elevationVisible code="false"/>
+		<liste>
+			<coordonnees latitude="49.393141034" longitude="-2.191715056"/> <altitudeMNT code="-32767.0"/>
+			<coordonnees latitude="49.581855051" longitude="-1.70306399"/> <altitudeMNT code="-32767.0"/>
+			<coordonnees latitude="49.465474477" longitude="-0.502821359"/> <altitudeMNT code="-32767.0"/>
+			<coordonnees latitude="49.666972213" longitude="0.002761692"/> <altitudeMNT code="-32767.0"/>
+		</liste>
+		<numerosVisibles code="true"/>
+		<coinsDessines code="true"/>
+		<texteVisible code="false"/>
+		<anglePorte code="2.745853125345728"/>
+		<espacementPorte code="9260.0"/>
+	</Porte>
+	<Zone>
+		<coordonnees latitude="47.8420727245" longitude="-0.39550840249999997"/>
+		<altitudeMNT code="0.0"/>
+		<age code="1617888471834"/>
+		<Texte>
+			<couleurFond code="-1"/>
+			<couleurEcriture code="-16777216"/>
+			<libelle code="Zone1"/>
+			<description code=""/>
+			<libelleVisible code="true"/>
+			<toujoursVisible code="false"/>
+			<font nom="Arial" style="1" taille="15" />
+			<decalage x="0" y="18" angle="0"/>
+		</Texte>
+		<TraitSitac>
+			<couleurContour code="-16777216"/>
+			<couleurRemplissage code="-16777216"/>
+			<typeTrait code="PLEIN"/>
+			<largeurTrait code="3"/>
+		</TraitSitac>
+		<attitude code="None"/>
+		<elevationInf unit="GL" value="0"/>
+		<elevationSup unit="GL" value="0"/>
+		<elevationVisible code="false"/>
+		<liste>
+			<coordonnees latitude="47.824564157" longitude="0.642017493"/> <altitudeMNT code="107.0"/>
+			<coordonnees latitude="47.859581292" longitude="-1.433034298"/> <altitudeMNT code="73.0"/>
+			<coordonnees latitude="48.952324434" longitude="-2.43088678"/> <altitudeMNT code="0.0"/>
+		</liste>
+		<numerosVisibles code="true"/>
+		<coinsDessines code="true"/>
+		<texteVisible code="false"/>
+	</Zone>
+</Sitac>

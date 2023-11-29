@@ -1,23 +1,13 @@
 package com.apogee.dev.CUJaS.Core;
 
+import com.apogee.dev.CUJaS.Core.Melissa.MelissaKey;
+import com.apogee.dev.CUJaS.Core.NTK.NTKKey;
+
 /**
- * Clés génériques nécessaires à la lecture d'une SITAC et l'extraction des figures.
- * @author PRV
- * @version 1.0
+ * Interface générique pour les éléments sémantiques.
+ * <br>
+ * En pratique, cette interface sert uniquement à typer les clés génériques {@link XKey} des éléments sémantiques.
+ * @see NTKKey
+ * @see MelissaKey
  */
-public enum XKey {
-    BODY,
-    FIGURE,
-    FIG_TYPE,
-    FIG_NAME,
-    FIG_HORIZ,
-    FIG_VERT,
-    FIG_POINTS,
-    FIG_POINT,
-    PT_LAT,
-    PT_LON,
-    BULLSEYE,
-    BULLS_RINGS,
-    BULLS_DIST,
-    ANGLE,
-}
+public interface XKey {}
