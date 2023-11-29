@@ -16,6 +16,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Parser XML pour les fichiers SITAC Melissa.
+ * <br>
+ * Ce parser est capable de lire les fichiers XML de SITAC Melissa et de construire les figures correspondantes.
+ *
+ * @author PRV
+ * @version 1.0
+ */
 public class MelissaParser implements XMLParser {
     private final Document doc;
     private final ArrayList<Node> extracted_figures;
@@ -24,7 +32,10 @@ public class MelissaParser implements XMLParser {
 
     private static final Logger logger = LogManager.getLogger(MelissaParser.class);
 
-
+    /**
+     * Constructeur du parser Melissa.
+     * @param filepath chemin vers le fichier à parser
+     */
     public MelissaParser(String filepath) {
         this.extracted_figures = new ArrayList<>();
         this.keywords = new MelissaSemantics().keywords;
@@ -41,6 +52,10 @@ public class MelissaParser implements XMLParser {
 
     }
 
+    /**
+     * Extraction des figures du fichier XML.
+     * @throws RuntimeException si le fichier n'est pas au format attendu (élément racine inconnu)
+     */
     @Override
     public void parse_figures() throws RuntimeException {
         this.extracted_figures.clear();
@@ -60,8 +75,15 @@ public class MelissaParser implements XMLParser {
 
     }
 
+    /**
+     * Construction des figures à partir des éléments extraits.
+     * <br>
+     * On pourra par exemple optimiser la construction en traitant les figures en même temps qu'elles sont extraites.
+     * @throws RuntimeException si une figure n'est pas reconnue
+     * @see MelissaKey
+     */
     @Override
-    public void build_figures() {
+    public void build_figures() throws RuntimeException {
         for (Node figure : this.extracted_figures) {
             // find key matching figure.getNodeName()
             MelissaKey key = (MelissaKey) this.keywords.entrySet().stream()
@@ -90,26 +112,31 @@ public class MelissaParser implements XMLParser {
                     this.figures.add(parse_bulls(element));
                     break;
                 default:
-                    logger.error("Unknown figure type: " + figure.getNodeName());
-                    //throw new RuntimeException("Unknown figure type: " + figure.getNodeName());
+                    throw new RuntimeException("Unknown figure type: " + figure.getNodeName());
             }
         }
-
     }
 
-    protected Point parse_point(Element figure) {
+    /**
+     * Construction d'un point à partir d'un élément XML.
+     * <br>
+     * On peut également utiliser la méthode pour construire les points intermédiaires d'une ligne.
+     * @param figure élément XML représentant un point
+     * @return point construit
+     * @throws RuntimeException si le point ne peut pas être construit (erreur de parsing)
+     */
+    protected Point parse_point(Element figure) throws RuntimeException {
         logger.info("Building a point");
         // <coordonnees latitude="xx.xxxx" longitude="yy.yyyy"/>
-        // get info
         double lat, lon;
-        try {
+        try { // Si la figure est un point isolé
             Element coords = (Element) figure.getElementsByTagName(this.keywords.get(MelissaKey.COORDS)).item(0);
             lat = Double.parseDouble(coords.getAttribute("latitude"));
             lon = Double.parseDouble(coords.getAttribute("longitude"));
-        } catch (NullPointerException e) {
+        } catch (NullPointerException e) { // Si la figure est un point intermédiaire passé par une ligne
             lat = Double.parseDouble(figure.getAttribute("latitude"));
             lon = Double.parseDouble(figure.getAttribute("longitude"));
-        } catch (Exception e) {
+        } catch (Exception e) { // Autres erreurs
             throw new RuntimeException(e);
         }
 
@@ -119,18 +146,26 @@ public class MelissaParser implements XMLParser {
         return point;
     }
 
+    /**
+     * Construction d'une ligne à partir d'un élément XML.
+     * @param figure élément XML représentant une ligne
+     * @return ligne construite
+     */
     protected Line parse_line(Element figure) {
         ArrayList<Point> points = new ArrayList<>();
 
+        // premier point (défini comme étant la "position" de la ligne)
         Element center = (Element) figure.getElementsByTagName(this.keywords.get(MelissaKey.COORDS)).item(0);
         double lat = Double.parseDouble(center.getAttribute("latitude"));
         double lon = Double.parseDouble(center.getAttribute("longitude"));
         points.add(new Point(lat, lon));
 
-        // <liste>
-        // <coordonnees latitude="xx.xxxx" longitude="yy.yyyy"/>
-        // <coordonnees latitude="xx.xxxx" longitude="yy.yyyy"/>
-        // </liste>
+        /* <liste>
+              <coordonnees latitude="xx.xxxx" longitude="yy.yyyy"/>
+              ...
+              <coordonnees latitude="xx.xxxx" longitude="yy.yyyy"/>
+         </liste>
+         */
 
         NodeList list = figure.getElementsByTagName(this.keywords.get(MelissaKey.PTS_LINE)).item(0).getChildNodes();
         for (int i = 0; i < list.getLength(); i++) {
@@ -145,23 +180,39 @@ public class MelissaParser implements XMLParser {
         return line;
     }
 
+    /**
+     * Construction d'un polygone à partir d'un élément XML.
+     * <br>
+     * Pour optimiser l'implémentation, le polygon est construit à partir d'une ligne, que l'on transforme ensuite en polygone.
+     * @param figure élément XML représentant un polygone
+     * @return polygone construit
+     * @see Line#asPolygon()
+     */
     protected Polygon parse_polygon(Element figure) {
         Polygon polygon = parse_line(figure).asPolygon();
         logger.info("Polygon built: " + polygon);
         return polygon;
     }
 
+    /**
+     * Construction d'une ellipse à partir d'un élément XML.
+     * @param figure élément XML représentant une ellipse
+     * @return ellipse construite
+     */
     protected Ellipse parse_ellipse(Element figure) {
+        // center
         Element center = (Element) figure.getElementsByTagName(this.keywords.get(MelissaKey.COORDS)).item(0);
         logger.warn("Center: " + center.getAttribute("latitude") + ", " + center.getAttribute("longitude"));
         double lat = Double.parseDouble(center.getAttribute("latitude"));
         double lon = Double.parseDouble(center.getAttribute("longitude"));
         Point point = new Point(lat, lon);
 
+        // radii
         Element radii = (Element) figure.getElementsByTagName(this.keywords.get(MelissaKey.ELL_RADII)).item(0);
         double hrad = Double.parseDouble(radii.getAttribute("rayonHorizontal"));
         double vrad = Double.parseDouble(radii.getAttribute("rayonVertical"));
 
+        // angle
         Element angle = (Element) figure.getElementsByTagName(this.keywords.get(MelissaKey.ANGLE)).item(0);
         double alpha = Double.parseDouble(angle.getAttribute("code"));
 
@@ -170,6 +221,11 @@ public class MelissaParser implements XMLParser {
         return ellipse;
     }
 
+    /**
+     * Construction d'un bullseye à partir d'un élément XML.
+     * @param element élément XML représentant un bullseye
+     * @return bullseye construit
+     */
     protected Bullseye parse_bulls(Element element) {
         Element center = (Element) element.getElementsByTagName(this.keywords.get(MelissaKey.COORDS)).item(0);
         double lat = Double.parseDouble(center.getAttribute("latitude"));

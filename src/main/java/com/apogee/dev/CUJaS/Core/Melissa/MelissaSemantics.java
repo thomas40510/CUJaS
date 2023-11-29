@@ -5,6 +5,7 @@ import com.apogee.dev.CUJaS.Core.Semantics;
 /**
  * Éléments sémantiques pour le format Melissa.
  * En pratique, on fait correspondre la syntaxe spécifique Melissa aux clés de construction.
+ * Voir la documentation de {@code Melissa_NG} pour plus de détails.
  * @see Semantics
  * @see MelissaKey
  * @author PRV

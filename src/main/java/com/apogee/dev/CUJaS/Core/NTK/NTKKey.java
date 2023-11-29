@@ -3,7 +3,7 @@ package com.apogee.dev.CUJaS.Core.NTK;
 import com.apogee.dev.CUJaS.Core.XKey;
 
 /**
- * Clés génériques nécessaires à la lecture d'une SITAC et l'extraction des figures.
+ * Clés nécessaires à la lecture d'une SITAC au format NTK et l'extraction des figures.
  * @author PRV
  * @version 1.0
  */
