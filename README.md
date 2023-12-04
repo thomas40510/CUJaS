@@ -1,124 +1,54 @@
+Convertisseur Unifié en JAVA pour les SiTaC (CUJaS)
+
+# Objectifs
+Ce programme, développé en Java afin d'en faire un exécutable unique fonctionnel hors-ligne, vise à unifier et améliorer les convertisseurs de SiTac au format `kml` pour les vols d'entraînement.
+Il doit à ce titre, être :
+- simple d'utilisation ;
+- robuste ;
+- exécutable tout seul, hors-ligne sur un poste Windows ;
+- simple à étendre, améliorer, et debugger.
+
+# Implémentation
+À ces fins, le convertisseur unifié repose sur une architecture en "couches", permettant de séparer le langage de SiTac de l'implémentation des objets, offrant une très large souplesse dans le changement éventuel de syntaxe pour le fichier en entrée sans incidence sur la qualité du fichier `kml` en sortie.
+
 ```mermaid
-classDiagram
-direction BT
-class ANSIColorConstants {
-  - ANSIColorConstants() 
-}
-class Bullseye {
-  + Bullseye(Object, double, double, int, double, String[]) 
-}
-class CUJaS_UI {
-  + CUJaS_UI() 
-}
-class Circle {
-  + Circle(Point, double, String[]) 
-}
-class ColoredTextPane {
-  + ColoredTextPane() 
-}
-class Corridor {
-  + Corridor(Point, Point, double, String[]) 
-}
-class Ellipse {
-  + Ellipse(Point, double, double, double, String[]) 
-}
-class Figure {
-  + Figure(String[]) 
-}
-class GUIConstants {
-  - GUIConstants() 
-}
-class GeomUtils {
-  + GeomUtils() 
-}
-class KMLExporter {
-  + KMLExporter(ArrayList~Figure~, String, String?) 
-}
-class KMLObject {
-<<Interface>>
-
-}
-class KMLUtils {
-  + KMLUtils() 
-}
-class Lang {
-<<enumeration>>
-  + Lang() 
-}
-class Line {
-  + Line() 
-  + Line(ArrayList~Point~, String[]) 
-}
-class MelissaSemantics {
-  + MelissaSemantics() 
-}
-class NTKSemantics {
-  + NTKSemantics() 
-}
-class Point {
-  + Point(double, double, String[]) 
-}
-class Polygon {
-  + Polygon(ArrayList~Point~, String[]) 
-  + Polygon() 
-}
-class Rectangle {
-  + Rectangle(Point, double, double, String[]) 
-}
-class SITACObject {
-<<Interface>>
-
-}
-class Semantics {
-<<Interface>>
-
-}
-class XKey {
-<<enumeration>>
-  + XKey() 
-}
-class XMLParser {
-  + XMLParser(String, Semantics) 
-}
-
-Bullseye  ..>  Circle : «create»
-Bullseye  -->  Figure 
-Bullseye "1" *--> "center 1" Point 
-CUJaS_UI  ..>  ColoredTextPane : «create»
-CUJaS_UI  ..>  KMLExporter : «create»
-CUJaS_UI  ..>  MelissaSemantics : «create»
-CUJaS_UI  ..>  NTKSemantics : «create»
-CUJaS_UI "1" *--> "semantics 1" Semantics 
-CUJaS_UI  ..>  XMLParser : «create»
-Circle  -->  Ellipse 
-Circle "1" *--> "center 1" Point 
-Corridor  -->  Figure 
-Corridor "1" *--> "start_point 1" Point 
-Ellipse  -->  Figure 
-Ellipse "1" *--> "center 1" Point 
-Figure  ..>  Point : «create»
-Figure  ..>  SITACObject 
-GeomUtils  ..>  Point : «create»
-KMLExporter "1" *--> "figures *" Figure 
-CUJaS_UI  -->  Lang 
-Line  -->  Figure 
-Line "1" *--> "points *" Point 
-Line  ..>  Polygon : «create»
-MelissaSemantics  ..>  Semantics 
-NTKSemantics  ..>  Semantics 
-Point  -->  Figure 
-Polygon  -->  Line 
-Rectangle  -->  Figure 
-Rectangle "1" *--> "start 1" Point 
-Semantics "1" *--> "keywords *" XKey 
-XMLParser  ..>  Bullseye : «create»
-XMLParser  ..>  Circle : «create»
-XMLParser  ..>  Corridor : «create»
-XMLParser  ..>  Ellipse : «create»
-XMLParser "1" *--> "figures *" Figure 
-XMLParser  ..>  Line : «create»
-XMLParser  ..>  Point : «create»
-XMLParser  ..>  Polygon : «create»
-XMLParser  ..>  Rectangle : «create»
-XMLParser "1" *--> "keywords *" XKey
+stateDiagram-v2
+    direction LR
+    nodes: Nodes XML
+    objects: Figures
+    kmlobj: Fragments kml
+    kml: Code kml
+    file: Fichier kml
+    [*] --> nodes : Fichier SiTac
+    Semantics --> XMLParser : syntaxe
+    state XMLParser {
+        nodes --> objects
+        objects --> kmlobj
+    }
+    state KMLBuilder {
+        kmlobj --> kml
+        
+    }
+    kml --> file
+    file --> [*]
+    
+    note right of XMLParser
+        Monde du langage (syntaxe-dépendant)
+    end note
+    note left of KMLBuilder
+        Monde des objets (implémentation-dépendant)
+    end note
+    
 ```
+
+
+# Utilisation
+Simplement lancer l'outil, et se laisser guider dans l'interface. Pour info, il faut :
+1. Sélectionner un fichier d'entrée
+2. Sélectionner le langage du fichier d'entrée
+3. Sélectionner le dossier de sortie pour le fichier `kml`
+4. Éventuellement, choisir un fichier de styles `kml` personnalisés (si on souhaite d'autres styles pour les objets que ceux par défaut)
+5. Lancer la conversion.
+
+Toute erreur de traitement / conversion sera notifiée dans la console de l'outil (généralement, c'est une erreur de fichier d'entrée, ou de sélection du langage).
+Les objets reconnus dans la SiTac mais non encore implémentés sont également consignés dans la console pour information.
