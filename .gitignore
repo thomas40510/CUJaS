@@ -190,3 +190,11 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+
+.idea/inspectionProfiles/
+
+src/main/resources/test.xml
+
+src/main/resources/output.kml
+
+src/main/out/
