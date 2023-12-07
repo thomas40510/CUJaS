@@ -5,10 +5,14 @@ import com.apogee.dev.CUJaS.Core.Melissa.MelissaParser;
 import com.apogee.dev.CUJaS.Core.NTK.NTKParser;
 import com.apogee.dev.CUJaS.Core.Semantics;
 import com.apogee.dev.CUJaS.Core.XMLParser;
+import mdlaf.MaterialLookAndFeel;
+import mdlaf.utils.MaterialImageFactory;
+import mdlaf.utils.icons.MaterialIconFont;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -20,7 +24,7 @@ import java.util.List;
  * @version 1.0
  */
 public class CUJaS_UI {
-    private final Logger logger = LogManager.getLogger(CUJaS_UI.class);
+    private static final Logger logger = LogManager.getLogger(CUJaS_UI.class);
 
     private String inputFileName = null;
     private String outputDir = null;
@@ -61,11 +65,22 @@ public class CUJaS_UI {
     private JButton stylesQBtn;
     private ButtonGroup langGroup;
 
+    static {
+        try {
+            UIManager.setLookAndFeel(new MaterialLookAndFeel(new CUJASTheme()));
+        } catch (UnsupportedLookAndFeelException e) {
+            logger.warn(e.getMessage());
+        }
+    }
+
     /**
      * Constructeur de l'UI
      */
     public CUJaS_UI() {
         redirectConsole();
+
+        //set margins
+        rootPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         logger.info("UI initialized.");
 
@@ -160,8 +175,9 @@ public class CUJaS_UI {
      * @param i index de l'onglet
      */
     private void titleDone(int i) {
-        String paneTitle = tabbedPane1.getTitleAt(i);
-        if (!paneTitle.contains(" ✅")) tabbedPane1.setTitleAt(i, paneTitle + " ✅");
+        tabbedPane1.setIconAt(i, MaterialImageFactory.getInstance().getImage(
+                MaterialIconFont.CHECK, new ColorUIResource(6, 148, 50))
+        );
     }
 
     /**
@@ -224,8 +240,7 @@ public class CUJaS_UI {
 
     private void checkTabs() {
         for (int i = 0; i < tabbedPane1.getTabCount(); i++) {
-            String paneTitle = tabbedPane1.getTitleAt(i);
-            if (paneTitle.contains(" ✅")) tabbedPane1.setTitleAt(i, paneTitle.substring(0, paneTitle.length() - 2));
+            tabbedPane1.setIconAt(i, null);
         }
     }
 
