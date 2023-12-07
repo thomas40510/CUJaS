@@ -38,7 +38,6 @@ stateDiagram-v2
     note left of KMLBuilder
         Monde des objets (implémentation-dépendant)
     end note
-    
 ```
 
 

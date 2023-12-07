@@ -5,14 +5,22 @@ import com.apogee.dev.CUJaS.Core.Melissa.MelissaParser;
 import com.apogee.dev.CUJaS.Core.NTK.NTKParser;
 import com.apogee.dev.CUJaS.Core.Semantics;
 import com.apogee.dev.CUJaS.Core.XMLParser;
+import mdlaf.MaterialLookAndFeel;
+import mdlaf.utils.MaterialImageFactory;
+import mdlaf.utils.icons.MaterialIconFont;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * UI de l'outil CUJaS
@@ -20,7 +28,7 @@ import java.util.List;
  * @version 1.0
  */
 public class CUJaS_UI {
-    private final Logger logger = LogManager.getLogger(CUJaS_UI.class);
+    private static final Logger logger = LogManager.getLogger(CUJaS_UI.class);
 
     private String inputFileName = null;
     private String outputDir = null;
@@ -59,13 +67,42 @@ public class CUJaS_UI {
     private JLabel exportStatus;
     private JButton customStyleBtn;
     private JButton stylesQBtn;
+    private JLabel logo1;
+    private JLabel logo2;
+    private JPanel titlePanel;
     private ButtonGroup langGroup;
+
+    static {
+        try {
+            UIManager.setLookAndFeel(new MaterialLookAndFeel(new CUJASTheme()));
+        } catch (UnsupportedLookAndFeelException e) {
+            logger.warn(e.getMessage());
+        }
+    }
 
     /**
      * Constructeur de l'UI
      */
     public CUJaS_UI() {
         redirectConsole();
+        logo1.setText("");
+        logo2.setText("");
+        try {
+            BufferedImage img1 = ImageIO.read(
+                    Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("eie.png"))
+            );
+            BufferedImage img2 = ImageIO.read(
+                    Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("spabi2.png"))
+            );
+            int size = 60;
+            logo1.setIcon(new ImageIcon(Objects.requireNonNull(img1).getScaledInstance(size, size, Image.SCALE_SMOOTH)));
+            logo2.setIcon(new ImageIcon(Objects.requireNonNull(img2).getScaledInstance(size, size, Image.SCALE_SMOOTH)));
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+
+        //set margins
+        rootPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         logger.info("UI initialized.");
 
@@ -160,8 +197,9 @@ public class CUJaS_UI {
      * @param i index de l'onglet
      */
     private void titleDone(int i) {
-        String paneTitle = tabbedPane1.getTitleAt(i);
-        if (!paneTitle.contains(" ✅")) tabbedPane1.setTitleAt(i, paneTitle + " ✅");
+        tabbedPane1.setIconAt(i, MaterialImageFactory.getInstance().getImage(
+                MaterialIconFont.CHECK, new ColorUIResource(6, 148, 50))
+        );
     }
 
     /**
@@ -207,7 +245,6 @@ public class CUJaS_UI {
         procProgress.setIndeterminate(false);
 
         inputLocTxt.setText("Aucun fichier sélectionné");
-        txtRead.setText("Lecture de la SITAC");
         nextBtn.setEnabled(false);
         statusLabels.add(readStatus);
         statusLabels.add(extractStatus);
@@ -218,6 +255,7 @@ public class CUJaS_UI {
 
         for (JLabel label : statusLabels) {
             label.setText("");
+            label.setIcon(null);
         }
 
         procProgress.setValue(0);
@@ -225,8 +263,7 @@ public class CUJaS_UI {
 
     private void checkTabs() {
         for (int i = 0; i < tabbedPane1.getTabCount(); i++) {
-            String paneTitle = tabbedPane1.getTitleAt(i);
-            if (paneTitle.contains(" ✅")) tabbedPane1.setTitleAt(i, paneTitle.substring(0, paneTitle.length() - 2));
+            tabbedPane1.setIconAt(i, null);
         }
     }
 
@@ -246,6 +283,7 @@ public class CUJaS_UI {
      * @see com.apogee.dev.CUJaS.Core.KMLExporter
      */
     private void exportFile() {
+        tabbedPane1.setSelectedIndex(3);
         SwingWorker<Void, JLabel> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
@@ -353,11 +391,12 @@ public class CUJaS_UI {
     }
 
     /**
-     * Met à jour un label de status pour indiquer que l'étape est terminée, et incrémente la {@code ProgressBar}.
+     * Met à jour un label de statut pour indiquer que l'étape est terminée, et incrémente la {@code ProgressBar}.
      * @param label label à mettre à jour
      */
     private void complete (JLabel label) {
-        label.setText("✅");
+        label.setIcon(MaterialImageFactory.getInstance().getImage(
+                MaterialIconFont.CHECK, new ColorUIResource(6, 148, 50)));
         procProgress.setValue(PROGRESS++);
     }
 
