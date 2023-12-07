@@ -207,7 +207,6 @@ public class CUJaS_UI {
         procProgress.setIndeterminate(false);
 
         inputLocTxt.setText("Aucun fichier sélectionné");
-        txtRead.setText("Lecture de la SITAC");
         nextBtn.setEnabled(false);
         statusLabels.add(readStatus);
         statusLabels.add(extractStatus);
@@ -246,6 +245,7 @@ public class CUJaS_UI {
      * @see com.apogee.dev.CUJaS.Core.KMLExporter
      */
     private void exportFile() {
+        tabbedPane1.setSelectedIndex(3);
         SwingWorker<Void, JLabel> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
