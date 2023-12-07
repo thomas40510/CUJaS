@@ -86,16 +86,14 @@ public class CUJaS_UI {
      */
     public CUJaS_UI() {
         redirectConsole();
+        logo1.setText("");
+        logo2.setText("");
         try {
             BufferedImage img1 = ImageIO.read(new File("src/main/resources/eie.png"));
-            // set as icon of logo1 with size 100x100
             int size = 60;
             logo1.setIcon(new ImageIcon(Objects.requireNonNull(img1).getScaledInstance(size, size, Image.SCALE_SMOOTH)));
-            logo1.setText("");
-
             BufferedImage img2 = ImageIO.read(new File("src/main/resources/spabi2.png"));
             logo2.setIcon(new ImageIcon(Objects.requireNonNull(img2).getScaledInstance(size, size, Image.SCALE_SMOOTH)));
-            logo2.setText("");
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
@@ -254,6 +252,7 @@ public class CUJaS_UI {
 
         for (JLabel label : statusLabels) {
             label.setText("");
+            label.setIcon(null);
         }
 
         procProgress.setValue(0);
@@ -389,11 +388,12 @@ public class CUJaS_UI {
     }
 
     /**
-     * Met à jour un label de status pour indiquer que l'étape est terminée, et incrémente la {@code ProgressBar}.
+     * Met à jour un label de statut pour indiquer que l'étape est terminée, et incrémente la {@code ProgressBar}.
      * @param label label à mettre à jour
      */
     private void complete (JLabel label) {
-        label.setText("✅");
+        label.setIcon(MaterialImageFactory.getInstance().getImage(
+                MaterialIconFont.CHECK, new ColorUIResource(6, 148, 50)));
         procProgress.setValue(PROGRESS++);
     }
 
