@@ -16,7 +16,6 @@ import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -89,10 +88,14 @@ public class CUJaS_UI {
         logo1.setText("");
         logo2.setText("");
         try {
-            BufferedImage img1 = ImageIO.read(new File("src/main/resources/eie.png"));
+            BufferedImage img1 = ImageIO.read(
+                    Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("eie.png"))
+            );
+            BufferedImage img2 = ImageIO.read(
+                    Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("spabi2.png"))
+            );
             int size = 60;
             logo1.setIcon(new ImageIcon(Objects.requireNonNull(img1).getScaledInstance(size, size, Image.SCALE_SMOOTH)));
-            BufferedImage img2 = ImageIO.read(new File("src/main/resources/spabi2.png"));
             logo2.setIcon(new ImageIcon(Objects.requireNonNull(img2).getScaledInstance(size, size, Image.SCALE_SMOOTH)));
         } catch (Exception e) {
             logger.warn(e.getMessage());
