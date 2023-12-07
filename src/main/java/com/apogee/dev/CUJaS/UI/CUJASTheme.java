@@ -142,9 +142,4 @@ public class CUJASTheme extends AbstractMaterialTheme {
   public boolean getButtonBorderEnableToAll() {
     return true;
   }
-
-  @Override
-  public boolean getButtonBorderEnable() {
-    return true;
-  }
 }
