@@ -11,12 +11,17 @@ import mdlaf.utils.icons.MaterialIconFont;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * UI de l'outil CUJaS
@@ -63,6 +68,9 @@ public class CUJaS_UI {
     private JLabel exportStatus;
     private JButton customStyleBtn;
     private JButton stylesQBtn;
+    private JLabel logo1;
+    private JLabel logo2;
+    private JPanel titlePanel;
     private ButtonGroup langGroup;
 
     static {
@@ -78,6 +86,19 @@ public class CUJaS_UI {
      */
     public CUJaS_UI() {
         redirectConsole();
+        try {
+            BufferedImage img1 = ImageIO.read(new File("src/main/resources/eie.png"));
+            // set as icon of logo1 with size 100x100
+            int size = 60;
+            logo1.setIcon(new ImageIcon(Objects.requireNonNull(img1).getScaledInstance(size, size, Image.SCALE_SMOOTH)));
+            logo1.setText("");
+
+            BufferedImage img2 = ImageIO.read(new File("src/main/resources/spabi2.png"));
+            logo2.setIcon(new ImageIcon(Objects.requireNonNull(img2).getScaledInstance(size, size, Image.SCALE_SMOOTH)));
+            logo2.setText("");
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
 
         //set margins
         rootPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
