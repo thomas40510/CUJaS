@@ -8,6 +8,11 @@ Il doit à ce titre, être :
 - exécutable de lui-même, hors-ligne, sur un poste Windows ;
 - simple à étendre, améliorer, et debugger.
 
+| ![screen1.png](src/main/resources/screenshots/screen1.png) | ![screen2.png](src/main/resources/screenshots/screen2.png) |
+|------------------------------------------------------------|------------------------------------------------------------|
+
+
+
 ## Implémentation
 À ces fins, le convertisseur unifié repose sur une architecture en "couches", permettant de séparer le langage de SiTac de l'implémentation des objets, offrant une très large souplesse dans le changement éventuel de syntaxe pour le fichier en entrée sans incidence sur la qualité du fichier `kml` en sortie.
 

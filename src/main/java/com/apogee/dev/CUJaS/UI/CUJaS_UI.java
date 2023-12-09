@@ -25,9 +25,10 @@ import java.util.Objects;
 /**
  * UI de l'outil CUJaS
  * @author PRV
- * @version 1.0
+ * @version 1.2
+ * @since 1.0
  */
-public class CUJaS_UI extends JFrame {
+public class CUJaS_UI {
     private static final Logger logger = LogManager.getLogger(CUJaS_UI.class);
 
     private String inputFileName = null;
@@ -44,7 +45,6 @@ public class CUJaS_UI extends JFrame {
 
     private XMLParser parser;
 
-    JMenuBar menuBar;
     private JPanel rootPanel;
     private JButton nextBtn;
     private JRadioButton NTKRadioButton;
@@ -100,12 +100,15 @@ public class CUJaS_UI extends JFrame {
         logger.info("UI initialized.");
 
         preProcess();
-        this.pack();
-        setResizable(false);
 
         addBtns();
     }
 
+    /**
+     * Charge les insignes et les affiche dans l'UI.
+     * <br>
+     * On charge l'insigne du CIET et celui de l'EIE.
+     */
     protected void setLogos() {
         logo1.setText("");
         logo2.setText("");
@@ -124,6 +127,9 @@ public class CUJaS_UI extends JFrame {
         }
     }
 
+    /**
+     * Ajout des listeners sur les boutons de l'UI.
+     */
     public void addBtns() {
         inputBtn.addActionListener(e -> selectInput());
 
@@ -160,7 +166,12 @@ public class CUJaS_UI extends JFrame {
         aboutBtn.setToolTipText("À propos");
     }
 
+    /**
+     * Implémentation du contenu de la fenêtre "à propos".
+     * @return message de présentation
+     */
     private static String aboutMsg() {
+        //TODO: load version from build settings
         String version = "1.1-beta";
         return """
                 CUJaS
@@ -175,6 +186,10 @@ public class CUJaS_UI extends JFrame {
                 """.formatted(version);
     }
 
+    /**
+     * Mise en forme des boutons d'à propos (icône, forme)
+     * @param btn bouton à mettre en forme
+     */
     private void isAboutBtn(JButton btn) {
         // set icon
         btn.setIcon(MaterialImageFactory.getInstance().getImage(
