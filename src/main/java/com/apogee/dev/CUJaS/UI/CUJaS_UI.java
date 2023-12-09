@@ -27,7 +27,7 @@ import java.util.Objects;
  * @author PRV
  * @version 1.0
  */
-public class CUJaS_UI {
+public class CUJaS_UI extends JFrame {
     private static final Logger logger = LogManager.getLogger(CUJaS_UI.class);
 
     private String inputFileName = null;
@@ -44,6 +44,7 @@ public class CUJaS_UI {
 
     private XMLParser parser;
 
+    JMenuBar menuBar;
     private JPanel rootPanel;
     private JButton nextBtn;
     private JRadioButton NTKRadioButton;
@@ -70,6 +71,8 @@ public class CUJaS_UI {
     private JLabel logo1;
     private JLabel logo2;
     private JPanel titlePanel;
+    private JLabel titleText;
+    private JButton aboutBtn;
     private ButtonGroup langGroup;
 
     static {
@@ -85,6 +88,25 @@ public class CUJaS_UI {
      */
     public CUJaS_UI() {
         redirectConsole();
+
+        // set text size for title
+        titleText.setFont(new Font("Arial", Font.BOLD, 20));
+
+        setLogos();
+
+        //set margins
+        rootPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        logger.info("UI initialized.");
+
+        preProcess();
+        this.pack();
+        setResizable(false);
+
+        addBtns();
+    }
+
+    protected void setLogos() {
         logo1.setText("");
         logo2.setText("");
         try {
@@ -100,14 +122,9 @@ public class CUJaS_UI {
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
+    }
 
-        //set margins
-        rootPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        logger.info("UI initialized.");
-
-        preProcess();
-
+    public void addBtns() {
         inputBtn.addActionListener(e -> selectInput());
 
         // listener on radio buttons group
@@ -118,6 +135,7 @@ public class CUJaS_UI {
 
         customStyleBtn.addActionListener(e -> selectCustomStyleFile());
 
+        isAboutBtn(stylesQBtn);
         stylesQBtn.addActionListener(e -> {
             // show a message dialog
             JOptionPane.showMessageDialog(rootPanel,
@@ -125,11 +143,49 @@ public class CUJaS_UI {
                             Il est possible de définir le style des objets plutôt que d'utiliser ceux par défaut.\s
                             Voir la documentation et le fichier d'exemple kml_styles.xml pour + d'infos.""",
                     "Styles KML",
-                    JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.INFORMATION_MESSAGE, MaterialImageFactory.getInstance().getImage(
+                            MaterialIconFont.HELP_OUTLINE, new ColorUIResource(0, 0, 0)));
         });
 
         nextBtn.addActionListener(e -> exportFile());
 
+        isAboutBtn(aboutBtn);
+        aboutBtn.addActionListener(e -> {
+            JOptionPane.showMessageDialog(rootPanel,
+                    aboutMsg(),
+                    "À propos",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
+        // mousehover text
+        aboutBtn.setToolTipText("À propos");
+    }
+
+    private static String aboutMsg() {
+        String version = "1.1-beta";
+        return """
+                CUJaS
+                (Convertisseur Unifié en Java pour les SiTaC).
+                ---
+                Version %s
+                Développé par l'IETA Prévost pour l'EIE CN-235
+                Distribué sous licence GNU GPL v3
+                
+                ooOoo
+                Les vrais avions ont des hélices.
+                """.formatted(version);
+    }
+
+    private void isAboutBtn(JButton btn) {
+        // set icon
+        btn.setIcon(MaterialImageFactory.getInstance().getImage(
+                MaterialIconFont.HELP_OUTLINE, new ColorUIResource(0, 0, 0))
+        );
+        btn.setText("");
+        // about btn is rounded
+        btn.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        btn.setContentAreaFilled(false);
     }
 
     /**
