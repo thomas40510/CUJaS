@@ -1,14 +1,19 @@
-Convertisseur Unifié en JAVA pour les SiTaC (CUJaS)
+# Convertisseur Unifié en JAVA pour les SiTaC (CUJaS)
 
-# Objectifs
+## Objectifs
 Ce programme, développé en Java afin d'en faire un exécutable unique fonctionnel hors-ligne, vise à unifier et améliorer les convertisseurs de SiTac au format `kml` pour les vols d'entraînement.
 Il doit à ce titre, être :
 - simple d'utilisation ;
 - robuste ;
-- exécutable tout seul, hors-ligne sur un poste Windows ;
+- exécutable de lui-même, hors-ligne, sur un poste Windows ;
 - simple à étendre, améliorer, et debugger.
 
-# Implémentation
+| ![screen1.png](src/main/resources/screenshots/screen1.png) | ![screen2.png](src/main/resources/screenshots/screen2.png) |
+|------------------------------------------------------------|------------------------------------------------------------|
+
+
+
+## Implémentation
 À ces fins, le convertisseur unifié repose sur une architecture en "couches", permettant de séparer le langage de SiTac de l'implémentation des objets, offrant une très large souplesse dans le changement éventuel de syntaxe pour le fichier en entrée sans incidence sur la qualité du fichier `kml` en sortie.
 
 ```mermaid
@@ -19,6 +24,7 @@ stateDiagram-v2
     kmlobj: Fragments kml
     kml: Code kml
     file: Fichier kml
+    style: Styles kml
     [*] --> nodes : Fichier SiTac
     Semantics --> XMLParser : syntaxe
     state XMLParser {
@@ -29,6 +35,7 @@ stateDiagram-v2
         kmlobj --> kml
         
     }
+    style --> kml
     kml --> file
     file --> [*]
     
@@ -38,11 +45,10 @@ stateDiagram-v2
     note left of KMLBuilder
         Monde des objets (implémentation-dépendant)
     end note
-    
 ```
 
 
-# Utilisation
+## Utilisation
 Simplement lancer l'outil, et se laisser guider dans l'interface. Pour info, il faut :
 1. Sélectionner un fichier d'entrée
 2. Sélectionner le langage du fichier d'entrée

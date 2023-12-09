@@ -5,22 +5,31 @@ import com.apogee.dev.CUJaS.Core.Melissa.MelissaParser;
 import com.apogee.dev.CUJaS.Core.NTK.NTKParser;
 import com.apogee.dev.CUJaS.Core.Semantics;
 import com.apogee.dev.CUJaS.Core.XMLParser;
+import mdlaf.MaterialLookAndFeel;
+import mdlaf.utils.MaterialImageFactory;
+import mdlaf.utils.icons.MaterialIconFont;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * UI de l'outil CUJaS
  * @author PRV
- * @version 1.0
+ * @version 1.2
+ * @since 1.0
  */
 public class CUJaS_UI {
-    private final Logger logger = LogManager.getLogger(CUJaS_UI.class);
+    private static final Logger logger = LogManager.getLogger(CUJaS_UI.class);
 
     private String inputFileName = null;
     private String outputDir = null;
@@ -59,7 +68,20 @@ public class CUJaS_UI {
     private JLabel exportStatus;
     private JButton customStyleBtn;
     private JButton stylesQBtn;
+    private JLabel logo1;
+    private JLabel logo2;
+    private JPanel titlePanel;
+    private JLabel titleText;
+    private JButton aboutBtn;
     private ButtonGroup langGroup;
+
+    static {
+        try {
+            UIManager.setLookAndFeel(new MaterialLookAndFeel(new CUJASTheme()));
+        } catch (UnsupportedLookAndFeelException e) {
+            logger.warn(e.getMessage());
+        }
+    }
 
     /**
      * Constructeur de l'UI
@@ -67,10 +89,48 @@ public class CUJaS_UI {
     public CUJaS_UI() {
         redirectConsole();
 
+        // set text size for title
+        titleText.setFont(new Font("Arial", Font.BOLD, 20));
+
+        setLogos();
+
+        //set margins
+        rootPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         logger.info("UI initialized.");
 
         preProcess();
 
+        addBtns();
+    }
+
+    /**
+     * Charge les insignes et les affiche dans l'UI.
+     * <br>
+     * On charge l'insigne du CIET et celui de l'EIE.
+     */
+    protected void setLogos() {
+        logo1.setText("");
+        logo2.setText("");
+        try {
+            BufferedImage img1 = ImageIO.read(
+                    Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("eie.png"))
+            );
+            BufferedImage img2 = ImageIO.read(
+                    Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("spabi2.png"))
+            );
+            int size = 60;
+            logo1.setIcon(new ImageIcon(Objects.requireNonNull(img1).getScaledInstance(size, size, Image.SCALE_SMOOTH)));
+            logo2.setIcon(new ImageIcon(Objects.requireNonNull(img2).getScaledInstance(size, size, Image.SCALE_SMOOTH)));
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+    }
+
+    /**
+     * Ajout des listeners sur les boutons de l'UI.
+     */
+    public void addBtns() {
         inputBtn.addActionListener(e -> selectInput());
 
         // listener on radio buttons group
@@ -81,6 +141,7 @@ public class CUJaS_UI {
 
         customStyleBtn.addActionListener(e -> selectCustomStyleFile());
 
+        isAboutBtn(stylesQBtn);
         stylesQBtn.addActionListener(e -> {
             // show a message dialog
             JOptionPane.showMessageDialog(rootPanel,
@@ -88,11 +149,58 @@ public class CUJaS_UI {
                             Il est possible de définir le style des objets plutôt que d'utiliser ceux par défaut.\s
                             Voir la documentation et le fichier d'exemple kml_styles.xml pour + d'infos.""",
                     "Styles KML",
-                    JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.INFORMATION_MESSAGE, MaterialImageFactory.getInstance().getImage(
+                            MaterialIconFont.HELP_OUTLINE, new ColorUIResource(0, 0, 0)));
         });
 
         nextBtn.addActionListener(e -> exportFile());
 
+        isAboutBtn(aboutBtn);
+        aboutBtn.addActionListener(e -> {
+            JOptionPane.showMessageDialog(rootPanel,
+                    aboutMsg(),
+                    "À propos",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
+        // mousehover text
+        aboutBtn.setToolTipText("À propos");
+    }
+
+    /**
+     * Implémentation du contenu de la fenêtre "à propos".
+     * @return message de présentation
+     */
+    private static String aboutMsg() {
+        //TODO: load version from build settings
+        String version = "1.1-beta";
+        return """
+                CUJaS
+                (Convertisseur Unifié en Java pour les SiTaC).
+                ---
+                Version %s
+                Développé par l'IETA Prévost pour l'EIE CN-235
+                Distribué sous licence GNU GPL v3
+                
+                ooOoo
+                Les vrais avions ont des hélices.
+                """.formatted(version);
+    }
+
+    /**
+     * Mise en forme des boutons d'à propos (icône, forme)
+     * @param btn bouton à mettre en forme
+     */
+    private void isAboutBtn(JButton btn) {
+        // set icon
+        btn.setIcon(MaterialImageFactory.getInstance().getImage(
+                MaterialIconFont.HELP_OUTLINE, new ColorUIResource(0, 0, 0))
+        );
+        btn.setText("");
+        // about btn is rounded
+        btn.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        btn.setContentAreaFilled(false);
     }
 
     /**
@@ -160,8 +268,9 @@ public class CUJaS_UI {
      * @param i index de l'onglet
      */
     private void titleDone(int i) {
-        String paneTitle = tabbedPane1.getTitleAt(i);
-        if (!paneTitle.contains(" ✅")) tabbedPane1.setTitleAt(i, paneTitle + " ✅");
+        tabbedPane1.setIconAt(i, MaterialImageFactory.getInstance().getImage(
+                MaterialIconFont.CHECK, new ColorUIResource(6, 148, 50))
+        );
     }
 
     /**
@@ -207,7 +316,6 @@ public class CUJaS_UI {
         procProgress.setIndeterminate(false);
 
         inputLocTxt.setText("Aucun fichier sélectionné");
-        txtRead.setText("Lecture de la SITAC");
         nextBtn.setEnabled(false);
         statusLabels.add(readStatus);
         statusLabels.add(extractStatus);
@@ -218,6 +326,7 @@ public class CUJaS_UI {
 
         for (JLabel label : statusLabels) {
             label.setText("");
+            label.setIcon(null);
         }
 
         procProgress.setValue(0);
@@ -225,8 +334,7 @@ public class CUJaS_UI {
 
     private void checkTabs() {
         for (int i = 0; i < tabbedPane1.getTabCount(); i++) {
-            String paneTitle = tabbedPane1.getTitleAt(i);
-            if (paneTitle.contains(" ✅")) tabbedPane1.setTitleAt(i, paneTitle.substring(0, paneTitle.length() - 2));
+            tabbedPane1.setIconAt(i, null);
         }
     }
 
@@ -246,6 +354,7 @@ public class CUJaS_UI {
      * @see com.apogee.dev.CUJaS.Core.KMLExporter
      */
     private void exportFile() {
+        tabbedPane1.setSelectedIndex(3);
         SwingWorker<Void, JLabel> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
@@ -353,11 +462,12 @@ public class CUJaS_UI {
     }
 
     /**
-     * Met à jour un label de status pour indiquer que l'étape est terminée, et incrémente la {@code ProgressBar}.
+     * Met à jour un label de statut pour indiquer que l'étape est terminée, et incrémente la {@code ProgressBar}.
      * @param label label à mettre à jour
      */
     private void complete (JLabel label) {
-        label.setText("✅");
+        label.setIcon(MaterialImageFactory.getInstance().getImage(
+                MaterialIconFont.CHECK, new ColorUIResource(6, 148, 50)));
         procProgress.setValue(PROGRESS++);
     }
 
