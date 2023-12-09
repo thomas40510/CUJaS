@@ -8,8 +8,8 @@ Il doit à ce titre, être :
 - exécutable de lui-même, hors-ligne, sur un poste Windows ;
 - simple à étendre, améliorer, et debugger.
 
-| ![screen1.png](src%2Fmain%2Fresources%2Fscreenshots%2Fscreen1.png) | ![screen2.png](src%2Fmain%2Fresources%2Fscreenshots%2Fscreen2.png) |
-|--------------------------------------------------------------------|--------------------------------------------------------------------|
+| ![screen1.png](src/main/resources/screenshots/screen1.png) | ![screen2.png](src/main/resources/screenshots/screen2.png) |
+|------------------------------------------------------------|------------------------------------------------------------|
 
 
 
