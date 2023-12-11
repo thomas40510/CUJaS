@@ -173,7 +173,7 @@ public class CUJaS_UI {
      */
     private static String aboutMsg() {
         //TODO: load version from build settings
-        String version = "1.1-beta";
+        String version = "1.2.1-beta";
         return """
                 CUJaS
                 (Convertisseur Unifié en Java pour les SiTaC).
