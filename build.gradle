@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.apogee.dev'
-version = '1.2-beta'
+version = '1.2.1-beta'
 
 repositories {
     mavenCentral()

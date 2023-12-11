@@ -34,6 +34,7 @@ public class CUJaS_UI {
     private String inputFileName = null;
     private String outputDir = null;
     private String kml_styles = null;
+    private String outputFile;
 
     /**
      * Langage de la SITAC
@@ -172,7 +173,7 @@ public class CUJaS_UI {
      */
     private static String aboutMsg() {
         //TODO: load version from build settings
-        String version = "1.1-beta";
+        String version = "1.2.1-beta";
         return """
                 CUJaS
                 (Convertisseur Unifié en Java pour les SiTaC).
@@ -378,7 +379,7 @@ public class CUJaS_UI {
 
                     // generate kml
                     String time_now = String.valueOf(System.currentTimeMillis());
-                    String outputFile = outputDir + "/output_" + time_now + ".kml";
+                    outputFile = outputDir + "/output_" + time_now + ".kml";
                     KMLExporter exporter = new KMLExporter(parser.getFigures(), outputFile, kml_styles);
                     exporter.export();
                     this.publish(exportStatus);
@@ -427,12 +428,12 @@ public class CUJaS_UI {
                 String os = System.getProperty("os.name").toLowerCase();
                 // open output directory
                 if (os.contains("win")) {
-                    Runtime.getRuntime().exec("explorer.exe /select," + outputDir + "/output.kml");
+                    Runtime.getRuntime().exec("explorer.exe /select," + outputFile);
                 } else if (os.contains("mac")) {
-                    Runtime.getRuntime().exec("open " + outputDir);
+                    Runtime.getRuntime().exec("open " + outputFile);
                 } else {
                     // linux
-                    Runtime.getRuntime().exec("xdg-open " + outputDir);
+                    Runtime.getRuntime().exec("xdg-open " + outputFile);
                 }
             } catch (Exception e) {
                 logger.warn(e.getMessage());
@@ -456,7 +457,8 @@ public class CUJaS_UI {
      */
     private void showErrorStatus() {
         for (JLabel label : statusLabels) {
-            if (label.getText().isEmpty()) label.setText("❌");
+            if (label.getIcon() == null) label.setIcon(MaterialImageFactory.getInstance().getImage(
+                    MaterialIconFont.CLOSE, new ColorUIResource(255, 0, 0)));
         }
         procProgress.setIndeterminate(true);
     }
