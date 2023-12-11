@@ -6,11 +6,12 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Exportation des figures vers un fichier KML.
@@ -20,6 +21,7 @@ import java.util.ArrayList;
  */
 public record KMLExporter(ArrayList<Figure> figures, String filepath, String styles_filepath) {
     private static final Logger logger = LogManager.getLogger(KMLExporter.class);
+    private static boolean force_default = false;
 
     /**
      * Prise en charge de l'exportation d'un ensemble de figures vers un fichier KML.
@@ -61,20 +63,28 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath, String sty
         String res = "";
         try {
             String filename;
-            if (this.styles_filepath == null) {
-                Path currentRelativePath = Paths.get("");
-                // read file in 'resources' folder as string
-                filename = currentRelativePath.toAbsolutePath() + "/src/main/resources/kml_styles.xml";
+            if (this.styles_filepath == null || force_default) {
+                // access file so the jar can find it
+                InputStream is = Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("default_styles.xml"));
+                res = new String(is.readAllBytes());
                 logger.info("Using default styles");
             } else {
-                // TODO: check consistency of the file
-                filename = this.styles_filepath;
-                logger.info("Using custom styles");
+                try {
+                    // TODO: check consistency of the file
+                    filename = this.styles_filepath;
+                    logger.info("Using custom styles");
+                    File file = new File(filename);
+                    res = new String(Files.readAllBytes(file.toPath()));
+                } catch (FileNotFoundException e) {
+                    logger.error(e);
+                    force_default = true;
+                    logger.debug("Failed to read custom styles. Using default styles.");
+                    return readStyles();
+                }
             }
-            File file = new File(filename);
-            res = new String(Files.readAllBytes(file.toPath()));
         } catch (Exception e) {
             logger.error(e);
+            throw new RuntimeException("Failed to read styles file.");
         }
         return res;
     }
