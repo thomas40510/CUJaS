@@ -60,7 +60,7 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath, String sty
     private String readStyles() {
         logger.debug("Lecture des styles de SITAC...");
         // read contents of file
-        String res = "";
+        String res;
         try {
             String filename;
             if (this.styles_filepath == null || force_default) {

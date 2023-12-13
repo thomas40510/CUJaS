@@ -98,7 +98,7 @@ public class CUJaS_UI {
         //set margins
         rootPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        logger.info("UI initialized.");
+        logger.info("UI initialisée.");
 
         preProcess();
 
@@ -255,7 +255,7 @@ public class CUJaS_UI {
 
         // get selected directory
         outputDir = fileChooser.getSelectedFile().getAbsolutePath();
-        logger.info("Output directory: " + outputDir);
+        logger.info("Dossier de sortie : " + outputDir);
         // show next tab
         //tabbedPane1.setSelectedIndex(3);
         // change tab title
@@ -301,7 +301,7 @@ public class CUJaS_UI {
         if (fileChooser.getSelectedFile() == null) return;
 
         kml_styles = fileChooser.getSelectedFile().getAbsolutePath();
-        logger.info("Custom kml styles set: " + kml_styles);
+        logger.info("Styles kml personnalisés : " + kml_styles);
 
         if (outputDir != null) tabbedPane1.setSelectedIndex(3);
 
@@ -405,7 +405,7 @@ public class CUJaS_UI {
 
         try {
             worker.execute();
-            logger.info("/// Done exporting! ///");
+            logger.info("/// Fin de l'exportation ! ///");
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
