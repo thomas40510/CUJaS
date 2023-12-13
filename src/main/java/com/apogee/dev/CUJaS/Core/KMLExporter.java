@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * Exportation des figures vers un fichier KML.
  * @author PRV
- * @version 1.0
+ * @version 1.1
  * @see <a href="https://developers.google.com/kml/documentation/kmlreference">Documentation du langage KML</a>
  */
 public record KMLExporter(ArrayList<Figure> figures, String filepath, String styles_filepath) {
@@ -34,7 +34,7 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath, String sty
         this.figures = figures;
         this.filepath = filepath;
         this.styles_filepath = styles_filepath;
-        logger.info("Initialized exporter for file " + filepath);
+        logger.info("Exporter initialisé pour " + filepath);
     }
 
     /**
@@ -58,7 +58,7 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath, String sty
      * @see <a href="https://developers.google.com/kml/documentation/kmlreference#style">Styles dans la doc KML</a>
      */
     private String readStyles() {
-        logger.debug("Reading styles for SITAC...");
+        logger.debug("Lecture des styles de SITAC...");
         // read contents of file
         String res = "";
         try {
@@ -67,18 +67,18 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath, String sty
                 // access file so the jar can find it
                 InputStream is = Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("default_styles.xml"));
                 res = new String(is.readAllBytes());
-                logger.info("Using default styles");
+                logger.info("Utilisation des styles par défaut.");
             } else {
                 try {
                     // TODO: check consistency of the file
                     filename = this.styles_filepath;
-                    logger.info("Using custom styles");
+                    logger.info("Utilisation de styles personnalisés.");
                     File file = new File(filename);
                     res = new String(Files.readAllBytes(file.toPath()));
                 } catch (FileNotFoundException e) {
                     logger.error(e);
                     force_default = true;
-                    logger.debug("Failed to read custom styles. Using default styles.");
+                    logger.debug("Échec de lecture des styles personnalisés. Utilisation des styles par défaut.");
                     return readStyles();
                 }
             }
@@ -95,14 +95,14 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath, String sty
      * @see Figure#export_kml()
      */
     public void export() throws RuntimeException {
-        logger.debug("Exporting figures to KML...");
+        logger.debug("Exportation en KML...");
         StringBuilder figCode = new StringBuilder();
         for (Figure f : this.figures) {
-            logger.debug("Exporting figure " + f.name +".");
+            logger.debug("Exportation de la figure " + f.name +".");
             figCode.append(f.export_kml());
         }
         if (figCode.isEmpty()) {
-            logger.warn("No figures to export.");
+            logger.warn("Aucune figure à exporter.");
             throw new RuntimeException("No figures to export.");
         }
         String kml = header + readStyles() + figCode + footer;
@@ -110,7 +110,7 @@ public record KMLExporter(ArrayList<Figure> figures, String filepath, String sty
             FileOutputStream fos = new FileOutputStream(this.filepath);
             fos.write(kml.getBytes());
             fos.close();
-            logger.info("Successfully exported figures to KML. File is at " + this.filepath);
+            logger.info("Succès de l'exportation vers " + this.filepath);
         } catch (Exception e) {
             logger.error(e);
             throw new RuntimeException("Failed to write KML file.");

@@ -19,7 +19,7 @@ import java.util.HashMap;
 /**
  * Parser XML pour les fichiers de SITAC au format NTK.
  * @author PRV
- * @version 1.0
+ * @version 1.1
  */
 public class NTKParser implements XMLParser {
     private final Document doc;
@@ -40,7 +40,7 @@ public class NTKParser implements XMLParser {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             this.doc = builder.parse(new File(filepath));
-            logger.info("Successfully found your file.");
+            logger.info("J'ai bien trouvé votre fichier !");
         } catch (NullPointerException e) {
             throw new RuntimeException("File not found: " + filepath);
         } catch (Exception e) {
@@ -69,13 +69,13 @@ public class NTKParser implements XMLParser {
         doc.getDocumentElement().normalize();
         NodeList figs = doc.getElementsByTagName(this.keywords.get(NTKKey.FIGURE));
         for (int i = 0; i < figs.getLength(); i++) {
-            logger.debug("Extracting figure " + i);
+            logger.debug("Extraction de la figure " + i);
             this.extracted_figures.add(figs.item(i));
         }
         if (this.extracted_figures.isEmpty()) {
             throw new RuntimeException("No figure found in the file.");
         }
-        logger.info("Done parsing. I found " + this.extracted_figures.size() + " figures.");
+        logger.info("Fin de l'analyse. " + this.extracted_figures.size() + " figures trouvées.");
     }
 
     /**
@@ -90,7 +90,7 @@ public class NTKParser implements XMLParser {
             Element elem = (Element) node;
             String figureType = getVal(elem, NTKKey.FIG_TYPE);
             String figureName = getVal(elem, NTKKey.FIG_NAME);
-            logger.debug("Building figure " + figureName + " of type " + figureType);
+            logger.debug("Construction de " + figureName + " du type " + figureType);
             switch (figureType) {
                 case "Point":
                     this.figures.add(parse_point(elem, figureName));
@@ -117,10 +117,10 @@ public class NTKParser implements XMLParser {
                     this.figures.add(parse_corridor(elem, figureName));
                     break;
                 default:
-                    logger.warn("Unknown figure type: " + figureType + ". I'm ignoring it.");
+                    logger.warn("Figure inconnue : " + figureType + ". Je l'ignore.");
             }
         }
-        logger.info("Done building " + this.figures.size() + " figures.");
+        logger.info("Fin de construction. " + this.figures.size() + " figures traitées.");
     }
 
     /**

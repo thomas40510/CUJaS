@@ -22,7 +22,7 @@ import java.util.HashMap;
  * Ce parser est capable de lire les fichiers XML de SITAC Melissa et de construire les figures correspondantes.
  *
  * @author PRV
- * @version 1.0
+ * @version 1.1
  */
 public class MelissaParser implements XMLParser {
     private final Document doc;
@@ -43,7 +43,7 @@ public class MelissaParser implements XMLParser {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             this.doc = builder.parse(new File(filepath));
-            logger.info("Successfully found your file.");
+            logger.info("J'ai bien trouvé votre fichier !");
         } catch (NullPointerException e) {
             throw new RuntimeException("File not found: " + filepath);
         } catch (Exception e) {
@@ -62,10 +62,10 @@ public class MelissaParser implements XMLParser {
         this.figures.clear();
         Node root = this.doc.getFirstChild();
         if (root.getNodeName().equals(this.keywords.get(MelissaKey.BODY))) {
-            logger.info("Root node is " + root.getNodeName());
+            logger.info("Racine : " + root.getNodeName());
             for (Node child = root.getFirstChild(); child != null; child = child.getNextSibling()) {
                 if (this.keywords.containsValue(child.getNodeName())) {
-                    logger.info("Found a figure: " + child.getNodeName());
+                    logger.info("Figure trouvée : " + child.getNodeName());
                     this.extracted_figures.add(child);
                 }
             }
@@ -106,7 +106,7 @@ public class MelissaParser implements XMLParser {
                     this.figures.add(parse_polygon(element));
                     break;
                 case CORRIDOR:
-                    logger.info("Found a corridor");
+                    logger.info("Porte trouvée. Je ne sais pas encore la traiter.");
                     break;
                 case BULLS:
                     this.figures.add(parse_bulls(element));
@@ -126,7 +126,6 @@ public class MelissaParser implements XMLParser {
      * @throws RuntimeException si le point ne peut pas être construit (erreur de parsing)
      */
     protected Point parse_point(Element figure) throws RuntimeException {
-        logger.info("Building a point");
         // <coordonnees latitude="xx.xxxx" longitude="yy.yyyy"/>
         double lat, lon;
         try { // Si la figure est un point isolé
@@ -142,7 +141,7 @@ public class MelissaParser implements XMLParser {
 
         // build point
         Point point = new Point(lat, lon);
-        logger.info("Point built: " + point);
+        logger.info("Point construit : " + point);
         return point;
     }
 
@@ -176,7 +175,7 @@ public class MelissaParser implements XMLParser {
         }
 
         Line line = new Line(points);
-        logger.info("Line built: " + line);
+        logger.info("Ligne construite : " + line);
         return line;
     }
 
@@ -190,7 +189,7 @@ public class MelissaParser implements XMLParser {
      */
     protected Polygon parse_polygon(Element figure) {
         Polygon polygon = parse_line(figure).asPolygon();
-        logger.info("Polygon built: " + polygon);
+        logger.info("Polygone construit : " + polygon);
         return polygon;
     }
 
@@ -217,7 +216,7 @@ public class MelissaParser implements XMLParser {
         double alpha = Double.parseDouble(angle.getAttribute("code"));
 
         Ellipse ellipse = new Ellipse(point, hrad, vrad, alpha);
-        logger.info("Ellipse built: " + ellipse);
+        logger.info("Ellipse construite : " + ellipse);
         return ellipse;
     }
 
@@ -241,7 +240,7 @@ public class MelissaParser implements XMLParser {
         double rad = nb_rings * step;
 
         Bullseye bullseye = new Bullseye(ptCenter, rad, rad, nb_rings, step);
-        logger.info("Bullseye built: " + bullseye);
+        logger.info("Bullseye construit : " + bullseye);
         return bullseye;
     }
 
