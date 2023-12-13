@@ -25,7 +25,7 @@ import java.util.Objects;
 /**
  * UI de l'outil CUJaS
  * @author PRV
- * @version 1.2
+ * @version 1.3
  * @since 1.0
  */
 public class CUJaS_UI {
@@ -157,12 +157,10 @@ public class CUJaS_UI {
         nextBtn.addActionListener(e -> exportFile());
 
         isAboutBtn(aboutBtn);
-        aboutBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(rootPanel,
-                    aboutMsg(),
-                    "À propos",
-                    JOptionPane.INFORMATION_MESSAGE);
-        });
+        aboutBtn.addActionListener(e -> JOptionPane.showMessageDialog(rootPanel,
+                aboutMsg(),
+                "À propos",
+                JOptionPane.INFORMATION_MESSAGE));
         // mousehover text
         aboutBtn.setToolTipText("À propos");
     }

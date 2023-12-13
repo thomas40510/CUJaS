@@ -10,7 +10,9 @@ import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
 
 /**
- * Reference: <a href="https://www.material-theme.com/docs/reference/color-palette">material-theme/docs/reference/color-palette</a>
+ * Thème Personnalisé pour l'UI de CUJaS. Sa redéfinition permet un ajustement des couleurs et des bordures.
+ * <br>
+ * Référence: <a href="https://www.material-theme.com/docs/reference/color-palette">material-theme/docs/reference/color-palette</a>
  *
  * @see mdlaf.themes.MaterialLiteTheme
  * @author <a href="https://github.com/vincenzopalazzo">vincenzopalazzo</a>
