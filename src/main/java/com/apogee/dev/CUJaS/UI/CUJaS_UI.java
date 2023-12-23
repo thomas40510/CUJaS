@@ -157,12 +157,10 @@ public class CUJaS_UI {
         nextBtn.addActionListener(e -> exportFile());
 
         isAboutBtn(aboutBtn);
-        aboutBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(rootPanel,
-                    aboutMsg(),
-                    "À propos",
-                    JOptionPane.INFORMATION_MESSAGE);
-        });
+        aboutBtn.addActionListener(e -> JOptionPane.showMessageDialog(rootPanel,
+                aboutMsg(),
+                "À propos",
+                JOptionPane.INFORMATION_MESSAGE));
         // mousehover text
         aboutBtn.setToolTipText("À propos");
     }
