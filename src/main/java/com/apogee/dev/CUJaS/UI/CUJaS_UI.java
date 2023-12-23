@@ -183,7 +183,7 @@ public class CUJaS_UI {
                 
                 ooOoo
                 Les vrais avions ont des hélices.
-                """.formatted(version);
+                """.formatted(version == null ? "DEV" : version);
     }
 
     /**
@@ -520,6 +520,14 @@ public class CUJaS_UI {
         frame.setContentPane(new CUJaS_UI().rootPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(720, 480);
+        try {
+            BufferedImage icon = ImageIO.read(
+                    Objects.requireNonNull(CUJaS_UI.class.getClassLoader().getResourceAsStream("eie.png"))
+            );
+            frame.setIconImage(icon);
+        } catch (Exception e) {
+            logger.warn("Error loading icon : " + e.getMessage());
+        }
         // uncomment to wrap content
         // frame.pack();
         frame.setLocationRelativeTo(null); // center window
