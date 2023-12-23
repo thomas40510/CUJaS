@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.apogee.dev'
-version = '1.2.1-beta'
+version = '1.2.2-dev'
 
 repositories {
     mavenCentral()
@@ -36,7 +36,11 @@ mainClassName = 'com.apogee.dev.CUJaS.Main'
 
 jar {
     manifest {
-        attributes 'Main-Class': "$mainClassName"
+        attributes (
+                'Main-Class': "$mainClassName",
+                'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(' '),
+                'Implementation-Version': version
+        )
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
     from {
