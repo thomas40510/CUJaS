@@ -58,3 +58,64 @@ Simplement lancer l'outil, et se laisser guider dans l'interface. Pour info, il 
 
 Toute erreur de traitement / conversion sera notifiée dans la console de l'outil (généralement, c'est une erreur de fichier d'entrée, ou de sélection du langage).
 Les objets reconnus dans la SiTac mais non encore implémentés sont également consignés dans la console pour information.
+
+## Objets supportés
+```mermaid
+classDiagram
+direction BT
+class Bullseye {
+  + Point center
+  + double ring_distance
+  + double hradius
+  + int rings
+  - int CROSS_ALPHA
+  + double vradius
+}
+class Circle {
+  + double radius
+  + Point center
+}
+class Corridor {
+  + Point start_point
+  + Point end_point
+  + double width
+}
+class Ellipse {
+  + Point center
+  + double hradius
+  + double vradius
+  + double angle
+}
+class Figure {
+  + String name
+  # Logger logger
+}
+class Line {
+  + ArrayList~Point~ points
+}
+class Point {
+  + double longitude
+  + double latitude
+}
+class Polygon
+class Rectangle {
+  + Point start
+  + double vertical
+  + double horizontal
+}
+class SITACObject {
+<<Interface>>
+  + String name
+}
+
+Bullseye  -->  Figure 
+Circle  -->  Ellipse 
+Corridor  -->  Figure 
+Ellipse  -->  Figure 
+Figure  ..>  SITACObject 
+Line  -->  Figure 
+Point  -->  Figure 
+Polygon  -->  Line 
+Rectangle  -->  Figure 
+
+```
