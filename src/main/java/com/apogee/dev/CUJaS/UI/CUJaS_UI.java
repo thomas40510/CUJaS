@@ -157,12 +157,10 @@ public class CUJaS_UI {
         nextBtn.addActionListener(e -> exportFile());
 
         isAboutBtn(aboutBtn);
-        aboutBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(rootPanel,
-                    aboutMsg(),
-                    "À propos",
-                    JOptionPane.INFORMATION_MESSAGE);
-        });
+        aboutBtn.addActionListener(e -> JOptionPane.showMessageDialog(rootPanel,
+                aboutMsg(),
+                "À propos",
+                JOptionPane.INFORMATION_MESSAGE));
         // mousehover text
         aboutBtn.setToolTipText("À propos");
     }
@@ -171,9 +169,8 @@ public class CUJaS_UI {
      * Implémentation du contenu de la fenêtre "à propos".
      * @return message de présentation
      */
-    private static String aboutMsg() {
-        //TODO: load version from build settings
-        String version = "1.2.1-beta";
+    public String aboutMsg() {
+        String version = getClass().getPackage().getImplementationVersion();
         return """
                 CUJaS
                 (Convertisseur Unifié en Java pour les SiTaC).
@@ -184,7 +181,7 @@ public class CUJaS_UI {
                 
                 ooOoo
                 Les vrais avions ont des hélices.
-                """.formatted(version);
+                """.formatted(version == null ? "DEV" : version);
     }
 
     /**
@@ -521,6 +518,14 @@ public class CUJaS_UI {
         frame.setContentPane(new CUJaS_UI().rootPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(720, 480);
+        try {
+            BufferedImage icon = ImageIO.read(
+                    Objects.requireNonNull(CUJaS_UI.class.getClassLoader().getResourceAsStream("eie.png"))
+            );
+            frame.setIconImage(icon);
+        } catch (Exception e) {
+            logger.warn("Error loading icon : " + e.getMessage());
+        }
         // uncomment to wrap content
         // frame.pack();
         frame.setLocationRelativeTo(null); // center window
