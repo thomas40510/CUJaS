@@ -171,9 +171,8 @@ public class CUJaS_UI {
      * Implémentation du contenu de la fenêtre "à propos".
      * @return message de présentation
      */
-    private static String aboutMsg() {
-        //TODO: load version from build settings
-        String version = "1.2.1-beta";
+    public String aboutMsg() {
+        String version = getClass().getPackage().getImplementationVersion();
         return """
                 CUJaS
                 (Convertisseur Unifié en Java pour les SiTaC).
