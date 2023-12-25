@@ -1,6 +1,7 @@
 package com.apogee.dev.CUJaS.SITACObjects;
 
 import com.apogee.dev.CUJaS.SITACObjects.utils.GeomUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -35,7 +36,7 @@ public class Corridor extends Figure {
      * @param width largeur du {@code Corridor}
      * @param angle angle du {@code Corridor} par rapport à l'axe horizontal
      */
-    public Corridor(Point center, double width, double angle) {
+    public Corridor(@NotNull Point center, double width, double angle) {
         Point[] points = GeomUtils.calcCorridorPoints(center, width, angle);
         this.start_point = points[0];
         this.end_point = points[1];
