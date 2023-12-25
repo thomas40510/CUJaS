@@ -1,7 +1,7 @@
 # Convertisseur Unifié en JAVA pour les SiTaC (CUJaS)
 
 <p align="center">
-<img style="horiz-align: center" alt="icon.png" height="200" src="src/main/resources/cujas_icon.png"/>
+<img style="horiz-align: center" alt="icon.png" height="250" src="src/main/resources/cujas_icon.png"/>
 </p>
 
 ## Objectifs
