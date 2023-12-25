@@ -1,6 +1,7 @@
 package com.apogee.dev.CUJaS.SITACObjects;
 
 import com.apogee.dev.CUJaS.SITACObjects.utils.GeomUtils;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Implémentation du Couloir.
@@ -11,9 +12,8 @@ import com.apogee.dev.CUJaS.SITACObjects.utils.GeomUtils;
  */
 public class Corridor extends Figure {
     public Point start_point, end_point;
-    private Point center;
+    private @Nullable Point center;
     public double width;
-    //TODO: store dx and dy to prevent recomputing upon generation of KML
 
     /**
      * Constructeur d'un {@code Corridor}
