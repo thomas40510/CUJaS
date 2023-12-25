@@ -125,4 +125,17 @@ public class GeomUtils {
         return points;
     }
 
+    public static Point calcCenterPoint(Point start, Point end) {
+        return new Point((start.latitude + end.latitude) / 2, (start.longitude + end.longitude) / 2);
+    }
+
+    public static Point[] calcCorridorPoints(Point center, double width, double angle) {
+        Point[] points = new Point[2];
+        double line_angle = rad(angle);
+        points[0] = new Point(center.latitude + width * Math.cos(line_angle),
+                center.longitude + width * Math.sin(line_angle));
+        points[1] = new Point(center.latitude - width * Math.cos(line_angle),
+                center.longitude - width * Math.sin(line_angle));
+        return points;
+    }
 }

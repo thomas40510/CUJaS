@@ -106,7 +106,7 @@ public class MelissaParser implements XMLParser {
                     this.figures.add(parse_polygon(element));
                     break;
                 case CORRIDOR:
-                    logger.info("Found a corridor");
+                    this.figures.add(parse_corridor(element));
                     break;
                 case BULLS:
                     this.figures.add(parse_bulls(element));
@@ -178,6 +178,10 @@ public class MelissaParser implements XMLParser {
         Line line = new Line(points);
         logger.info("Line built: " + line);
         return line;
+    }
+
+    protected Corridor parse_corridor(Element figure) {
+        return null;
     }
 
     /**
