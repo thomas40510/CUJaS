@@ -106,7 +106,7 @@ public class MelissaParser implements XMLParser {
                     this.figures.add(parse_polygon(element));
                     break;
                 case CORRIDOR:
-                    logger.info("Found a corridor");
+                    this.figures.add(parse_corridor(element));
                     break;
                 case BULLS:
                     this.figures.add(parse_bulls(element));
@@ -181,6 +181,60 @@ public class MelissaParser implements XMLParser {
     }
 
     /**
+     * Construction d'un corridor (porte) à partir d'un élément XML.
+     * <br>
+     * On construit également les deux lignes qui entourent le corridor si elles sont spécifiées.
+     * @param figure élément XML représentant une porte
+     * @return corridor construit
+     */
+    protected Corridor parse_corridor(Element figure) {
+        Element center = (Element) figure.getElementsByTagName(this.keywords.get(MelissaKey.COORDS)).item(0);
+        double lat = Double.parseDouble(center.getAttribute("latitude"));
+        double lon = Double.parseDouble(center.getAttribute("longitude"));
+        Point ptCenter = new Point(lat, lon);
+
+        Element size = (Element) figure.getElementsByTagName(this.keywords.get(MelissaKey.SIZE_CORR)).item(0);
+        double width = Double.parseDouble(size.getAttribute("code"));
+
+        Element angle = (Element) figure.getElementsByTagName(this.keywords.get(MelissaKey.ANGLE_CORR)).item(0);
+        double alpha = Double.parseDouble(angle.getAttribute("code"));
+
+        Corridor corridor = new Corridor(ptCenter, width, alpha);
+        logger.info("Corridor built: " + corridor);
+        try {
+            parse_corridor_lines(figure, corridor);
+        } catch (RuntimeException e) {
+            logger.debug("No corridor lines found");
+        }
+        return corridor;
+    }
+
+    /**
+     * Construction des lignes entourant un corridor.
+     * @param figure élément XML représentant une porte
+     * @param corridor corridor déjà construit
+     * @throws RuntimeException si les lignes ne sont pas spécifiées dans la SITAC
+     */
+    private void parse_corridor_lines(Element figure, Corridor corridor) throws RuntimeException {
+        Line initial = parse_line(figure);
+        if (initial.points.size() < 2) throw new RuntimeException("Corridor line must have at least 2 points");
+
+        ArrayList<Point> points = initial.points;
+        points.remove(0);
+        int half = points.size() / 2;
+        ArrayList<Point> left = new ArrayList<>(points.subList(0, half));
+        ArrayList<Point> right = new ArrayList<>(points.subList(half, points.size()));
+        left.add(corridor.start_point);
+        right.add(0, corridor.end_point);
+
+        this.figures.add(new Line(left));
+        logger.debug("Left line built: " + this.figures.get(this.figures.size() - 1));
+        this.figures.add(new Line(right));
+        logger.debug("Right line built: " + this.figures.get(this.figures.size() - 1));
+    }
+
+
+    /**
      * Construction d'un polygone à partir d'un élément XML.
      * <br>
      * Pour optimiser l'implémentation, le polygon est construit à partir d'une ligne, que l'on transforme ensuite en polygone.
@@ -202,7 +256,7 @@ public class MelissaParser implements XMLParser {
     protected Ellipse parse_ellipse(Element figure) {
         // center
         Element center = (Element) figure.getElementsByTagName(this.keywords.get(MelissaKey.COORDS)).item(0);
-        logger.warn("Center: " + center.getAttribute("latitude") + ", " + center.getAttribute("longitude"));
+        logger.debug("Center: " + center.getAttribute("latitude") + ", " + center.getAttribute("longitude"));
         double lat = Double.parseDouble(center.getAttribute("latitude"));
         double lon = Double.parseDouble(center.getAttribute("longitude"));
         Point point = new Point(lat, lon);
