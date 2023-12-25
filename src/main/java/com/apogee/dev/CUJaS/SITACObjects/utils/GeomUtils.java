@@ -132,10 +132,11 @@ public class GeomUtils {
     public static Point[] calcCorridorPoints(Point center, double width, double angle) {
         Point[] points = new Point[2];
         double line_angle = rad(angle);
-        points[0] = new Point(center.latitude + width * Math.cos(line_angle),
-                center.longitude + width * Math.sin(line_angle));
-        points[1] = new Point(center.latitude - width * Math.cos(line_angle),
-                center.longitude - width * Math.sin(line_angle));
+        double delta_pos = meter2degree(width / 2);
+        points[0] = new Point(center.latitude + delta_pos * Math.cos(line_angle),
+                center.longitude + delta_pos * Math.sin(line_angle));
+        points[1] = new Point(center.latitude - delta_pos * Math.cos(line_angle),
+                center.longitude - delta_pos * Math.sin(line_angle));
         return points;
     }
 }
