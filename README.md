@@ -1,5 +1,9 @@
 # Convertisseur Unifié en JAVA pour les SiTaC (CUJaS)
 
+<p align="center">
+<img style="horiz-align: center" alt="icon.png" height="250" src="src/main/resources/cujas_icon.png"/>
+</p>
+
 ## Objectifs
 Ce programme, développé en Java afin d'en faire un exécutable unique fonctionnel hors-ligne, vise à unifier et améliorer les convertisseurs de SiTac au format `kml` pour les vols d'entraînement.
 Il doit à ce titre, être :
