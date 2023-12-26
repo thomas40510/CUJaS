@@ -15,6 +15,7 @@ public class Corridor extends Figure {
     public Point start_point, end_point;
     private @Nullable Point center;
     public double width;
+    private static final double DELIMITER_SIZE = 500;
 
     /**
      * Constructeur d'un {@code Corridor}
@@ -74,6 +75,41 @@ public class Corridor extends Figure {
     @Override
     public String toString() {
         return this.name + " " + this.start_point + " " + this.end_point + " " + this.width;
+    }
+
+    /**
+     * Export en KML du {@code Corridor}.
+     * <br>
+     * On génère deux lignes parallèles, orthogonales à la ligne reliant les deux extrémités du {@code Corridor}.
+     * @return le code KML du {@code Corridor}
+     */
+    @Override
+    public String export_kml() {
+        // TODO: prévoir un style propre pour le corridor
+        StringBuilder res = new StringBuilder();
+
+        // on s'assure que les délimiteurs ont une taille fixe
+        final double angular_size = GeomUtils.meter2degree(DELIMITER_SIZE);
+        final double size_coeff = Math.max(angular_size/this.dx(), angular_size/this.dy());
+        // on calcule les deltas de position
+        final double delta_y = size_coeff * this.dy();
+        final double delta_x = size_coeff * this.dx();
+
+        // premier côté
+        Point ps1 = new Point(this.start_point.latitude - delta_y,
+                this.start_point.longitude + delta_x);
+        Point ps2 = new Point(this.start_point.latitude + delta_y,
+                this.start_point.longitude - delta_x);
+        res.append((new Line("corr1", ps1, start_point, ps2)).export_kml());
+
+        // end_point side
+        Point pe1 = new Point(this.end_point.latitude - delta_y,
+                this.end_point.longitude + delta_x);
+        Point pe2 = new Point(this.end_point.latitude + delta_y,
+                this.end_point.longitude - delta_x);
+        res.append((new Line("corr2", pe1, end_point, pe2)).export_kml());
+
+        return res.toString();
     }
 
 }
