@@ -15,7 +15,7 @@ public class Corridor extends Figure {
     public Point start_point, end_point;
     private @Nullable Point center;
     public double width;
-    private static final double DELIMITER_SIZE = 500;
+    private static final double DELIMITER_SIZE = 1000;
 
     /**
      * Constructeur d'un {@code Corridor}
