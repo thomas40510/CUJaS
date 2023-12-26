@@ -34,6 +34,28 @@ public class KMLUtils {
     }
 
     /**
+     * Génère le KML pour une {@code Line}.
+     * @param name nom de la ligne
+     * @param styleUrl référence vers le style à utiliser
+     * @param coords concaténation des coordonnées des points de la ligne
+     * @return le fragment KML correspondant
+     * @see <a href="https://developers.google.com/kml/documentation/kmlreference#linestring">LineString dans la doc KML</a>
+     * @see <a href="https://developers.google.com/kml/documentation/kml_tut#paths">Définition de Path (doc KML)</a>
+     */
+    public static String kmlLine(String name, String styleUrl, String coords) {
+        return """
+                <Placemark>
+                    <name>%s</name>
+                    <styleUrl>%s</styleUrl>
+                    <LineString>
+                        <coordinates>
+                            %s
+                        </coordinates>
+                    </LineString>
+                  </Placemark>""".formatted(name, styleUrl, coords);
+    }
+
+    /**
      * Génère le fragment KML pour une ligne, sans autre élément de contexte ou style.
      * @param coords concaténation des coordonnées des points de la ligne
      * @return le fragment KML correspondant

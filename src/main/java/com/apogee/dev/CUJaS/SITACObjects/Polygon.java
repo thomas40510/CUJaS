@@ -50,6 +50,8 @@ public class Polygon extends Line {
     @Override
     public String export_kml() {
         StringBuilder coords = new StringBuilder();
+        // on s'assure que le polygone est fermé
+        if (this.points.get(0) != this.points.get(this.points.size() - 1)) this.points.add(this.points.get(0));
         for (Point p : this.points) {
             coords.append(p.longitude).append(",").append(p.latitude).append(",0 \n");
         }
