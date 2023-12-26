@@ -520,7 +520,7 @@ public class CUJaS_UI {
         frame.setSize(720, 480);
         try {
             BufferedImage icon = ImageIO.read(
-                    Objects.requireNonNull(CUJaS_UI.class.getClassLoader().getResourceAsStream("eie.png"))
+                    Objects.requireNonNull(CUJaS_UI.class.getClassLoader().getResourceAsStream("cujas_icon.png"))
             );
             frame.setIconImage(icon);
         } catch (Exception e) {
