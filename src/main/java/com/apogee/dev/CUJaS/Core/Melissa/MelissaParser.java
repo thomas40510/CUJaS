@@ -227,9 +227,9 @@ public class MelissaParser implements XMLParser {
         left.add(corridor.start_point);
         right.add(0, corridor.end_point);
 
-        this.figures.add(new Line(left));
+        this.figures.add(new Line(left, "corr_line_left"));
         logger.debug("Left line built: " + this.figures.get(this.figures.size() - 1));
-        this.figures.add(new Line(right));
+        this.figures.add(new Line(right, "corr_line_right"));
         logger.debug("Right line built: " + this.figures.get(this.figures.size() - 1));
     }
 
