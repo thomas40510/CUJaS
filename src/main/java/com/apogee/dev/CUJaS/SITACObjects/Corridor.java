@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
  * <br>
  * Un couloir est une figure géométrique définie par une position de départ, une position d'arrivée et une largeur.
  * @see Figure
- * TODO: implémenter l'export en KML
  */
 public class Corridor extends Figure {
     public Point start_point, end_point;
