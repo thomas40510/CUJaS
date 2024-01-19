@@ -344,7 +344,7 @@ public class CUJaS_UI {
     /**
      * <i>Cooldown</i> entre chaque étape de l'exportation, en ms.
      */
-    private static final long WAIT_TIME = 500;
+    private static final long WAIT_TIME = 50;
 
     /**
      * Exportation de la SITAC.

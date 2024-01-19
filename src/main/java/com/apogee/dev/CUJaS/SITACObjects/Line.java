@@ -58,11 +58,16 @@ public class Line extends Figure {
 
     @Override
     public String export_kml() {
+        String style = (this.name.contains("corr")) ? "#style_porte" : "#style_line";
+        return export_kml(style);
+    }
+
+    public String export_kml(String style) {
         StringBuilder coords = new StringBuilder();
         for (Point p : this.points) {
             coords.append(p.longitude).append(",").append(p.latitude).append(",0 \n");
         }
-        return KMLUtils.kmlLine(this.name, "#style_line", coords.toString());
+        return KMLUtils.kmlLine(this.name, style, coords.toString());
     }
 
 }
