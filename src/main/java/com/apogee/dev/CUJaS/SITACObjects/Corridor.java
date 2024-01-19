@@ -14,7 +14,8 @@ public class Corridor extends Figure {
     public Point start_point, end_point;
     private @Nullable Point center;
     public double width;
-    private static final double DELIMITER_SIZE = 1000;
+    /** Taille des portes du corridor en mètre */
+    private static final double DELIMITER_SIZE = 2500;
 
     /**
      * Constructeur d'un {@code Corridor}
@@ -84,7 +85,7 @@ public class Corridor extends Figure {
      */
     @Override
     public String export_kml() {
-        // TODO: prévoir un style propre pour le corridor
+        String style = "#style_porte";
         StringBuilder res = new StringBuilder();
 
         // on s'assure que les délimiteurs ont une taille fixe
@@ -99,14 +100,14 @@ public class Corridor extends Figure {
                 this.start_point.longitude + delta_x);
         Point ps2 = new Point(this.start_point.latitude + delta_y,
                 this.start_point.longitude - delta_x);
-        res.append((new Line("corr1", ps1, start_point, ps2)).export_kml());
+        res.append((new Line("corr1", ps1, start_point, ps2)).export_kml(style));
 
-        // end_point side
+        // second côté
         Point pe1 = new Point(this.end_point.latitude - delta_y,
                 this.end_point.longitude + delta_x);
         Point pe2 = new Point(this.end_point.latitude + delta_y,
                 this.end_point.longitude - delta_x);
-        res.append((new Line("corr2", pe1, end_point, pe2)).export_kml());
+        res.append((new Line("corr2", pe1, end_point, pe2)).export_kml(style));
 
         return res.toString();
     }

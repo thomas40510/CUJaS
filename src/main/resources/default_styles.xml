@@ -129,4 +129,26 @@
 </BalloonStyle>
 </Style>
 
+<Style id="style_porte">
+<IconStyle>
+	<Icon>
+		<href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+	</Icon>
+	<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+</IconStyle>
+<LabelStyle>
+</LabelStyle>
+<LineStyle>
+	<!--color>ff000000</color-->
+	<color>ef1e26c1</color>
+	<width>6</width>
+</LineStyle>
+<PolyStyle>
+	<color>40ffffff</color>
+</PolyStyle>
+<BalloonStyle>
+	<displayMode>hide</displayMode>
+</BalloonStyle>
+</Style>
+
 		<!-- Begin_Objects -->
